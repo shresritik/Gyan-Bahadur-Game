@@ -1,5 +1,5 @@
 import { ctx } from "../components/canvas";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SPEED } from "../constants/constants";
+import { CANVAS_WIDTH, SPEED } from "../constants/constants";
 
 import { Base } from "./Base";
 
@@ -48,17 +48,17 @@ export class Player extends Base implements IPlayer {
   moveX(deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / deltaTime; // Normalize to 60 FPS
 
-    if (this.keys["a"]) {
+    if (this.keys["a"] && this.position.x < 300) {
       this.position.x -= movementSpeed;
     }
-    if (this.keys["d"]) {
+    if (this.keys["d"] && this.position.x < 300) {
       this.position.x += movementSpeed;
     }
 
     this.checkBoundaryX();
   }
 
-  moveY(deltaTime: number) {
+  moveY() {
     // Initially velocityY is negative so it moves upward and after adding gravity it moves downward
     this.position.y += this.velocityY; // Normalize to 60 FPS
     this.velocityY += this.gravity; // Normalize to 60 FPS
@@ -70,10 +70,10 @@ export class Player extends Base implements IPlayer {
   }
 
   checkBoundaryX() {
-    if (this.position.x < 0) {
-      this.position.x = CANVAS_WIDTH - this.w;
-    } else if (this.position.x + this.w > CANVAS_WIDTH) {
+    if (this.position.x <= 0) {
       this.position.x = 0;
+    } else if (this.position.x + this.w >= CANVAS_WIDTH) {
+      this.position.x = CANVAS_WIDTH - this.w;
     }
   }
   checkBoundaryY(platformY: number) {

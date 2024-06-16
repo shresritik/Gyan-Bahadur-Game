@@ -1,31 +1,9 @@
-import { ctx } from "../components/canvas";
-import { detectCollision } from "../utils/utils";
+import { Plat } from "./Plat";
 import { Player } from "./Player";
-
+let plat: Plat[] = [];
 export class Platform {
-  tileSize: number;
-  pacman: HTMLImageElement;
-  wall: HTMLImageElement;
-  dot: HTMLImageElement;
-  ghost: HTMLImageElement;
-  position: { x: number; y: number };
-  w: number;
-  h: number;
-  constructor(tileSize: number) {
-    this.tileSize = tileSize;
-    this.wall = this.#image("wall.png");
-    this.pacman = this.#image("pacman.png");
-    this.dot = this.#image("yellowDot.png");
-    this.ghost = this.#image("ghost.png");
-    this.position = { x: 0, y: 0 };
-    this.w = 0;
-    this.h = 0;
-  }
-  #image(fileName: string) {
-    const img = new Image();
-    img.src = `images/${fileName}`;
-    return img;
-  }
+  tileSize: number = 32;
+
   map = localStorage.getItem("map")
     ? JSON.parse(localStorage.getItem("map")!)
     : [
@@ -190,23 +168,27 @@ export class Platform {
           0, 0, 0, 0, 0,
         ],
       ];
-  drawMap = (player: Player) => {
+  drawMap = () => {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column];
         if (tile == 1) {
-          const image = this.wall;
-          this.position = { x: column * this.tileSize, y: row * this.tileSize };
-          ctx.drawImage(image, this.position.x, this.position.y);
-          if (detectCollision(player, this)) {
-            player.checkBoundaryY(this.position.y - player.h);
-          }
+          // const image = this.wall;
+          plat.push(
+            new Plat(
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
+            )
+          );
         }
       }
     }
   };
-
-  moveX(deltaTime: number) {
-    // Normalize to 60 FPS
-  }
+  moveX = (player: Player, deltaTime: number) => {
+    plat.forEach((pl) => {
+      pl.draw(player);
+      pl.moveX(player, deltaTime);
+    });
+  };
 }
