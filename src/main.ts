@@ -1,24 +1,29 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { Platform } from "./classes/Platform";
+import { Player } from "./classes/Player";
+import { ctx } from "./components/canvas";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./constants/constants";
+import "./style.css";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+// main game function calls
+let lastFrameTime: number = 0;
+let platform: Platform;
+let player: Player;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const drawObjects = () => {
+  platform = new Platform(32);
+  player = new Player({ x: 20, y: 50 }, 50, 50);
+};
+function gameLoop(currentTime: number) {
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  player.draw();
+  player.moveY(currentTime);
+  player.moveX(currentTime);
+  platform.drawMap(player);
+  // const deltaTime = currentTime - lastFrameTime;
+  // lastFrameTime = currentTime;
+  requestAnimationFrame(gameLoop);
+}
+
+// Start the game loop initially
+drawObjects();
+gameLoop(0);

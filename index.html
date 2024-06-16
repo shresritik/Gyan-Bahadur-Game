@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,20 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div>
+      <h1>Building a Tile Map</h1>
+      <img src="./images/pacman.png" onclick="pacmanFunc()" />
+      <img src="./images/wall.png" onclick="wallFunc()" />
+      <img src="./images/yellowDot.png" onclick="yellowFunc()" />
+      <img src="./images/ghost.png" onclick="ghostFunc()" />
+      <button onclick="save()">Save</button>
+      <button onclick="next()">Next</button>
+      <button onclick="prev()">Prev</button>
+
+      <canvas id="gameCanvas"></canvas>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
+    <script src="/src/customTile.ts"></script>
   </body>
 </html>
