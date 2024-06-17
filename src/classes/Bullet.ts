@@ -1,6 +1,8 @@
 import { SPEED } from "../constants/constants";
+import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
-import { TKeys } from "./Player";
+import { Enemy } from "./Enemy";
+import { Player, TKeys } from "./Player";
 
 export class Bullet extends Base {
   keys: TKeys = {};
@@ -12,16 +14,20 @@ export class Bullet extends Base {
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
 
-    this.velocityX = 1.5;
+    this.velocityX = SPEED * 2;
   }
 
   drawBullet(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = "blue";
-    ctx.fillRect(this.position.x, this.position.y, 10, 8);
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI, true);
+    ctx.fill();
   }
 
   // Method to move the bullet
-  moveBulletX(deltaTime: number) {
-    this.position.x += this.velocityX * SPEED * (deltaTime / 16.67); // Normalize to 60 FPS
+  moveBulletX(deltaTime: number, player: Player) {
+    // if (player.keys["d"] && player.position.x >= 300)
+    this.position.x += this.velocityX;
+    // else if (player.keys["a"] && player.position.x >= 300)
+    // this.position.x += this.velocityX;
   }
 }

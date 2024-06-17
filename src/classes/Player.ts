@@ -4,6 +4,7 @@ import { detectCollision } from "../utils/utils";
 
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
+import { Enemy } from "./Enemy";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -32,6 +33,11 @@ export class Player extends Base implements IPlayer {
 
     document.addEventListener("keydown", this.keyDownHandler);
     document.addEventListener("keyup", this.keyUpHandler);
+    document.addEventListener("keypress", (e) => {
+      if (e.key == "f") {
+        this.drawBullet();
+      }
+    });
   }
 
   keyDownHandler(e: KeyboardEvent) {
@@ -50,12 +56,13 @@ export class Player extends Base implements IPlayer {
 
   moveX(deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / deltaTime; // Normalize to 60 FPS
-
-    if (this.keys["a"] && this.position.x < 300) {
-      this.position.x -= movementSpeed;
-    }
-    if (this.keys["d"] && this.position.x < 300) {
-      this.position.x += movementSpeed;
+    if (this.position.x) {
+      if (this.keys["a"]) {
+        this.position.x -= movementSpeed;
+      }
+      if (this.keys["d"]) {
+        this.position.x += movementSpeed;
+      }
     }
 
     this.checkBoundaryX();
@@ -93,12 +100,13 @@ export class Player extends Base implements IPlayer {
     );
     this.bulletArray.push(bullet);
   }
-  updateBullet(deltatime: number) {
+  updateBullet(deltatime: number, enemy: Enemy) {
     this.bulletArray.forEach((bullet, index) => {
-      bullet.moveBulletX(deltatime);
-      // if (bullet.position.y < 0) {
-      //   this.bulletArray.splice(index, 1);
-      // }
+      bullet.moveBulletX(deltatime, this);
+      bullet.drawBullet(ctx);
+      if (bullet.position.x >= CANVAS_WIDTH) {
+        this.bulletArray.splice(index, 1);
+      }
     });
   }
   // if the player is in new platform and is not bouncing than increase score

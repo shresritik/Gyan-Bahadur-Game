@@ -28,7 +28,7 @@ function gameLoop(currentTime: number) {
   platform.moveX(player, currentTime);
   platform.drawEnemy(player, currentTime);
   platform.drawFruit(player, currentTime);
-  player.updateBullet(currentTime);
+  player.updateBullet(currentTime, player);
   writeScore(ctx);
 
   // const deltaTime = currentTime - lastFrameTime;
