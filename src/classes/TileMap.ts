@@ -7,7 +7,7 @@ import { Player } from "./Player";
 export class TileMap {
   tileSize: number = 32;
 
-  map = localStorage.getItem("mapi")
+  map = localStorage.getItem("map")
     ? JSON.parse(localStorage.getItem("map")!)
     : [
         [
@@ -183,7 +183,7 @@ export class TileMap {
               this.tileSize
             )
           );
-        } else if (tile == 3) {
+        } else if (tile == 4 || tile == 5) {
           objects.enemy.push(
             new Enemy(
               { x: column * this.tileSize, y: row * this.tileSize },
@@ -191,12 +191,13 @@ export class TileMap {
               this.tileSize
             )
           );
-        } else if (tile == 2) {
+        } else if (tile == 2 || tile == 3) {
           objects.fruit.push(
             new Fruit(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
-              this.tileSize
+              this.tileSize,
+              tile
             )
           );
         }

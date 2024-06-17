@@ -110,20 +110,4 @@ export class Player extends Base implements IPlayer {
       }
     });
   }
-  // if the player is in new platform and is not bouncing than increase score
-  // updateScore(platform: Platform) {
-  //   if (
-  //     detectCollision(this, platform) &&
-  //     this.velocityY >= 0 &&
-  //     platform !== this.lastPlatform
-  //   ) {
-  //     scoreCount.score++;
-  //     this.lastPlatform = platform;
-
-  //     if (maxScore < scoreCount.score) {
-  //       maxScore = scoreCount.score;
-  //       localStorage.setItem("maxScore", JSON.stringify(maxScore));
-  //     }
-  //   }
-  // }
 }

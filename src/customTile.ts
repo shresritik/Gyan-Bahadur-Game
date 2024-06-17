@@ -1,8 +1,8 @@
-import grapes from "./assets/grapes.png";
-import banana from "./assets/banana.png";
-import corona from "./assets/banana.png";
-import singleFire from "./assets/single-fire.png";
-import wall from "./assets/wall.png";
+const grapes = "./src/assets/grapes.png";
+const banana = "./src/assets/banana.png";
+const corona = "./src/assets/corona.png";
+const singleFire = "./src/assets/single-fire.png";
+const wall = "./src/assets/wall.png";
 let grapesBool = false;
 let bananaBool = false;
 let coronaBool = false;
@@ -61,13 +61,13 @@ function load() {
   }
 }
 
-function createMapObj(rows: number, cols: number, specialPoints: number[][]) {
+function createMapObj(rows: number, cols: number) {
   let map = Array.from({ length: rows }, () => Array(cols).fill(0));
 
-  for (let point of specialPoints) {
-    let [row, col, value] = point;
-    map[row][col] = value;
-  }
+  // for (let point of specialPoints) {
+  //   let [row, col, value] = point;
+  //   map[row][col] = value;
+  // }
 
   return { map: map };
 }
@@ -75,12 +75,7 @@ function createMapObj(rows: number, cols: number, specialPoints: number[][]) {
 const rows = 20;
 const cols = 120;
 
-const specialPoints = [
-  [0, 7, 1],
-  [10, 14, 2],
-];
-
-let mapObj = createMapObj(rows, cols, specialPoints);
+let mapObj = createMapObj(rows, cols);
 const tableEl = document.createElement("table");
 document.body.append(tableEl);
 
@@ -130,9 +125,11 @@ function renderTable() {
       // Add image if the map value is not zero
       if (mapObj.map[row][column] !== 0) {
         let image = new Image();
-        if (mapObj.map[row][column] === 1) image.src = "./images/wall.png";
-        if (mapObj.map[row][column] === 2) image.src = "./images/pacman.png";
-        if (mapObj.map[row][column] === 3) image.src = "./images/ghost.png";
+        if (mapObj.map[row][column] === 1) image.src = wall;
+        if (mapObj.map[row][column] === 2) image.src = grapes;
+        if (mapObj.map[row][column] === 3) image.src = banana;
+        if (mapObj.map[row][column] === 4) image.src = corona;
+        if (mapObj.map[row][column] === 5) image.src = singleFire;
         tableColumn.appendChild(image);
       }
 

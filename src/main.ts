@@ -14,7 +14,7 @@ const drawObjects = () => {
 
   player = new Player({ x: 20, y: 50 }, 50, 50);
 };
-export function writeScore(ctx: CanvasRenderingContext2D) {
+export function writeScore() {
   ctx.fillStyle = "red";
   ctx.font = "30px sans-serif";
   ctx.fillText(`Score: ${scoreCount.score}`, 10, 30);
@@ -29,7 +29,7 @@ function gameLoop(currentTime: number) {
   platform.drawEnemy(player, currentTime);
   platform.drawFruit(player, currentTime);
   player.updateBullet(currentTime, player);
-  writeScore(ctx);
+  writeScore();
 
   // const deltaTime = currentTime - lastFrameTime;
   // lastFrameTime = currentTime;

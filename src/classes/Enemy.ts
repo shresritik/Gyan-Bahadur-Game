@@ -51,7 +51,7 @@ export class Enemy extends Base {
       if (detectCollision(bull, this)) {
         scoreCount.score++;
         objects.enemy.shift();
-        player.bulletArray.length = 0;
+        player.bulletArray.shift();
 
         // player.checkBoundaryY(this.position.y - player.h);
       }
