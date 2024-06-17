@@ -1,7 +1,9 @@
 import { ctx } from "../components/canvas";
-import { CANVAS_WIDTH, SPEED } from "../constants/constants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SPEED } from "../constants/constants";
+import { detectCollision } from "../utils/utils";
 
 import { Base } from "./Base";
+import { Bullet } from "./Bullet";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -21,6 +23,7 @@ export class Player extends Base implements IPlayer {
 
   maxHeight = 0;
   platformY = 0;
+  bulletArray: Bullet[] = [];
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
 
@@ -62,8 +65,7 @@ export class Player extends Base implements IPlayer {
     // Initially velocityY is negative so it moves upward and after adding gravity it moves downward
     this.position.y += this.velocityY; // Normalize to 60 FPS
     this.velocityY += this.gravity; // Normalize to 60 FPS
-    // this.checkBoundaryY();
-
+    this.checkBoundaryY(CANVAS_HEIGHT);
     if (this.keys["w"] && this.position.y + this.h >= this.platformY) {
       this.velocityY -= 1.5;
     }
@@ -83,4 +85,36 @@ export class Player extends Base implements IPlayer {
       this.velocityY = 0;
     }
   }
+  drawBullet() {
+    const bullet = new Bullet(
+      { x: this.position.x, y: this.position.y },
+      20,
+      30
+    );
+    this.bulletArray.push(bullet);
+  }
+  updateBullet(deltatime: number) {
+    this.bulletArray.forEach((bullet, index) => {
+      bullet.moveBulletX(deltatime);
+      // if (bullet.position.y < 0) {
+      //   this.bulletArray.splice(index, 1);
+      // }
+    });
+  }
+  // if the player is in new platform and is not bouncing than increase score
+  // updateScore(platform: Platform) {
+  //   if (
+  //     detectCollision(this, platform) &&
+  //     this.velocityY >= 0 &&
+  //     platform !== this.lastPlatform
+  //   ) {
+  //     scoreCount.score++;
+  //     this.lastPlatform = platform;
+
+  //     if (maxScore < scoreCount.score) {
+  //       maxScore = scoreCount.score;
+  //       localStorage.setItem("maxScore", JSON.stringify(maxScore));
+  //     }
+  //   }
+  // }
 }

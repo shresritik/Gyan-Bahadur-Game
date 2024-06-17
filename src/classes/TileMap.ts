@@ -1,7 +1,10 @@
+import { objects } from "../constants/constants";
+import { Enemy } from "./Enemy";
+import { Fruit } from "./Fruit";
 import { Plat } from "./Plat";
 import { Player } from "./Player";
-let plat: Plat[] = [];
-export class Platform {
+
+export class TileMap {
   tileSize: number = 32;
 
   map = localStorage.getItem("map")
@@ -174,8 +177,24 @@ export class Platform {
         const tile = this.map[row][column];
         if (tile == 1) {
           // const image = this.wall;
-          plat.push(
+          objects.platform.push(
             new Plat(
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
+            )
+          );
+        } else if (tile == 3) {
+          objects.enemy.push(
+            new Enemy(
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
+            )
+          );
+        } else if (tile == 2) {
+          objects.fruit.push(
+            new Fruit(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
               this.tileSize
@@ -186,9 +205,21 @@ export class Platform {
     }
   };
   moveX = (player: Player, deltaTime: number) => {
-    plat.forEach((pl) => {
+    objects.platform.forEach((pl) => {
       pl.draw(player);
       pl.moveX(player, deltaTime);
     });
   };
+  drawEnemy(player: Player, deltaTime: number) {
+    objects.enemy.forEach((en) => {
+      en.draw(player);
+      en.moveX(player, deltaTime);
+    });
+  }
+  drawFruit(player: Player, deltaTime: number) {
+    objects.fruit.forEach((fr) => {
+      fr.draw(player);
+      fr.moveX(player, deltaTime);
+    });
+  }
 }
