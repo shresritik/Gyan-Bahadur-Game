@@ -76,7 +76,7 @@ export class Enemy extends Base {
         ) < 1000
       ) {
         singleBullet.drawBullet();
-        singleBullet.moveBulletX();
+        singleBullet.moveBulletX(player, true);
         if (singleBullet.position.x <= 0) {
           this.enemyBullet.splice(index, 1);
         }

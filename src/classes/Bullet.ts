@@ -1,6 +1,7 @@
 import { ctx } from "../components/canvas";
 import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
+import { Player } from "./Player";
 
 export class Bullet extends Base {
   velocityX = 12;
@@ -25,7 +26,10 @@ export class Bullet extends Base {
   }
 
   // Method to move the bullet
-  moveBulletX() {
+  moveBulletX(player: Player, enemy?: boolean) {
+    if (enemy)
+      this.bulletDirectionRight =
+        player.position.x <= this.position.x ? false : true;
     if (this.bulletDirectionRight) this.position.x += this.velocityX;
     else this.position.x -= this.velocityX;
   }

@@ -102,7 +102,7 @@ export class Player extends Base implements IPlayer {
   updateBullet(deltatime: number, player: Player) {
     this.bulletArray.forEach((bullet, index) => {
       bullet.drawBullet();
-      bullet.moveBulletX();
+      bullet.moveBulletX(player);
       if (bullet.position.x >= CANVAS_WIDTH) {
         this.bulletArray.splice(index, 1);
       }
