@@ -10,12 +10,13 @@ export class Enemy extends Base {
   spriteWidth = 0;
   spriteHeight = 0;
   hitEnemy: boolean = false;
+  elapsedFrame = 0;
   constructor(position: { x: number; y: number }, w: number, h: number) {
     super(position, h, w);
     this.imageX = 0;
     this.imageY = 39;
-    this.spriteWidth = 108;
-    this.spriteHeight = 248;
+    this.spriteWidth = 126;
+    this.spriteHeight = 254;
     this.hitEnemy = false;
   }
   draw = () => {
@@ -26,8 +27,8 @@ export class Enemy extends Base {
       image,
       this.imageX * this.spriteWidth,
       0,
-      108,
-      248,
+      this.spriteWidth,
+      this.spriteHeight,
       this.position.x,
       this.position.y,
       this.w,
@@ -58,12 +59,14 @@ export class Enemy extends Base {
     // player.checkBoundaryY(this.position.y - player.h);
   };
   moveX = (player: Player, deltaTime: number) => {
+    this.elapsedFrame++;
+
+    if (this.elapsedFrame % 15 === 0) this.imageX++;
+    if (this.imageX >= 7) this.imageX = 0;
     const movementSpeed = (SPEED * deltaTime) / deltaTime;
     if (player.keys["d"] && player.position.x >= 300)
       this.position.x -= movementSpeed;
     else if (player.keys["a"] && player.position.x >= 300)
       this.position.x += movementSpeed;
-    if (this.imageX < 7) this.imageX += 0.01;
-    else this.imageX = 0;
   };
 }

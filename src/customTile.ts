@@ -1,34 +1,51 @@
-let yellow = false;
-let pacman = false;
-let wall = false;
-let ghost = false;
+import grapes from "./assets/grapes.png";
+import banana from "./assets/banana.png";
+import corona from "./assets/banana.png";
+import singleFire from "./assets/single-fire.png";
+import wall from "./assets/wall.png";
+let grapesBool = false;
+let bananaBool = false;
+let coronaBool = false;
+let singleFireBool = false;
+let wallBool = false;
 
-function pacmanFunc() {
-  pacman = true;
-  yellow = false;
-  wall = false;
-  ghost = false;
+function grapesFunc() {
+  grapesBool = true;
+  bananaBool = false;
+  coronaBool = false;
+  singleFireBool = false;
+  wallBool = false;
 }
 
-function yellowFunc() {
-  yellow = true;
-  pacman = false;
-  wall = false;
-  ghost = false;
+function bananaFunc() {
+  bananaBool = true;
+  grapesBool = false;
+  coronaBool = false;
+  singleFireBool = false;
+  wallBool = false;
 }
 
+function coronaFunc() {
+  coronaBool = true;
+  bananaBool = false;
+  grapesBool = false;
+  singleFireBool = false;
+  wallBool = false;
+}
+
+function fireFunc() {
+  singleFireBool = true;
+  coronaBool = false;
+  grapesBool = false;
+  wallBool = false;
+  bananaBool = false;
+}
 function wallFunc() {
-  wall = true;
-  yellow = false;
-  pacman = false;
-  ghost = false;
-}
-
-function ghostFunc() {
-  ghost = true;
-  yellow = false;
-  pacman = false;
-  wall = false;
+  singleFireBool = true;
+  coronaBool = false;
+  grapesBool = false;
+  wallBool = true;
+  bananaBool = false;
 }
 
 function save() {
@@ -131,20 +148,23 @@ function addTile(row: number, column: number, tableColumn: HTMLElement) {
   let image = new Image();
   let value: number;
 
-  if (pacman) {
-    image.src = "./images/pacman.png";
-    value = 2;
-  } else if (yellow) {
-    image.src = "./images/yellowDot.png";
-    value = 0;
-  } else if (wall) {
-    image.src = "./images/wall.png";
+  if (wallBool) {
+    image.src = wall;
     value = 1;
-  } else if (ghost) {
-    image.src = "./images/ghost.png";
+  } else if (grapesBool) {
+    image.src = grapes;
+    value = 2;
+  } else if (bananaBool) {
+    image.src = banana;
     value = 3;
+  } else if (coronaBool) {
+    image.src = corona;
+    value = 4;
+  } else if (singleFireBool) {
+    image.src = singleFire;
+    value = 5;
   } else {
-    value = -1;
+    value = 0;
   }
 
   mapObj.map[row][column] = value;

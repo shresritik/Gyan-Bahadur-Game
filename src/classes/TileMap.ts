@@ -7,7 +7,7 @@ import { Player } from "./Player";
 export class TileMap {
   tileSize: number = 32;
 
-  map = localStorage.getItem("map")
+  map = localStorage.getItem("mapi")
     ? JSON.parse(localStorage.getItem("map")!)
     : [
         [
@@ -139,7 +139,7 @@ export class TileMap {
           0, 0, 0, 0, 0,
         ],
         [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
