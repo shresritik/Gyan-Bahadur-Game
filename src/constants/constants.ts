@@ -10,7 +10,7 @@ export const CANVAS_HEIGHT = 640;
 export const SPEED = 2;
 export const COLOR = "#F7F0EA";
 export const gameStatus = { gameOver: false, isPaused: false };
-export const scoreCount = { score: 0 };
+export const scoreCount = { score: 0, health: 100 };
 export const objects: { platform: Plat[]; enemy: Enemy[]; fruit: Fruit[] } = {
   platform: [],
   enemy: [],

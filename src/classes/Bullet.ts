@@ -26,7 +26,6 @@ export class Bullet extends Base {
 
   // Method to move the bullet
   moveBulletX() {
-    console.log(this.position.x, this.bulletDirectionRight);
     if (this.bulletDirectionRight) this.position.x += this.velocityX;
     else this.position.x -= this.velocityX;
   }

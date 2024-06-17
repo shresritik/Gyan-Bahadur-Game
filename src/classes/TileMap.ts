@@ -188,7 +188,8 @@ export class TileMap {
             new Enemy(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
-              this.tileSize
+              this.tileSize,
+              tile
             )
           );
         } else if (tile == 2 || tile == 3) {
@@ -213,6 +214,8 @@ export class TileMap {
   drawEnemy(player: Player, deltaTime: number) {
     objects.enemy.forEach((en) => {
       en.draw();
+      // en.drawBullet();
+      en.updateBullet(player);
       en.playerCollision(player);
       en.bulletCollision(player);
       en.moveX(player, deltaTime);

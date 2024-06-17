@@ -1,5 +1,6 @@
 import { Bullet } from "../classes/Bullet";
 import { Enemy } from "../classes/Enemy";
+import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Plat";
 import { Player } from "../classes/Player";
 /**
@@ -20,12 +21,25 @@ export function getRandomValue(min: number, max: number): number {
  * @param other The enemy to check collision against.
  * @returns True if there is a collision, false otherwise.
  */
-type Tdetector = Player | Plat | Bullet | Enemy;
-export function detectCollision(player: Tdetector, other: Tdetector) {
+type Tdetector = Player | Plat | Bullet | Enemy | Fruit;
+
+export function detectCollision(
+  entity1: Tdetector,
+  entity2: Tdetector
+): boolean {
   return (
-    player.position.x < other.position.x + other.w &&
-    player.position.x + player.w > other.position.x &&
-    player.position.y < other.position.y + other.h &&
-    player.position.y + player.h > other.position.y
+    entity1.position.x < entity2.position.x + entity2.w &&
+    entity1.position.x + entity1.w > entity2.position.x &&
+    entity1.position.y < entity2.position.y + entity2.h &&
+    entity1.position.y + entity1.h > entity2.position.y
   );
+}
+
+export function getDistance(
+  x1: number = 0,
+  y1: number = 0,
+  x2: number = 0,
+  y2: number = 0
+): number {
+  return Math.floor(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
 }
