@@ -9,14 +9,16 @@ export class Enemy extends Base {
   imageY: number = 0;
   spriteWidth = 0;
   spriteHeight = 0;
+  hitEnemy: boolean = false;
   constructor(position: { x: number; y: number }, w: number, h: number) {
     super(position, h, w);
     this.imageX = 0;
     this.imageY = 39;
     this.spriteWidth = 108;
     this.spriteHeight = 248;
+    this.hitEnemy = false;
   }
-  draw = (player: Player) => {
+  draw = () => {
     const image = new Image();
     image.src = fireImg;
 
@@ -31,12 +33,19 @@ export class Enemy extends Base {
       this.w,
       this.h
     );
+  };
+  playerCollision = (player: Player) => {
     if (detectCollision(player, this)) {
-      if (scoreCount.score > 0) {
+      if (scoreCount.score > 0 && !this.hitEnemy) {
         scoreCount.score--;
+        this.hitEnemy = true;
       }
       // player.checkBoundaryY(this.position.y - player.h);
+    } else {
+      this.hitEnemy = false;
     }
+  };
+  bulletCollision = (player: Player) => {
     player.bulletArray.forEach((bull) => {
       if (detectCollision(bull, this)) {
         scoreCount.score++;
@@ -46,6 +55,7 @@ export class Enemy extends Base {
         // player.checkBoundaryY(this.position.y - player.h);
       }
     });
+    // player.checkBoundaryY(this.position.y - player.h);
   };
   moveX = (player: Player, deltaTime: number) => {
     const movementSpeed = (SPEED * deltaTime) / deltaTime;

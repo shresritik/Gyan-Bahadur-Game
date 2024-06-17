@@ -1,4 +1,5 @@
 import { Bullet } from "../classes/Bullet";
+import { Enemy } from "../classes/Enemy";
 import { Plat } from "../classes/Plat";
 import { Player } from "../classes/Player";
 /**
@@ -19,7 +20,7 @@ export function getRandomValue(min: number, max: number): number {
  * @param other The enemy to check collision against.
  * @returns True if there is a collision, false otherwise.
  */
-type Tdetector = Player | Plat | Bullet;
+type Tdetector = Player | Plat | Bullet | Enemy;
 export function detectCollision(player: Tdetector, other: Tdetector) {
   return (
     player.position.x < other.position.x + other.w &&

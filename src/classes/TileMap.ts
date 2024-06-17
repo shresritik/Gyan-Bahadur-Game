@@ -176,7 +176,6 @@ export class TileMap {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column];
         if (tile == 1) {
-          // const image = this.wall;
           objects.platform.push(
             new Plat(
               { x: column * this.tileSize, y: row * this.tileSize },
@@ -212,7 +211,9 @@ export class TileMap {
   };
   drawEnemy(player: Player, deltaTime: number) {
     objects.enemy.forEach((en) => {
-      en.draw(player);
+      en.draw();
+      en.playerCollision(player);
+      en.bulletCollision(player);
       en.moveX(player, deltaTime);
     });
   }

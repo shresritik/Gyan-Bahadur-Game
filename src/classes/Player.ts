@@ -1,10 +1,8 @@
 import { ctx } from "../components/canvas";
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SPEED } from "../constants/constants";
-import { detectCollision } from "../utils/utils";
 
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
-import { Enemy } from "./Enemy";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -25,6 +23,7 @@ export class Player extends Base implements IPlayer {
   maxHeight = 0;
   platformY = 0;
   bulletArray: Bullet[] = [];
+  directionRight: boolean = true;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
 
@@ -56,13 +55,14 @@ export class Player extends Base implements IPlayer {
 
   moveX(deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / deltaTime; // Normalize to 60 FPS
-    if (this.position.x) {
-      if (this.keys["a"]) {
-        this.position.x -= movementSpeed;
-      }
-      if (this.keys["d"]) {
-        this.position.x += movementSpeed;
-      }
+    if (this.keys["a"]) {
+      this.directionRight = false;
+
+      this.position.x -= movementSpeed;
+    }
+    if (this.keys["d"]) {
+      this.directionRight = true;
+      this.position.x += movementSpeed;
     }
 
     this.checkBoundaryX();
@@ -96,14 +96,15 @@ export class Player extends Base implements IPlayer {
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y },
       20,
-      30
+      30,
+      this.directionRight
     );
     this.bulletArray.push(bullet);
   }
-  updateBullet(deltatime: number, enemy: Enemy) {
+  updateBullet(deltatime: number, player: Player) {
     this.bulletArray.forEach((bullet, index) => {
-      bullet.moveBulletX(deltatime, this);
-      bullet.drawBullet(ctx);
+      bullet.drawBullet();
+      bullet.moveBulletX();
       if (bullet.position.x >= CANVAS_WIDTH) {
         this.bulletArray.splice(index, 1);
       }
