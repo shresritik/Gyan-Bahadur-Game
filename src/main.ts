@@ -1,12 +1,26 @@
 import { TileMap } from "./classes/TileMap";
 import { Player } from "./classes/Player";
 import { ctx } from "./components/canvas";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, scoreCount } from "./constants/constants";
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  keys,
+  scoreCount,
+} from "./constants/constants";
 import "./style.css";
 
 // main game function calls
 let platform: TileMap;
 let player: Player;
+const keyDownHandler = (e: KeyboardEvent) => {
+  keys[e.key] = true;
+};
+
+const keyUpHandler = (e: KeyboardEvent) => {
+  keys[e.key] = false;
+};
+window.addEventListener("keydown", keyDownHandler);
+window.addEventListener("keyup", keyUpHandler);
 
 const drawObjects = () => {
   platform = new TileMap();

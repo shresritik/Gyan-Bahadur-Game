@@ -1,5 +1,10 @@
 import { ctx } from "../components/canvas";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SPEED } from "../constants/constants";
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  SPEED,
+  keys,
+} from "../constants/constants";
 
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
@@ -10,13 +15,10 @@ interface IPlayer {
   w: number;
   // image: HTMLImageElement;
 }
-export interface TKeys {
-  [keys: string]: boolean;
-}
 
 export class Player extends Base implements IPlayer {
   // image: HTMLImageElement;
-  keys: TKeys = {};
+
   velocityY = -7;
   gravity = 0.3;
 
@@ -27,24 +29,11 @@ export class Player extends Base implements IPlayer {
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
 
-    this.keyDownHandler = this.keyDownHandler.bind(this);
-    this.keyUpHandler = this.keyUpHandler.bind(this);
-
-    document.addEventListener("keydown", this.keyDownHandler);
-    document.addEventListener("keyup", this.keyUpHandler);
     document.addEventListener("keypress", (e) => {
       if (e.key == "f") {
         this.drawBullet();
       }
     });
-  }
-
-  keyDownHandler(e: KeyboardEvent) {
-    this.keys[e.key] = true;
-  }
-
-  keyUpHandler(e: KeyboardEvent) {
-    this.keys[e.key] = false;
   }
 
   draw() {
@@ -54,18 +43,27 @@ export class Player extends Base implements IPlayer {
   }
 
   moveX(deltaTime: number) {
-    const movementSpeed = (SPEED * deltaTime) / deltaTime; // Normalize to 60 FPS
-    if (this.keys["a"]) {
+    const movementSpeed = (SPEED * deltaTime) / deltaTime;
+    if (this.position.x < 300) {
+      // Normalize to 60 FPS
+      if (keys["a"]) {
+        this.directionRight = false;
+
+        this.position.x -= movementSpeed;
+      }
+      if (keys["d"]) {
+        this.directionRight = true;
+        this.position.x += movementSpeed;
+      }
+
+      this.checkBoundaryX();
+    }
+    if (keys["a"]) {
       this.directionRight = false;
-
-      this.position.x -= movementSpeed;
     }
-    if (this.keys["d"]) {
+    if (keys["d"]) {
       this.directionRight = true;
-      this.position.x += movementSpeed;
     }
-
-    this.checkBoundaryX();
   }
 
   moveY() {
@@ -73,7 +71,7 @@ export class Player extends Base implements IPlayer {
     this.position.y += this.velocityY; // Normalize to 60 FPS
     this.velocityY += this.gravity; // Normalize to 60 FPS
     this.checkBoundaryY(CANVAS_HEIGHT);
-    if (this.keys["w"] && this.position.y + this.h >= this.platformY) {
+    if (keys["w"] && this.position.y + this.h >= this.platformY) {
       this.velocityY -= 1.5;
     }
   }

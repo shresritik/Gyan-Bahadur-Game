@@ -1,5 +1,5 @@
 import { ctx } from "../components/canvas";
-import { SPEED } from "../constants/constants";
+import { SPEED, keys } from "../constants/constants";
 import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
@@ -18,9 +18,8 @@ export class Plat extends Base {
   };
   moveX = (player: Player, deltaTime: number) => {
     const movementSpeed = (SPEED * deltaTime) / deltaTime;
-    if (player.keys["d"] && player.position.x >= 300)
-      this.position.x -= movementSpeed;
-    else if (player.keys["a"] && player.position.x >= 300)
+    if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
+    else if (keys["a"] && player.position.x >= 300)
       this.position.x += movementSpeed;
   };
 }

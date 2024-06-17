@@ -1,5 +1,5 @@
 import { ctx } from "../components/canvas";
-import { SPEED, objects, scoreCount } from "../constants/constants";
+import { SPEED, keys, objects, scoreCount } from "../constants/constants";
 import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
@@ -50,13 +50,11 @@ export class Enemy extends Base {
     player.bulletArray.forEach((bull) => {
       if (detectCollision(bull, this)) {
         scoreCount.score++;
-        objects.enemy.shift();
-        player.bulletArray.shift();
+        objects.enemy = objects.enemy.filter((enemy) => enemy !== this);
 
-        // player.checkBoundaryY(this.position.y - player.h);
+        player.bulletArray.shift();
       }
     });
-    // player.checkBoundaryY(this.position.y - player.h);
   };
   moveX = (player: Player, deltaTime: number) => {
     this.elapsedFrame++;
@@ -64,9 +62,8 @@ export class Enemy extends Base {
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
     const movementSpeed = (SPEED * deltaTime) / deltaTime;
-    if (player.keys["d"] && player.position.x >= 300)
-      this.position.x -= movementSpeed;
-    else if (player.keys["a"] && player.position.x >= 300)
+    if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
+    else if (keys["a"] && player.position.x >= 300)
       this.position.x += movementSpeed;
   };
 }
