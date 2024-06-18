@@ -41,7 +41,7 @@ export class Fruit extends Base {
     }
 
     if (image && image.complete) {
-      ctx.drawImage(image, this.position.x, this.position.y, this.w, this.h);
+      ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
 
       if (detectCollision(player, this)) {
         if (scoreCount.health < 100) scoreCount.health++;
@@ -49,7 +49,7 @@ export class Fruit extends Base {
       }
     } else if (image) {
       image.onload = () => {
-        ctx.drawImage(image, this.position.x, this.position.y, this.w, this.h);
+        ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
 
         if (detectCollision(player, this)) {
           if (scoreCount.health < 100) scoreCount.health++;

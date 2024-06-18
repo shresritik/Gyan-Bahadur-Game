@@ -63,19 +63,13 @@ export class Enemy extends Base {
           0,
           this.spriteWidth,
           this.spriteHeight,
-          this.position.x,
-          this.position.y,
-          this.w,
-          this.h
+          this.position.x + 20,
+          this.position.y - 20,
+          60,
+          60
         );
       } else if (this.tile == 5) {
-        ctx.drawImage(
-          image,
-          this.position.x - 10,
-          this.position.y - 10,
-          50,
-          50
-        );
+        ctx.drawImage(image, this.position.x, this.position.y - 20, 60, 60);
       }
     } else {
       image.onload = () => {
@@ -86,10 +80,10 @@ export class Enemy extends Base {
             0,
             this.spriteWidth,
             this.spriteHeight,
-            this.position.x,
-            this.position.y,
-            this.w,
-            this.h
+            this.position.x - 10,
+            this.position.y - 10,
+            50,
+            50
           );
         } else if (this.tile == 5) {
           ctx.drawImage(
