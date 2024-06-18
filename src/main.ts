@@ -26,8 +26,8 @@ window.addEventListener("keyup", keyUpHandler);
 
 const drawObjects = () => {
   platform = new TileMap();
-  platform.drawMap();
   player = new Player({ x: 20, y: 50 }, 50, 50);
+  platform.drawMap(player);
 };
 
 export function writeScore() {
@@ -52,7 +52,7 @@ function gameLoop(currentTime: number) {
   platform.drawEnemy(player, deltaTime);
   platform.drawFruit(player, deltaTime);
 
-  player.updateBullet(deltaTime, player);
+  player.updateBullet();
 
   objects.enemy.forEach((enemy) => {
     enemy.updateBullet(player);

@@ -23,6 +23,17 @@ export function getRandomValue(min: number, max: number): number {
  */
 type Tdetector = Player | Plat | Bullet | Enemy | Fruit;
 
+// export function detectCollision(
+//   entity1: Tdetector,
+//   entity2: Tdetector
+// ): boolean {
+//   return (
+//     entity1.position.x <= entity2.position.x + entity2.w &&
+//     entity1.position.x + entity1.w >= entity2.position.x &&
+//     entity1.position.y + entity1.h <= entity2.position.y + entity2.h &&
+//     entity1.position.y + entity1.h > entity2.position.y
+//   );
+// }
 export function detectCollision(
   entity1: Tdetector,
   entity2: Tdetector
@@ -43,3 +54,15 @@ export function getDistance(
 ): number {
   return Math.floor(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
 }
+export const normalizeVector = (vector: { x: number; y: number }) => {
+  const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+  return {
+    x: vector.x / length,
+    y: vector.y / length,
+  };
+};
+
+// export const normalizeVector = (vector: { x: number; y: number }) => {
+//   const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+//   return { x: vector.x / length, y: vector.y / length };
+// };

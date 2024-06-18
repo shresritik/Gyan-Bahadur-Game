@@ -1,22 +1,21 @@
 import { ctx } from "../components/canvas";
-import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
-import { Player } from "./Player";
 
 export class Bullet extends Base {
-  velocityX = 12;
-  bullet: number | null = null;
-  bulletSpeed: number | null = 0.5;
-  bulletDirectionRight: boolean = true;
+  velocityX: number;
+  velocityY: number;
+  direction: { x: number };
+
   constructor(
     position: { x: number; y: number },
     h: number,
     w: number,
-    bulletDirectionRight: boolean
+    direction: { x: number }
   ) {
     super(position, h, w);
-    this.bulletDirectionRight = bulletDirectionRight;
-    this.velocityX = SPEED * 2;
+    this.velocityX = 6; // Set bullet speed (adjust as needed)
+    this.velocityY = 6; // Set bullet speed (adjust as needed)
+    this.direction = direction;
   }
 
   drawBullet() {
@@ -25,12 +24,7 @@ export class Bullet extends Base {
     ctx.fill();
   }
 
-  // Method to move the bullet
-  moveBulletX(player: Player, enemy?: boolean) {
-    if (enemy)
-      this.bulletDirectionRight =
-        player.position.x <= this.position.x ? false : true;
-    if (this.bulletDirectionRight) this.position.x += this.velocityX;
-    else this.position.x -= this.velocityX;
+  moveBullet() {
+    this.position.x += this.velocityX * this.direction.x;
   }
 }

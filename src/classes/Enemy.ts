@@ -1,6 +1,13 @@
 import { ctx } from "../components/canvas";
-import { SPEED, scoreCount, keys, objects } from "../constants/constants";
-import { detectCollision, getDistance } from "../utils/utils";
+import {
+  SPEED,
+  scoreCount,
+  keys,
+  objects,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+} from "../constants/constants";
+import { detectCollision, getDistance, normalizeVector } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import fireImg from "../assets/fire.png";
@@ -16,7 +23,9 @@ export class Enemy extends Base {
   elapsedFrame = 0;
   tile: number = 0;
   enemyBullet: Bullet[] = [];
-  bulletInterval: number;
+  bulletInterval: number | undefined;
+  lastHealthDecreaseTime: number = 0; // Last time health was decreased
+  healthDecreaseCooldown: number = 1000; // Cooldown period in milliseconds
 
   constructor(
     position: { x: number; y: number },
@@ -31,7 +40,10 @@ export class Enemy extends Base {
     this.spriteHeight = 254;
     this.hitEnemy = false;
     this.tile = tile;
-    this.bulletInterval = setInterval(this.drawBullet, 3000); // Shoot bullet every second
+  }
+
+  startShooting(player: Player) {
+    this.bulletInterval = setInterval(() => this.drawBullet(player), 3000); // Shoot bullet every 3 seconds
   }
 
   draw = () => {
@@ -55,18 +67,32 @@ export class Enemy extends Base {
     }
   };
 
-  drawBullet = () => {
+  drawBullet = (player: Player) => {
+    const direction = normalizeVector({
+      x: player.position.x - this.position.x,
+      y: player.position.y - this.position.y,
+    });
+
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y },
       20,
       20,
-      false
+      direction
     );
     this.enemyBullet.push(bullet);
   };
 
   updateBullet = (player: Player) => {
     this.enemyBullet.forEach((singleBullet, index) => {
+      if (
+        singleBullet.position.x <= 0 ||
+        singleBullet.position.x >= CANVAS_WIDTH ||
+        singleBullet.position.y <= 0 ||
+        singleBullet.position.y >= CANVAS_HEIGHT
+      ) {
+        this.enemyBullet.splice(index, 1);
+      }
+
       if (
         getDistance(
           player.position.x,
@@ -76,10 +102,8 @@ export class Enemy extends Base {
         ) < 1000
       ) {
         singleBullet.drawBullet();
-        singleBullet.moveBulletX(player, true);
-        if (singleBullet.position.x <= 0) {
-          this.enemyBullet.splice(index, 1);
-        }
+        singleBullet.moveBullet();
+
         if (detectCollision(player, singleBullet)) {
           if (scoreCount.health > 0 && !this.hitEnemy) {
             scoreCount.health--;
@@ -94,13 +118,15 @@ export class Enemy extends Base {
   };
 
   playerCollision = (player: Player) => {
+    const currentTime = Date.now();
     if (detectCollision(player, this)) {
-      if (scoreCount.health > 0 && !this.hitEnemy) {
+      if (
+        scoreCount.health > 0 &&
+        currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
+      ) {
         scoreCount.health--;
-        this.hitEnemy = true;
+        this.lastHealthDecreaseTime = currentTime; // Update the last decrease time
       }
-    } else {
-      this.hitEnemy = false;
     }
   };
 
@@ -110,7 +136,7 @@ export class Enemy extends Base {
         scoreCount.score++;
         objects.enemy = objects.enemy.filter((enemy) => {
           if (enemy === this) {
-            enemy.destroy(); // Call destroy to clear the interval
+            enemy.destroy();
             return false;
           }
           return true;
@@ -130,8 +156,9 @@ export class Enemy extends Base {
       this.position.x += movementSpeed;
   };
 
-  // Clear interval when the enemy is removed
   destroy() {
-    clearInterval(this.bulletInterval);
+    if (this.bulletInterval) {
+      clearInterval(this.bulletInterval);
+    }
   }
 }

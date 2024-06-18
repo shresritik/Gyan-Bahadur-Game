@@ -171,7 +171,7 @@ export class TileMap {
           0, 0, 0, 0, 0,
         ],
       ];
-  drawMap = () => {
+  drawMap = (player: Player) => {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         const tile = this.map[row][column];
@@ -184,14 +184,15 @@ export class TileMap {
             )
           );
         } else if (tile == 4 || tile == 5) {
-          objects.enemy.push(
-            new Enemy(
-              { x: column * this.tileSize, y: row * this.tileSize },
-              this.tileSize,
-              this.tileSize,
-              tile
-            )
+          const newEnemy = new Enemy(
+            { x: column * this.tileSize, y: row * this.tileSize },
+            this.tileSize,
+            this.tileSize,
+            tile
           );
+
+          newEnemy.startShooting(player);
+          objects.enemy.push(newEnemy);
         } else if (tile == 2 || tile == 3) {
           objects.fruit.push(
             new Fruit(
