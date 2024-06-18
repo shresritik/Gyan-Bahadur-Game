@@ -3,8 +3,7 @@ import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
 
 export class Bullet extends Base {
-  velocityY: number;
-  direction: { x: number };
+  velocity: { x: number };
 
   constructor(
     position: { x: number; y: number },
@@ -13,17 +12,16 @@ export class Bullet extends Base {
     direction: { x: number }
   ) {
     super(position, h, w);
-    this.velocityY = 6; // Set bullet speed (adjust as needed)
-    this.direction = direction;
+    this.velocity = { x: direction.x }; // Example speed, adjust as needed
   }
 
   drawBullet() {
     ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, 8, 0, 2 * Math.PI, true);
+    ctx.arc(this.position.x, this.position.y, this.w / 2, 0, 2 * Math.PI, true);
     ctx.fill();
   }
 
   moveBullet() {
-    this.position.x += SPEED * this.direction.x;
+    this.position.x += this.velocity.x * SPEED;
   }
 }

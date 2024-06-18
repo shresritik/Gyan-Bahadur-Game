@@ -215,9 +215,9 @@ export class TileMap {
   drawEnemy(player: Player, deltaTime: number) {
     objects.enemy.forEach((en) => {
       en.draw();
-      en.updateBullet(player);
+      en.updateEnemyBullet(player);
       en.playerCollision(player);
-      en.bulletCollision(player);
+      en.enemyBulletCollision(player);
       en.moveX(player, deltaTime);
     });
   }

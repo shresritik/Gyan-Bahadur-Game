@@ -1,21 +1,21 @@
-import { TileMap } from "./classes/TileMap";
-import { Player } from "./classes/Player";
 import { ctx } from "./components/canvas";
 import {
-  CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  CANVAS_HEIGHT,
   objects,
   scoreCount,
 } from "./constants/constants";
+import { Player } from "./classes/Player";
+import { TileMap } from "./classes/TileMap";
 import "./style.css";
 
-let platform: TileMap;
+let tileMap: TileMap;
 let player: Player;
 
 const drawObjects = () => {
-  platform = new TileMap();
+  tileMap = new TileMap();
   player = new Player({ x: 20, y: 50 }, 50, 50);
-  platform.drawMap(player);
+  tileMap.drawMap(player);
 };
 
 export function writeScore() {
@@ -36,15 +36,15 @@ function gameLoop(currentTime: number) {
   player.moveY();
   player.moveX(deltaTime);
 
-  platform.moveX(player, deltaTime);
-  platform.drawEnemy(player, deltaTime);
-  platform.drawFruit(player, deltaTime);
+  tileMap.moveX(player, deltaTime);
+  tileMap.drawEnemy(player, deltaTime);
+  tileMap.drawFruit(player, deltaTime);
 
   player.updateBullet();
 
   objects.enemy.forEach((enemy) => {
-    enemy.updateBullet(player);
-    enemy.bulletCollision(player);
+    enemy.updateEnemyBullet(player);
+    enemy.enemyBulletCollision(player);
   });
 
   writeScore();

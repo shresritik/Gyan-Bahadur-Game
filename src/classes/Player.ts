@@ -1,11 +1,5 @@
 import { ctx } from "../components/canvas";
-import {
-  CANVAS_HEIGHT,
-  CANVAS_WIDTH,
-  SPEED,
-  keys,
-} from "../constants/constants";
-
+import { CANVAS_WIDTH, SPEED, keys } from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
 
@@ -16,37 +10,34 @@ interface IPlayer {
 }
 
 export class Player extends Base implements IPlayer {
-  velocityY = -7;
-  gravity = 0.3;
-
-  maxHeight = 0;
-  platformY = 0;
+  velocityY = 0;
+  gravity = 0.2;
   bulletArray: Bullet[] = [];
   directionRight: boolean = true;
+  playerSpeed = 2;
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
-    const keyDownHandler = (e: KeyboardEvent) => {
+
+    window.addEventListener("keydown", (e: KeyboardEvent) => {
       keys[e.key] = true;
-    };
-
-    const keyUpHandler = (e: KeyboardEvent) => {
+    });
+    window.addEventListener("keyup", (e: KeyboardEvent) => {
       keys[e.key] = false;
-    };
-
-    window.addEventListener("keydown", keyDownHandler);
-    window.addEventListener("keyup", keyUpHandler);
-    window.addEventListener("keypress", (e) => {
+    });
+    window.addEventListener("keypress", (e: KeyboardEvent) => {
       if (e.key == "f") {
         this.drawBullet();
       }
     });
   }
-
+  //draw player
   draw() {
     ctx.fillStyle = "red";
     ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
   }
+  //move left with a and right with d
+  //if player.x is less than 300 then stop the movement
 
   moveX(deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
@@ -72,7 +63,6 @@ export class Player extends Base implements IPlayer {
   moveY() {
     this.position.y += this.velocityY;
     this.velocityY += this.gravity;
-    // this.checkBoundaryY(CANVAS_HEIGHT);
   }
 
   checkBoundaryX() {
@@ -82,32 +72,26 @@ export class Player extends Base implements IPlayer {
       this.position.x = CANVAS_WIDTH - this.w;
     }
   }
-
-  // checkBoundaryY(platformY: number) {
-  //   if (this.position.y + this.h >= platformY) {
-  //     this.platformY = platformY;
-  //     this.position.y = this.platformY;
-  //     this.velocityY = 0;
-  //   }
-  // }
-
+  //create bullet object
   drawBullet() {
     const bullet = new Bullet(
-      { x: this.position.x, y: this.position.y },
-      20,
-      30,
+      { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
+      10,
+      10,
       { x: this.directionRight ? 1 : -1 }
     );
     this.bulletArray.push(bullet);
   }
-
+  //update player's bullet
   updateBullet() {
-    this.bulletArray.forEach((bullet, index) => {
+    for (let i = 0; i < this.bulletArray.length; i++) {
+      const bullet = this.bulletArray[i];
       bullet.drawBullet();
       bullet.moveBullet();
-      if (bullet.position.x >= CANVAS_WIDTH) {
-        this.bulletArray.splice(index, 1);
+      if (bullet.position.x <= 0 || bullet.position.x >= CANVAS_WIDTH) {
+        this.bulletArray.splice(i, 1);
+        i--;
       }
-    });
+    }
   }
 }

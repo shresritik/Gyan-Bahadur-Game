@@ -7,7 +7,7 @@ import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
 } from "../constants/constants";
-import { detectCollision, getDistance, normalizeVector } from "../utils/utils";
+import { detectCollision, getDistance } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import fireImg from "../assets/fire.png";
@@ -17,8 +17,8 @@ import { Bullet } from "./Bullet";
 export class Enemy extends Base {
   imageX: number = 0;
   imageY: number = 0;
-  spriteWidth = 0;
-  spriteHeight = 0;
+  spriteWidth = 126;
+  spriteHeight = 254;
   hitEnemy: boolean = false;
   elapsedFrame = 0;
   tile: number = 0;
@@ -26,6 +26,9 @@ export class Enemy extends Base {
   bulletInterval: number | undefined;
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
   healthDecreaseCooldown: number = 1000; // Cooldown period in milliseconds
+  bulletIndex: number = 0;
+  private static fireImage: HTMLImageElement;
+  private static coronaImage: HTMLImageElement;
 
   constructor(
     position: { x: number; y: number },
@@ -34,41 +37,74 @@ export class Enemy extends Base {
     tile: number
   ) {
     super(position, h, w);
-    this.imageX = 0;
-    this.imageY = 39;
-    this.spriteWidth = 126;
-    this.spriteHeight = 254;
-    this.hitEnemy = false;
     this.tile = tile;
-  }
 
+    if (!Enemy.fireImage) {
+      Enemy.fireImage = new Image();
+      Enemy.fireImage.src = fireImg;
+    }
+
+    if (!Enemy.coronaImage) {
+      Enemy.coronaImage = new Image();
+      Enemy.coronaImage.src = coronaImg;
+    }
+  }
   startShooting(player: Player) {
-    this.bulletInterval = setInterval(() => this.drawBullet(player), 3000); // Shoot bullet every 3 seconds
+    this.bulletInterval = setInterval(() => this.createBullet(player), 3000); // create bullet objects every 3 seconds
   }
-
+  //if tile==4 draw fire image else corona image
   draw = () => {
-    const image = new Image();
-    if (this.tile == 4) {
-      image.src = fireImg;
-      ctx.drawImage(
-        image,
-        this.imageX * this.spriteWidth,
-        0,
-        this.spriteWidth,
-        this.spriteHeight,
-        this.position.x,
-        this.position.y,
-        this.w,
-        this.h
-      );
-    } else if (this.tile == 5) {
-      image.src = coronaImg;
-
-      ctx.drawImage(image, this.position.x - 10, this.position.y - 10, 50, 50);
+    const image = this.tile === 4 ? Enemy.fireImage : Enemy.coronaImage;
+    if (image.complete) {
+      if (this.tile == 4) {
+        ctx.drawImage(
+          image,
+          this.imageX * this.spriteWidth,
+          0,
+          this.spriteWidth,
+          this.spriteHeight,
+          this.position.x,
+          this.position.y,
+          this.w,
+          this.h
+        );
+      } else if (this.tile == 5) {
+        ctx.drawImage(
+          image,
+          this.position.x - 10,
+          this.position.y - 10,
+          50,
+          50
+        );
+      }
+    } else {
+      image.onload = () => {
+        if (this.tile == 4) {
+          ctx.drawImage(
+            image,
+            this.imageX * this.spriteWidth,
+            0,
+            this.spriteWidth,
+            this.spriteHeight,
+            this.position.x,
+            this.position.y,
+            this.w,
+            this.h
+          );
+        } else if (this.tile == 5) {
+          ctx.drawImage(
+            image,
+            this.position.x - 10,
+            this.position.y - 10,
+            50,
+            50
+          );
+        }
+      };
     }
   };
-
-  drawBullet = (player: Player) => {
+  //instantialte bullet
+  createBullet = (player: Player) => {
     const direction = this.position.x - player.position.x;
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y },
@@ -78,8 +114,8 @@ export class Enemy extends Base {
     );
     this.enemyBullet.push(bullet);
   };
-
-  updateBullet = (player: Player) => {
+  // if enemy and player are in less than 1000 distance enemy shoots bullet
+  updateEnemyBullet = (player: Player) => {
     this.enemyBullet.forEach((singleBullet, index) => {
       if (
         singleBullet.position.x <= 0 ||
@@ -113,7 +149,7 @@ export class Enemy extends Base {
       }
     });
   };
-
+  //if player collides with the enemy for 1000 cooldown time then decrease health continuously
   playerCollision = (player: Player) => {
     const currentTime = Date.now();
     if (detectCollision(player, this)) {
@@ -126,28 +162,46 @@ export class Enemy extends Base {
       }
     }
   };
-
-  bulletCollision = (player: Player) => {
+  //if corona then hit three bullets to defeat other enemy are defeated with one bullet
+  enemyBulletCollision = (player: Player) => {
     player.bulletArray.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
-        scoreCount.score++;
-        objects.enemy = objects.enemy.filter((enemy) => {
-          if (enemy === this) {
-            enemy.destroy();
-            return false;
+        if (this.tile == 5) {
+          if (this.bulletIndex >= 2) {
+            scoreCount.score++;
+            objects.enemy = objects.enemy.filter((enemy) => {
+              if (enemy === this) {
+                enemy.destroy();
+                return false;
+              }
+              return true;
+            });
+          } else {
+            this.bulletIndex++;
           }
-          return true;
-        });
+        } else {
+          scoreCount.score++;
+          objects.enemy = objects.enemy.filter((enemy) => {
+            if (enemy === this) {
+              enemy.destroy();
+              return false;
+            }
+            return true;
+          });
+        }
+
         player.bulletArray.splice(index, 1);
       }
     });
   };
+  // sprite for fire
+  // move the enemy only if the player.x reaches 300 this creates parallex effect
 
   moveX = (player: Player, deltaTime: number) => {
     this.elapsedFrame++;
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
-    const movementSpeed = (SPEED * deltaTime) / deltaTime;
+    const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
     else if (keys["a"] && player.position.x >= 300)
       this.position.x += movementSpeed;
