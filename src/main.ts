@@ -4,7 +4,6 @@ import { ctx } from "./components/canvas";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
-  keys,
   objects,
   scoreCount,
 } from "./constants/constants";
@@ -12,17 +11,6 @@ import "./style.css";
 
 let platform: TileMap;
 let player: Player;
-
-const keyDownHandler = (e: KeyboardEvent) => {
-  keys[e.key] = true;
-};
-
-const keyUpHandler = (e: KeyboardEvent) => {
-  keys[e.key] = false;
-};
-
-window.addEventListener("keydown", keyDownHandler);
-window.addEventListener("keyup", keyUpHandler);
 
 const drawObjects = () => {
   platform = new TileMap();

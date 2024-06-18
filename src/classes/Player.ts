@@ -26,8 +26,17 @@ export class Player extends Base implements IPlayer {
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
+    const keyDownHandler = (e: KeyboardEvent) => {
+      keys[e.key] = true;
+    };
 
-    document.addEventListener("keypress", (e) => {
+    const keyUpHandler = (e: KeyboardEvent) => {
+      keys[e.key] = false;
+    };
+
+    window.addEventListener("keydown", keyDownHandler);
+    window.addEventListener("keyup", keyUpHandler);
+    window.addEventListener("keypress", (e) => {
       if (e.key == "f") {
         this.drawBullet();
       }
@@ -40,7 +49,7 @@ export class Player extends Base implements IPlayer {
   }
 
   moveX(deltaTime: number) {
-    const movementSpeed = (SPEED * deltaTime) / deltaTime;
+    const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (this.position.x < 300) {
       if (keys["a"]) {
         this.directionRight = false;
@@ -63,10 +72,7 @@ export class Player extends Base implements IPlayer {
   moveY() {
     this.position.y += this.velocityY;
     this.velocityY += this.gravity;
-    this.checkBoundaryY(CANVAS_HEIGHT);
-    if (keys["w"] && this.position.y + this.h >= this.platformY) {
-      this.velocityY -= 1.5;
-    }
+    // this.checkBoundaryY(CANVAS_HEIGHT);
   }
 
   checkBoundaryX() {
@@ -77,13 +83,13 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  checkBoundaryY(platformY: number) {
-    if (this.position.y + this.h >= platformY) {
-      this.platformY = platformY;
-      this.position.y = this.platformY;
-      this.velocityY = 0;
-    }
-  }
+  // checkBoundaryY(platformY: number) {
+  //   if (this.position.y + this.h >= platformY) {
+  //     this.platformY = platformY;
+  //     this.position.y = this.platformY;
+  //     this.velocityY = 0;
+  //   }
+  // }
 
   drawBullet() {
     const bullet = new Bullet(

@@ -1,8 +1,8 @@
 import { ctx } from "../components/canvas";
+import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
 
 export class Bullet extends Base {
-  velocityX: number;
   velocityY: number;
   direction: { x: number };
 
@@ -13,7 +13,6 @@ export class Bullet extends Base {
     direction: { x: number }
   ) {
     super(position, h, w);
-    this.velocityX = 6; // Set bullet speed (adjust as needed)
     this.velocityY = 6; // Set bullet speed (adjust as needed)
     this.direction = direction;
   }
@@ -25,6 +24,6 @@ export class Bullet extends Base {
   }
 
   moveBullet() {
-    this.position.x += this.velocityX * this.direction.x;
+    this.position.x += SPEED * this.direction.x;
   }
 }

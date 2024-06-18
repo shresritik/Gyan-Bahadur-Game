@@ -63,21 +63,18 @@ export class Enemy extends Base {
       );
     } else if (this.tile == 5) {
       image.src = coronaImg;
+
       ctx.drawImage(image, this.position.x - 10, this.position.y - 10, 50, 50);
     }
   };
 
   drawBullet = (player: Player) => {
-    const direction = normalizeVector({
-      x: player.position.x - this.position.x,
-      y: player.position.y - this.position.y,
-    });
-
+    const direction = this.position.x - player.position.x;
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y },
       20,
       20,
-      direction
+      { x: direction > 0 ? -1 : 1 }
     );
     this.enemyBullet.push(bullet);
   };

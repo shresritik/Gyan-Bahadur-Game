@@ -13,7 +13,19 @@ export class Plat extends Base {
 
     ctx.drawImage(image, this.position.x, this.position.y, this.w, this.h);
     if (detectCollision(player, this)) {
-      player.checkBoundaryY(this.position.y - player.h);
+      if (this.position.y >= player.position.y) {
+        player.position.y = this.position.y - player.h;
+        player.velocityY = 0;
+        if (keys["w"]) {
+          player.velocityY -= 10;
+        }
+      } else if (player.position.y >= this.position.y) {
+        player.velocityY = 0.4;
+      } else {
+        player.velocityY = -7;
+      }
+
+      // player.checkBoundaryY(this.position.y - player.h);
     }
   };
   moveX = (player: Player, deltaTime: number) => {
