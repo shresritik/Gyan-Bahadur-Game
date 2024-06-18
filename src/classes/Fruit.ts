@@ -32,7 +32,7 @@ export class Fruit extends Base {
       ctx.drawImage(image, this.position.x, this.position.y, this.w, this.h);
 
       if (detectCollision(player, this)) {
-        scoreCount.health++;
+        if (scoreCount.health < 100) scoreCount.health++;
         objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
       }
     }
