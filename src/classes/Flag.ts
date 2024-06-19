@@ -4,20 +4,23 @@ import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
+import { Quiz } from "./Quiz";
+
 let frameX = 0;
-let frameY = 0;
 let gameFrame = 0;
+
 export class Flag extends Base {
   velocity: { x: number };
+  quiz: Quiz | null;
   outQuiz: boolean;
   flagFrame: {
     flagWidth: number;
     flagHeight: number;
     flagFrame: number;
   } = {
-    flagWidth: 98,
-    flagHeight: 93.54,
-    flagFrame: 200,
+    flagWidth: 92,
+    flagHeight: 100,
+    flagFrame: 100,
   };
 
   constructor(
@@ -28,12 +31,7 @@ export class Flag extends Base {
   ) {
     super(position, h, w);
     this.velocity = { x: direction.x };
-    window.removeEventListener("keydown", (e: KeyboardEvent) => {
-      keys[e.key] = false;
-    });
-    window.removeEventListener("keyup", (e: KeyboardEvent) => {
-      keys[e.key] = false;
-    }); // Example speed, adjust as needed
+    this.quiz = null;
     this.outQuiz = false;
   }
 
@@ -42,23 +40,22 @@ export class Flag extends Base {
     image.src = flagImg;
     ctx.drawImage(
       image,
-
       frameX * this.flagFrame.flagWidth,
-      frameY * this.flagFrame.flagHeight,
+      0, // Adjust based on your sprite sheet layout
       this.flagFrame.flagWidth,
       this.flagFrame.flagHeight,
       this.position.x,
-      this.position.y,
+      this.position.y - 80,
       100,
       130
     );
+
+    // Animate frames
     if (gameFrame % this.flagFrame.flagFrame == 0) {
       if (frameX < 1) frameX++;
       else frameX = 0;
     }
     gameFrame++;
-
-    // ctx.fillRect(this.position.x, this.position.y, 32, 32);
   }
 
   showQuiz(player: Player) {
@@ -71,10 +68,11 @@ export class Flag extends Base {
           gameStatus.isQuiz = false;
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
-        }, 2000); // Adjust timeout as needed
+        }, 2000);
       }
     }
   }
+
   moveX = (player: Player, deltaTime: number) => {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (keys["d"] && player.position.x >= 300) {
