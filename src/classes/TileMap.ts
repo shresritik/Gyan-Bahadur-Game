@@ -9,7 +9,7 @@ import { Player } from "./Player";
 export class TileMap {
   tileSize: number = 32;
 
-  map = localStorage.getItem("imap")
+  map = localStorage.getItem("map")
     ? JSON.parse(localStorage.getItem("map")!)
     : [
         [

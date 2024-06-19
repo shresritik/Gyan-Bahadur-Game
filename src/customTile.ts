@@ -1,58 +1,54 @@
-const grapes = "./src/assets/grapes.png";
-const banana = "./src/assets/banana.png";
-const corona = "./src/assets/corona.png";
-const singleFire = "./src/assets/single-fire.png";
-const wall = "./src/assets/wall.png";
-let grapesBool = false;
-let bananaBool = false;
-let coronaBool = false;
-let singleFireBool = false;
-let wallBool = false;
+// Image imports
+const images = {
+  grapes: "./src/assets/grapes.png",
+  banana: "./src/assets/banana.png",
+  corona: "./src/assets/corona.png",
+  singleFire: "./src/assets/single-fire.png",
+  wall: "./src/assets/wall.png",
+  flag: "./src/assets/single-flag.png",
+  animal: "./src/assets/dog1.png",
+};
 
-function grapesFunc() {
-  grapesBool = true;
-  bananaBool = false;
-  coronaBool = false;
-  singleFireBool = false;
-  wallBool = false;
+// Define a type for the keys of the images object
+type ImageKey = keyof typeof images;
+
+// State variables for tile selection
+let selectedTile: ImageKey | null = null;
+
+// Map object
+interface MapObject {
+  map: number[][];
 }
 
-function bananaFunc() {
-  bananaBool = true;
-  grapesBool = false;
-  coronaBool = false;
-  singleFireBool = false;
-  wallBool = false;
+const rows = 20;
+const cols = 120;
+let mapObj: MapObject = createMapObj(rows, cols);
+
+// Create table element and append to document body
+const tableEl = document.createElement("table");
+document.body.append(tableEl);
+
+let visibleStartIndex = 0; // Start by showing the first 20 columns
+let isMouseDown = false;
+
+// Function to create map object
+function createMapObj(rows: number, cols: number): MapObject {
+  const map = Array.from({ length: rows }, () => Array(cols).fill(0));
+  return { map };
 }
 
-function coronaFunc() {
-  coronaBool = true;
-  bananaBool = false;
-  grapesBool = false;
-  singleFireBool = false;
-  wallBool = false;
+// Function to handle tile selection
+function selectTile(tile: ImageKey) {
+  selectedTile = tile;
 }
 
-function fireFunc() {
-  singleFireBool = true;
-  coronaBool = false;
-  grapesBool = false;
-  wallBool = false;
-  bananaBool = false;
-}
-function wallFunc() {
-  singleFireBool = true;
-  coronaBool = false;
-  grapesBool = false;
-  wallBool = true;
-  bananaBool = false;
-}
-
+// Function to save map to local storage
 function save() {
   const saveMap = JSON.stringify(mapObj.map);
   localStorage.setItem("map", saveMap);
 }
 
+// Function to load map from local storage
 function load() {
   const savedMap = localStorage.getItem("map");
   if (savedMap) {
@@ -61,26 +57,7 @@ function load() {
   }
 }
 
-function createMapObj(rows: number, cols: number) {
-  let map = Array.from({ length: rows }, () => Array(cols).fill(0));
-
-  // for (let point of specialPoints) {
-  //   let [row, col, value] = point;
-  //   map[row][col] = value;
-  // }
-
-  return { map: map };
-}
-
-const rows = 20;
-const cols = 120;
-
-let mapObj = createMapObj(rows, cols);
-const tableEl = document.createElement("table");
-document.body.append(tableEl);
-
-let visibleStartIndex = 0; // Start by showing the first 20 columns
-
+// Function to handle next button click
 function next() {
   if (visibleStartIndex + 40 < cols) {
     visibleStartIndex += 5;
@@ -88,6 +65,7 @@ function next() {
   }
 }
 
+// Function to handle previous button click
 function prev() {
   if (visibleStartIndex > 0) {
     visibleStartIndex -= 5;
@@ -95,19 +73,20 @@ function prev() {
   }
 }
 
+// Function to render the table
 function renderTable() {
   tableEl.innerHTML = ""; // Clear existing table
 
   for (let row = 0; row < mapObj.map.length; row++) {
-    let tableRow = document.createElement("tr");
+    const tableRow = document.createElement("tr");
 
     for (
       let column = visibleStartIndex;
       column < visibleStartIndex + 40;
       column++
     ) {
-      let tableColumn = document.createElement("td");
-      tableColumn.className = "cell " + row + " " + column;
+      const tableColumn = document.createElement("td");
+      tableColumn.className = `cell ${row} ${column}`;
 
       tableColumn.addEventListener("mousedown", () => {
         isMouseDown = true;
@@ -124,12 +103,8 @@ function renderTable() {
 
       // Add image if the map value is not zero
       if (mapObj.map[row][column] !== 0) {
-        let image = new Image();
-        if (mapObj.map[row][column] === 1) image.src = wall;
-        if (mapObj.map[row][column] === 2) image.src = grapes;
-        if (mapObj.map[row][column] === 3) image.src = banana;
-        if (mapObj.map[row][column] === 4) image.src = corona;
-        if (mapObj.map[row][column] === 5) image.src = singleFire;
+        const image = new Image();
+        image.src = images[getTileKey(mapObj.map[row][column]) as ImageKey];
         tableColumn.appendChild(image);
       }
 
@@ -139,38 +114,100 @@ function renderTable() {
   }
 }
 
-let isMouseDown = false;
-
+// Function to add tile to the map
 function addTile(row: number, column: number, tableColumn: HTMLElement) {
-  let image = new Image();
-  let value: number;
+  if (!selectedTile) return;
 
-  if (wallBool) {
-    image.src = wall;
-    value = 1;
-  } else if (grapesBool) {
-    image.src = grapes;
-    value = 2;
-  } else if (bananaBool) {
-    image.src = banana;
-    value = 3;
-  } else if (coronaBool) {
-    image.src = corona;
-    value = 4;
-  } else if (singleFireBool) {
-    image.src = singleFire;
-    value = 5;
-  } else {
-    value = 0;
-  }
+  const image = new Image();
+  image.src = images[selectedTile];
+  const value = getTileValue(selectedTile);
 
   mapObj.map[row][column] = value;
-  if (image.src !== "" && !tableColumn.firstChild) {
+  if (!tableColumn.firstChild) {
     tableColumn.appendChild(image);
-  } else if (image.src !== "" && tableColumn.firstChild) {
+  } else {
     (tableColumn.firstChild as HTMLImageElement).src = image.src;
   }
 }
 
-load(); // Load saved map if exists
-renderTable(); // Initial render
+// Function to get tile key from value
+function getTileKey(value: number): ImageKey | null {
+  switch (value) {
+    case 1:
+      return "wall";
+    case 2:
+      return "grapes";
+    case 3:
+      return "banana";
+    case 4:
+      return "singleFire";
+    case 5:
+      return "corona";
+    case 6:
+      return "flag";
+    case 7:
+      return "animal";
+    default:
+      return null;
+  }
+}
+
+// Function to get tile value from key
+function getTileValue(key: ImageKey): number {
+  switch (key) {
+    case "wall":
+      return 1;
+    case "grapes":
+      return 2;
+    case "banana":
+      return 3;
+    case "singleFire":
+      return 4;
+    case "corona":
+      return 5;
+    case "flag":
+      return 6;
+    case "animal":
+      return 7;
+    default:
+      return 0;
+  }
+}
+
+// Create UI elements dynamically
+function createUI() {
+  const controlsDiv = document.createElement("div");
+
+  // Create image buttons
+  (Object.keys(images) as ImageKey[]).forEach((key) => {
+    const img = document.createElement("img");
+    img.src = images[key];
+    img.onclick = () => selectTile(key);
+    controlsDiv.appendChild(img);
+  });
+
+  // Create save button
+  const saveButton = document.createElement("button");
+  saveButton.innerText = "Save";
+  saveButton.onclick = save;
+  controlsDiv.appendChild(saveButton);
+
+  // Create next button
+  const nextButton = document.createElement("button");
+  nextButton.innerText = "Next";
+  nextButton.onclick = next;
+  controlsDiv.appendChild(nextButton);
+
+  // Create previous button
+  const prevButton = document.createElement("button");
+  prevButton.innerText = "Prev";
+  prevButton.onclick = prev;
+  controlsDiv.appendChild(prevButton);
+
+  document.body.appendChild(controlsDiv);
+}
+
+// Load saved map if exists and render table
+load();
+renderTable();
+createUI();
