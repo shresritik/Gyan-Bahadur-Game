@@ -4,11 +4,9 @@ import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
-import { Quiz } from "./Quiz";
 import { quizMap } from "../main";
 let frameX = 0;
 let frameY = 0;
-let gameIndex = 0;
 let gameFrame = 0;
 export class Flag extends Base {
   velocity: { x: number };

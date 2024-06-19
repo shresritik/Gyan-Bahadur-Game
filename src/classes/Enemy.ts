@@ -25,10 +25,11 @@ export class Enemy extends Base {
   enemyBullet: Bullet[] = [];
   bulletInterval: number | undefined;
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
-  healthDecreaseCooldown: number = 1000; // Cooldown period in milliseconds
+  healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
   bulletIndex: number = 0;
   private static fireImage: HTMLImageElement;
   private static coronaImage: HTMLImageElement;
+  directionX: number;
 
   constructor(
     position: { x: number; y: number },
@@ -38,6 +39,7 @@ export class Enemy extends Base {
   ) {
     super(position, h, w);
     this.tile = tile;
+    this.directionX = 1;
 
     if (!Enemy.fireImage) {
       Enemy.fireImage = new Image();
@@ -199,6 +201,18 @@ export class Enemy extends Base {
     if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
     else if (keys["a"] && player.position.x >= 300)
       this.position.x += movementSpeed;
+    if (this.tile == 5) {
+      if (this.position.x <= 0 || this.position.x + this.w > CANVAS_WIDTH) {
+        this.directionX *= -1;
+      }
+      this.position.x += this.directionX * SPEED * (deltaTime / 16.67);
+      // if (this.position.x <= 0) this.position.x += movementSpeed;
+      // else if (this.position.x >= CANVAS_WIDTH)
+      //   this.position.x -= movementSpeed;
+      // else {
+      //   this.position.x -= movementSpeed;
+      // }
+    }
   };
 
   destroy() {

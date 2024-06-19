@@ -53,7 +53,7 @@ function gameLoop(currentTime: number) {
   tileMap.drawEnemy(player, deltaTime);
   tileMap.drawFruit(player, deltaTime);
   tileMap.drawFlag(player, deltaTime);
-
+  tileMap.drawAnimal(player, deltaTime);
   player.updateBullet();
 
   objects.enemy.forEach((enemy) => {

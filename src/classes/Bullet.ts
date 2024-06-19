@@ -17,7 +17,14 @@ export class Bullet extends Base {
 
   drawBullet() {
     ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.w / 2, 0, 2 * Math.PI, true);
+    ctx.arc(
+      this.position.x,
+      this.position.y - 20,
+      this.w / 2,
+      0,
+      2 * Math.PI,
+      true
+    );
     ctx.fill();
   }
 
