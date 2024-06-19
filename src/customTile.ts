@@ -1,13 +1,21 @@
 // Image imports
+import grapes from "./assets/grapes.png";
+import banana from "./assets/banana.png";
+import corona from "./assets/corona.png";
+import singleFire from "./assets/single-fire.png";
+import wall from "./assets/wall.png";
+import flag from "./assets/flag.png";
+import animal from "./assets/dog1.png";
+import ammo from "./assets/single-water.png";
 const images = {
-  grapes: "./src/assets/grapes.png",
-  banana: "./src/assets/banana.png",
-  corona: "./src/assets/corona.png",
-  singleFire: "./src/assets/single-fire.png",
-  wall: "./src/assets/wall.png",
-  flag: "./src/assets/single-flag.png",
-  animal: "./src/assets/dog1.png",
-  ammo: "./src/assets/single-water.png",
+  grapes,
+  banana,
+  corona,
+  singleFire,
+  wall,
+  flag,
+  animal,
+  ammo,
 };
 
 // Define a type for the keys of the images object
