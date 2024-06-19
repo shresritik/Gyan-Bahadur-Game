@@ -1,4 +1,4 @@
-import { canvas, ctx } from "./components/canvas";
+import { ctx } from "./components/canvas";
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -7,7 +7,6 @@ import {
   keys,
   gameStatus,
   quizMap,
-  TKeys,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";

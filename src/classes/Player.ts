@@ -2,7 +2,8 @@ import { ctx } from "../components/canvas";
 import { CANVAS_WIDTH, SPEED, keys } from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
-import stance from "../assets/stance2.png";
+import stance from "../assets/stancer2.png";
+// import stance from "../assets/stance2.png";
 import run from "../assets/run2.png";
 import runLeft from "../assets/run-left.png";
 import jump from "../assets/jump.png";
@@ -126,24 +127,33 @@ export class Player extends Base implements IPlayer {
       // }
       // gameFrame++;
     } else {
-      gameFrame = 0;
       image.src = stance;
       ctx.drawImage(
         image,
-        frameX * this.stanceFrame.stanceWidth,
-        frameY * this.stanceFrame.stanceHeight,
-        this.stanceFrame.stanceWidth,
-        this.stanceFrame.stanceHeight,
+
         this.position.x,
-        this.position.y - 55,
-        image.height,
-        image.width
+        this.position.y - 75,
+        80,
+        150
       );
-      if (gameFrame % this.stanceFrame.stanceFrame == 0) {
-        if (frameX < 3) frameX++;
-        else frameX = 0;
-      }
-      gameFrame++;
+      // gameFrame = 0;
+      // image.src = stance;
+      // ctx.drawImage(
+      //   image,
+      //   frameX * this.stanceFrame.stanceWidth,
+      //   frameY * this.stanceFrame.stanceHeight,
+      //   this.stanceFrame.stanceWidth,
+      //   this.stanceFrame.stanceHeight,
+      //   this.position.x,
+      //   this.position.y - 55,
+      //   image.height,
+      //   image.width
+      // );
+      // if (gameFrame % this.stanceFrame.stanceFrame == 0) {
+      //   if (frameX < 3) frameX++;
+      //   else frameX = 0;
+      // }
+      // gameFrame++;
     }
   }
   //move left with a and right with d
