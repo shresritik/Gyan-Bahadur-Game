@@ -24,7 +24,7 @@ export class Quiz {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#0079C4";
     ctx.fillRect(
       this.quizBox.x,
       this.quizBox.y,

@@ -2,6 +2,7 @@ import { ctx } from "../components/canvas";
 import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
 import firer from "../assets/firer.png";
+import water from "../assets/water.png";
 import corona from "../assets/corona.png";
 let frameX = 0;
 let frameY = 0;
@@ -60,16 +61,34 @@ export class Bullet extends Base {
         32
       );
     } else {
-      ctx.beginPath();
-      ctx.arc(
+      // ctx.beginPath();
+      // ctx.arc(
+      //   this.position.x,
+      //   this.position.y - 20,
+      //   this.w / 2,
+      //   0,
+      //   2 * Math.PI,
+      //   true
+      // );
+      // ctx.fill();
+      image.src = water;
+      ctx.drawImage(
+        image,
+
+        frameX * this.fireFrame.fireWidth,
+        frameY * this.fireFrame.fireHeight,
+        this.fireFrame.fireWidth,
+        this.fireFrame.fireHeight,
         this.position.x,
-        this.position.y - 20,
-        this.w / 2,
-        0,
-        2 * Math.PI,
-        true
+        this.position.y - 45,
+        80,
+        50
       );
-      ctx.fill();
+      if (gameFrame % this.fireFrame.fireFrame == 0) {
+        if (frameY < 6) frameY++;
+        else frameY = 0;
+      }
+      gameFrame++;
     }
   }
 

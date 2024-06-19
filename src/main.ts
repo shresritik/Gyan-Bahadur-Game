@@ -32,10 +32,34 @@ const drawObjects = () => {
 };
 
 export function writeScore() {
-  ctx.fillStyle = "red";
-  ctx.font = "30px sans-serif";
-  ctx.fillText(`Score: ${scoreCount.score}`, 10, 30);
-  ctx.fillText(`Health: ${scoreCount.health}`, 150, 30);
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  ctx.fillText(`Score: ${scoreCount.score}`, 15, 35);
+}
+
+// Function to draw the health bar
+function drawHealthBar(
+  x = 15,
+  y = 50,
+  width = 200,
+  height = 20,
+  maxHealth: number = 100
+) {
+  let currentHealth = scoreCount.health;
+
+  // Background
+  ctx.fillStyle = "#000";
+  ctx.fillRect(x, y, width, height);
+  ctx.fillStyle = "white";
+  ctx.fillText(` ${scoreCount.health}%`, 215, 68);
+  // Health bar
+  const healthWidth = (currentHealth / maxHealth) * width;
+  ctx.fillStyle = "green";
+  ctx.fillRect(x, y, healthWidth, height);
+
+  // Border
+  ctx.strokeStyle = "#fff";
+  ctx.strokeRect(x, y, width, height);
 }
 
 let lastFrameTime = 0;
@@ -64,7 +88,7 @@ function gameLoop(currentTime: number) {
     quizMap.quizMap.draw();
   }
   writeScore();
-
+  drawHealthBar();
   requestAnimationFrame(gameLoop);
 }
 
