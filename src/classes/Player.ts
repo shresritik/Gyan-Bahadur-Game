@@ -53,12 +53,6 @@ export class Player extends Base implements IPlayer {
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
 
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      keys[e.key] = true;
-    });
-    window.addEventListener("keyup", (e: KeyboardEvent) => {
-      keys[e.key] = false;
-    });
     window.addEventListener("keypress", (e: KeyboardEvent) => {
       if (e.key == "f") {
         this.drawBullet();

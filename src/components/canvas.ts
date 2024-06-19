@@ -1,4 +1,6 @@
-const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
+export const canvas = document.getElementById(
+  "gameCanvas"
+) as HTMLCanvasElement;
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants/constants";
 import bgImg from "../assets/bg.png";
 canvas.width = CANVAS_WIDTH;
