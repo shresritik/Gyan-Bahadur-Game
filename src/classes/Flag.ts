@@ -1,10 +1,9 @@
 import { ctx } from "../components/canvas";
-import { SPEED, gameStatus, keys } from "../constants/constants";
+import { SPEED, gameStatus, keys, quizMap } from "../constants/constants";
 import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
-import { quizMap } from "../main";
 let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
@@ -49,7 +48,7 @@ export class Flag extends Base {
       this.flagFrame.flagWidth,
       this.flagFrame.flagHeight,
       this.position.x,
-      this.position.y - 65,
+      this.position.y,
       100,
       130
     );
@@ -67,11 +66,10 @@ export class Flag extends Base {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
       }
-
-      if (quizMap.correct != null) {
+      if (quizMap.quizMap != null && quizMap.quizMap.correct != null) {
         setTimeout(() => {
           gameStatus.isQuiz = false;
-          quizMap.correct = null;
+          quizMap.quizMap!.correct = null;
           this.outQuiz = true;
         }, 2000); // Adjust timeout as needed
       }

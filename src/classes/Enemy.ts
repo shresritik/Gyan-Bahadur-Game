@@ -130,7 +130,7 @@ export class Enemy extends Base {
           this.position.y
         ) < 1000
       ) {
-        singleBullet.drawBullet();
+        singleBullet.drawBullet(this.tile);
         singleBullet.moveBullet();
 
         if (detectCollision(player, singleBullet)) {

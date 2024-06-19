@@ -6,6 +6,7 @@ import {
   scoreCount,
   keys,
   gameStatus,
+  quizMap,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -14,7 +15,6 @@ import { Quiz } from "./classes/Quiz";
 
 let tileMap: TileMap;
 let player: Player;
-export let quizMap: Quiz;
 
 window.addEventListener("keydown", (e: KeyboardEvent) => {
   keys[e.key] = true;
@@ -27,7 +27,7 @@ const drawObjects = () => {
   tileMap = new TileMap();
   player = new Player({ x: 20, y: 50 }, 50, 50);
   tileMap.drawMap(player);
-  quizMap = new Quiz();
+  quizMap.quizMap = new Quiz();
   // player.createQuiz();
 };
 
@@ -60,8 +60,8 @@ function gameLoop(currentTime: number) {
     enemy.updateEnemyBullet(player);
     enemy.enemyBulletCollision(player);
   });
-  if (gameStatus.isQuiz) {
-    quizMap.draw();
+  if (gameStatus.isQuiz && quizMap.quizMap != null) {
+    quizMap.quizMap.draw();
   }
   writeScore();
 

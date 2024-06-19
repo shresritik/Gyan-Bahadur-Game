@@ -3,6 +3,7 @@ import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Plat";
+import { Quiz } from "../classes/Quiz";
 export interface TKeys {
   [keys: string]: boolean;
 }
@@ -13,6 +14,7 @@ export const SPEED = 2;
 export const COLOR = "#F7F0EA";
 export const gameStatus = { gameOver: false, isPaused: false, isQuiz: false };
 export const scoreCount = { score: 0, health: 100 };
+export const quizMap: { quizMap: Quiz | null } = { quizMap: null };
 export const objects: {
   platform: Plat[];
   enemy: Enemy[];

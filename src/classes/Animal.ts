@@ -1,5 +1,5 @@
 import { Base } from "./Base";
-import dog from "../assets/dog2.png";
+import dog from "../assets/dogr2.png";
 import { ctx } from "../components/canvas";
 import { SPEED, keys, scoreCount } from "../constants/constants";
 import { Player } from "./Player";
@@ -19,7 +19,7 @@ export class Animal extends Base {
   } = {
     dogWidth: 60,
     dogHeight: 64,
-    dogFrame: 100,
+    dogFrame: 70,
   };
   constructor(
     position: { x: number; y: number },

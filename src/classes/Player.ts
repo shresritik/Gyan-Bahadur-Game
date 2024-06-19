@@ -81,7 +81,7 @@ export class Player extends Base implements IPlayer {
         130
       );
       if (gameFrame % this.runFrame.runnerFrame == 0) {
-        if (frameX < 2) frameX++;
+        if (frameX < 1) frameX++;
         else frameX = 0;
       }
       gameFrame++;
