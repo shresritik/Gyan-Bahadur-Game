@@ -1,3 +1,4 @@
+import { Ammo } from "../classes/Ammo";
 import { Animal } from "../classes/Animal";
 import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
@@ -21,12 +22,17 @@ export const objects: {
   fruit: Fruit[];
   flag: Flag[];
   animal: Animal[];
+  ammo: Ammo[];
 } = {
   platform: [],
   enemy: [],
   fruit: [],
   flag: [],
   animal: [],
+  ammo: [],
+};
+export const ammoObj = {
+  ammo: 5,
 };
 export const quizObj = [
   {

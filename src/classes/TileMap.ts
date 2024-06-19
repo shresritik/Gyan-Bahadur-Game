@@ -1,4 +1,5 @@
 import { objects } from "../constants/constants";
+import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
 import { Flag } from "./Flag";
@@ -9,7 +10,7 @@ import { Player } from "./Player";
 export class TileMap {
   tileSize: number = 32;
 
-  map = localStorage.getItem("map")
+  map = localStorage.getItem("imap")
     ? JSON.parse(localStorage.getItem("map")!)
     : [
         [
@@ -145,11 +146,11 @@ export class TileMap {
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 5, 0, 6, 2, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 5, 0, 6, 8, 0, 0, 0, 0, 0,
           4, 0, 0, 0, 0,
         ],
         [
-          0, 0, 0, 0, 2, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0,
+          0, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 8, 2, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 7, 0, 5, 0, 5, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0,
           0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 3, 3, 3, 0, 0, 0, 2, 0, 2, 0, 5, 5, 0,
@@ -222,6 +223,15 @@ export class TileMap {
               tile
             )
           );
+        } else if (tile == 8) {
+          objects.ammo.push(
+            new Ammo(
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize,
+              tile
+            )
+          );
         }
       }
     }
@@ -260,6 +270,14 @@ export class TileMap {
       an.moveX(player, deltaTime);
       an.collidesPlayer(player);
       an.enemyBulletCollision(player);
+    });
+  }
+  drawAmmo(player: Player, deltaTime: number) {
+    objects.ammo.forEach((am) => {
+      am.drawAmmo();
+      am.moveX(player, deltaTime);
+
+      am.collidesPlayer(player);
     });
   }
 }

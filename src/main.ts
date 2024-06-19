@@ -7,13 +7,14 @@ import {
   keys,
   gameStatus,
   quizMap,
+  ammoObj,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
 import "./style.css";
 import { Quiz } from "./classes/Quiz";
 import { handleFullScreen } from "./utils/utils";
-
+import singleWater from "./assets/single-water.png";
 let tileMap: TileMap;
 let player: Player;
 
@@ -32,10 +33,18 @@ const drawObjects = () => {
   // player.createQuiz();
 };
 
-export function writeScore() {
+function writeScore() {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
   ctx.fillText(`Score: ${scoreCount.score}`, 15, 35);
+}
+function writeBullet() {
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  const image = new Image();
+  image.src = singleWater;
+  ctx.drawImage(image, 110, 10, 20, 30);
+  ctx.fillText(`${ammoObj.ammo}`, 140, 35);
 }
 
 // Function to draw the health bar
@@ -79,6 +88,7 @@ function gameLoop(currentTime: number) {
   tileMap.drawFruit(player, deltaTime);
   tileMap.drawFlag(player, deltaTime);
   tileMap.drawAnimal(player, deltaTime);
+  tileMap.drawAmmo(player, deltaTime);
   player.updateBullet();
 
   objects.enemy.forEach((enemy) => {
@@ -88,6 +98,7 @@ function gameLoop(currentTime: number) {
   if (gameStatus.isQuiz && quizMap.quizMap != null) {
     quizMap.quizMap.draw();
   }
+  writeBullet();
   writeScore();
   drawHealthBar();
   requestAnimationFrame(gameLoop);

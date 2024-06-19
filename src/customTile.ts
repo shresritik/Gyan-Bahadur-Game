@@ -7,6 +7,7 @@ const images = {
   wall: "./src/assets/wall.png",
   flag: "./src/assets/single-flag.png",
   animal: "./src/assets/dog1.png",
+  ammo: "./src/assets/single-water.png",
 };
 
 // Define a type for the keys of the images object
@@ -147,6 +148,8 @@ function getTileKey(value: number): ImageKey | null {
       return "flag";
     case 7:
       return "animal";
+    case 8:
+      return "ammo";
     default:
       return null;
   }
@@ -169,6 +172,8 @@ function getTileValue(key: ImageKey): number {
       return 6;
     case "animal":
       return 7;
+    case "ammo":
+      return 8;
     default:
       return 0;
   }

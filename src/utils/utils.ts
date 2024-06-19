@@ -1,3 +1,4 @@
+import { Ammo } from "../classes/Ammo";
 import { Animal } from "../classes/Animal";
 import { Bullet } from "../classes/Bullet";
 import { Enemy } from "../classes/Enemy";
@@ -25,7 +26,7 @@ export function getRandomValue(min: number, max: number): number {
  * @param other The enemy to check collision against.
  * @returns True if there is a collision, false otherwise.
  */
-type Tdetector = Player | Plat | Bullet | Enemy | Fruit | Flag | Animal;
+type Tdetector = Player | Plat | Bullet | Enemy | Fruit | Flag | Animal | Ammo;
 
 export function detectCollision(
   entity1: Tdetector,
