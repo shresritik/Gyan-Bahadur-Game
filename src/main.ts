@@ -1,4 +1,4 @@
-import { ctx } from "./components/canvas";
+import { canvas, ctx } from "./components/canvas";
 import {
   CANVAS_WIDTH,
   CANVAS_HEIGHT,
@@ -7,11 +7,13 @@ import {
   keys,
   gameStatus,
   quizMap,
+  TKeys,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
 import "./style.css";
 import { Quiz } from "./classes/Quiz";
+import { handleFullScreen } from "./utils/utils";
 
 let tileMap: TileMap;
 let player: Player;
@@ -93,5 +95,8 @@ function gameLoop(currentTime: number) {
 }
 
 // Start the game loop initially
+
+handleFullScreen();
+
 drawObjects();
 requestAnimationFrame(gameLoop);

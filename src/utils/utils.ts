@@ -5,6 +5,8 @@ import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Plat";
 import { Player } from "../classes/Player";
+import { toggleFullScreen } from "../components/toggleFullScreen";
+import { TKeys } from "../constants/constants";
 /**
  * Generates a random integer value between min (inclusive) and max (exclusive).
  * @param min The minimum value (inclusive).
@@ -25,17 +27,6 @@ export function getRandomValue(min: number, max: number): number {
  */
 type Tdetector = Player | Plat | Bullet | Enemy | Fruit | Flag | Animal;
 
-// export function detectCollision(
-//   entity1: Tdetector,
-//   entity2: Tdetector
-// ): boolean {
-//   return (
-//     entity1.position.x <= entity2.position.x + entity2.w &&
-//     entity1.position.x + entity1.w >= entity2.position.x &&
-//     entity1.position.y + entity1.h <= entity2.position.y + entity2.h &&
-//     entity1.position.y + entity1.h > entity2.position.y
-//   );
-// }
 export function detectCollision(
   entity1: Tdetector,
   entity2: Tdetector
@@ -47,7 +38,33 @@ export function detectCollision(
     entity1.position.y + entity1.h > entity2.position.y
   );
 }
-
+/**
+ * handle fullscreen request with Alt+Enter
+ */
+export const handleFullScreen = () => {
+  let keysPressed: TKeys = {};
+  document.addEventListener(
+    "keydown",
+    (e) => {
+      keysPressed[e.key] = true;
+      if (keysPressed["Alt"] && e.key == "Enter") {
+        toggleFullScreen();
+      }
+    },
+    false
+  );
+  document.addEventListener("keyup", (event) => {
+    delete keysPressed[event.key];
+  });
+};
+/**
+ *
+ * @param x1 :number get initial x coordinate
+ * @param y1 :number get initial y coordinate
+ * @param x2 :number get final x coordinate
+ * @param y2 :number get final y coordinate
+ * @returns distance between them
+ */
 export function getDistance(
   x1: number = 0,
   y1: number = 0,
@@ -63,8 +80,3 @@ export const normalizeVector = (vector: { x: number; y: number }) => {
     y: vector.y / length,
   };
 };
-
-// export const normalizeVector = (vector: { x: number; y: number }) => {
-//   const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-//   return { x: vector.x / length, y: vector.y / length };
-// };
