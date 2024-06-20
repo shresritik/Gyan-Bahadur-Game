@@ -75,7 +75,7 @@ export class Animal extends Base {
         scoreCount.health > 0 &&
         currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
       ) {
-        scoreCount.health--;
+        scoreCount.health -= 10;
         this.lastHealthDecreaseTime = currentTime; // Update the last decrease time
       }
     }

@@ -20,6 +20,7 @@ export class Ammo extends Base {
     fireHeight: 254,
     fireFrame: 40,
   };
+  ammoImg: HTMLImageElement;
   constructor(
     position: { x: number; y: number },
     h: number,
@@ -29,19 +30,19 @@ export class Ammo extends Base {
     super(position, h, w);
     this.velocity = { x: direction.x }; // Example speed, adjust as needed
     this.bulletIndex = 0;
+    this.ammoImg = new Image();
+    this.ammoImg.src = water;
   }
 
   drawAmmo(deltaTime: number) {
-    const image = new Image();
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
       gameFrame = 0;
     }
-    image.src = water;
     if (frameX >= 6) frameX = 0;
     ctx.drawImage(
-      image,
+      this.ammoImg,
 
       frameX * this.fireFrame.fireWidth,
       frameY * this.fireFrame.fireHeight,
