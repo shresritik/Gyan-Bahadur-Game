@@ -2,10 +2,10 @@ import { ctx } from "../components/canvas";
 import { CANVAS_WIDTH, SPEED, ammoObj, keys } from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
-import stance from "../assets/stancer2.png";
-import run from "../assets/run2.png";
-import runLeft from "../assets/run-left.png";
-import jump from "../assets/jump.png";
+import stanceImg from "../assets/stancer2.png";
+import runImg from "../assets/run2.png";
+import runLeftImg from "../assets/run-left.png";
+import jumpImg from "../assets/jump.png";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -56,12 +56,30 @@ export class Player extends Base implements IPlayer {
   playerSpeed = 2;
   cooldown = false;
 
+  // Preloaded images
+  stanceImage: HTMLImageElement;
+  runImage: HTMLImageElement;
+  runLeftImage: HTMLImageElement;
+  jumpImage: HTMLImageElement;
+
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
+
+    // Preload images
+    this.stanceImage = new Image();
+    this.stanceImage.src = stanceImg;
+
+    this.runImage = new Image();
+    this.runImage.src = runImg;
+
+    this.runLeftImage = new Image();
+    this.runLeftImage.src = runLeftImg;
+
+    this.jumpImage = new Image();
+    this.jumpImage.src = jumpImg;
   }
 
   draw(deltaTime: number) {
-    const image = new Image();
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
@@ -69,11 +87,10 @@ export class Player extends Base implements IPlayer {
     }
 
     if (keys["d"]) {
-      image.src = run;
       if (frameX >= 3) frameX = 0;
 
       ctx.drawImage(
-        image,
+        this.runImage,
         frameX * this.runFrame.runWidth,
         frameY * this.runFrame.runHeight,
         this.runFrame.runWidth,
@@ -84,11 +101,10 @@ export class Player extends Base implements IPlayer {
         130
       );
     } else if (keys["a"]) {
-      image.src = runLeft;
       if (frameX >= 3) frameX = 0;
 
       ctx.drawImage(
-        image,
+        this.runLeftImage,
         frameX * this.runFrame.runWidth,
         frameY * this.runFrame.runHeight,
         this.runFrame.runWidth,
@@ -99,9 +115,8 @@ export class Player extends Base implements IPlayer {
         130
       );
     } else if (keys["w"]) {
-      image.src = jump;
       ctx.drawImage(
-        image,
+        this.jumpImage,
         (frameX + 1) * this.jumpFrame.jumpWidth,
         frameY * this.jumpFrame.jumpHeight,
         this.jumpFrame.jumpWidth,
@@ -113,8 +128,13 @@ export class Player extends Base implements IPlayer {
       );
       frameX = 0;
     } else {
-      image.src = stance;
-      ctx.drawImage(image, this.position.x, this.position.y - 75, 80, 150);
+      ctx.drawImage(
+        this.stanceImage,
+        this.position.x,
+        this.position.y - 75,
+        80,
+        150
+      );
       frameX = 0; // Reset frameX when not running
     }
   }

@@ -21,6 +21,7 @@ export class Animal extends Base {
     dogHeight: 64,
     dogFrame: 70,
   };
+  dogImage: HTMLImageElement;
   constructor(
     position: { x: number; y: number },
     w: number,
@@ -29,20 +30,19 @@ export class Animal extends Base {
   ) {
     super(position, h, w);
     this.tile = tile;
+    this.dogImage = new Image();
+    this.dogImage.src = dog;
   }
 
   drawAnimal = (deltaTime: number) => {
-    let image: HTMLImageElement | undefined;
-    image = new Image();
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
       gameFrame = 0;
     }
-    image.src = dog;
     if (frameX >= 6) frameX = 0;
     ctx.drawImage(
-      image,
+      this.dogImage,
 
       frameX * this.dogFrame.dogWidth,
       frameY * this.dogFrame.dogHeight,

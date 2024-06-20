@@ -10,7 +10,6 @@ let frameY = 0;
 const frameInterval = 1000 / 5; // 5 frames per second
 
 let gameFrame = 0;
-
 export class Bullet extends Base {
   velocity: { x: number };
   fireFrame: {
@@ -22,6 +21,9 @@ export class Bullet extends Base {
     fireHeight: 126,
     fireFrame: 20,
   };
+  firerImg: HTMLImageElement;
+  coronaImg: HTMLImageElement;
+  waterImg: HTMLImageElement;
 
   constructor(
     position: { x: number; y: number },
@@ -30,11 +32,17 @@ export class Bullet extends Base {
     direction: { x: number }
   ) {
     super(position, h, w);
-    this.velocity = { x: direction.x }; // Example speed, adjust as needed
+    this.velocity = { x: direction.x };
+    this.firerImg = new Image();
+    this.firerImg.src = firer;
+    this.coronaImg = new Image();
+    this.coronaImg.src = corona;
+    this.waterImg = new Image();
+    this.waterImg.src = water;
+    // Example speed, adjust as needed
   }
 
   drawBullet(deltaTime: number, tile?: number) {
-    const image = new Image();
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameY++;
@@ -42,11 +50,10 @@ export class Bullet extends Base {
     }
 
     if (tile === 4) {
-      image.src = firer;
       if (frameY >= 6) frameY = 0;
 
       ctx.drawImage(
-        image,
+        this.firerImg,
         frameX * this.fireFrame.fireWidth,
         frameY * this.fireFrame.fireHeight,
         this.fireFrame.fireWidth,
@@ -57,14 +64,18 @@ export class Bullet extends Base {
         50
       );
     } else if (tile === 5) {
-      image.src = corona;
-      ctx.drawImage(image, this.position.x, this.position.y - 10, 32, 32);
+      ctx.drawImage(
+        this.coronaImg,
+        this.position.x,
+        this.position.y - 10,
+        32,
+        32
+      );
     } else {
-      image.src = water;
       if (frameY >= 6) frameY = 0;
 
       ctx.drawImage(
-        image,
+        this.waterImg,
         frameX * this.fireFrame.fireWidth,
         frameY * this.fireFrame.fireHeight,
         this.fireFrame.fireWidth,

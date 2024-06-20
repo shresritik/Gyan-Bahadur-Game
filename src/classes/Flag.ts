@@ -22,7 +22,7 @@ export class Flag extends Base {
     flagHeight: 100,
     flagFrame: 100,
   };
-
+  flagImage: HTMLImageElement;
   constructor(
     position: { x: number; y: number },
     h: number,
@@ -33,19 +33,19 @@ export class Flag extends Base {
     this.velocity = { x: direction.x };
     this.quiz = null;
     this.outQuiz = false;
+    this.flagImage = new Image();
+    this.flagImage.src = flagImg;
   }
 
   drawFlag(deltaTime: number) {
-    const image = new Image();
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
       gameFrame = 0;
     }
-    image.src = flagImg;
     if (frameX > 3) frameX = 0;
     ctx.drawImage(
-      image,
+      this.flagImage,
       frameX * this.flagFrame.flagWidth,
       0, // Adjust based on your sprite sheet layout
       this.flagFrame.flagWidth,
