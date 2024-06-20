@@ -4,10 +4,13 @@ import { Base } from "./Base";
 import firer from "../assets/firer.png";
 import water from "../assets/water.png";
 import corona from "../assets/corona.png";
+
 let frameX = 0;
 let frameY = 0;
+const frameInterval = 1000 / 5; // 5 frames per second
 
 let gameFrame = 0;
+
 export class Bullet extends Base {
   velocity: { x: number };
   fireFrame: {
@@ -19,6 +22,7 @@ export class Bullet extends Base {
     fireHeight: 126,
     fireFrame: 20,
   };
+
   constructor(
     position: { x: number; y: number },
     h: number,
@@ -29,13 +33,20 @@ export class Bullet extends Base {
     this.velocity = { x: direction.x }; // Example speed, adjust as needed
   }
 
-  drawBullet(tile?: number) {
+  drawBullet(deltaTime: number, tile?: number) {
     const image = new Image();
-    if (tile == 4) {
+    gameFrame += deltaTime;
+    if (gameFrame >= frameInterval) {
+      frameY++;
+      gameFrame = 0;
+    }
+
+    if (tile === 4) {
       image.src = firer;
+      if (frameY >= 6) frameY = 0;
+
       ctx.drawImage(
         image,
-
         frameX * this.fireFrame.fireWidth,
         frameY * this.fireFrame.fireHeight,
         this.fireFrame.fireWidth,
@@ -45,36 +56,15 @@ export class Bullet extends Base {
         80,
         50
       );
-      if (gameFrame % this.fireFrame.fireFrame == 0) {
-        if (frameY < 6) frameY++;
-        else frameY = 0;
-      }
-      gameFrame++;
-    } else if (tile == 5) {
+    } else if (tile === 5) {
       image.src = corona;
-      ctx.drawImage(
-        image,
-
-        this.position.x,
-        this.position.y - 10,
-        32,
-        32
-      );
+      ctx.drawImage(image, this.position.x, this.position.y - 10, 32, 32);
     } else {
-      // ctx.beginPath();
-      // ctx.arc(
-      //   this.position.x,
-      //   this.position.y - 20,
-      //   this.w / 2,
-      //   0,
-      //   2 * Math.PI,
-      //   true
-      // );
-      // ctx.fill();
       image.src = water;
+      if (frameY >= 6) frameY = 0;
+
       ctx.drawImage(
         image,
-
         frameX * this.fireFrame.fireWidth,
         frameY * this.fireFrame.fireHeight,
         this.fireFrame.fireWidth,
@@ -84,15 +74,10 @@ export class Bullet extends Base {
         80,
         50
       );
-      if (gameFrame % this.fireFrame.fireFrame == 0) {
-        if (frameY < 6) frameY++;
-        else frameY = 0;
-      }
-      gameFrame++;
     }
   }
 
-  moveBullet() {
-    this.position.x += this.velocity.x * SPEED;
+  moveBullet(deltaTime: number) {
+    this.position.x += this.velocity.x * ((SPEED * deltaTime) / 16.67);
   }
 }

@@ -8,6 +8,7 @@ import {
   gameStatus,
   quizMap,
   ammoObj,
+  TKeys,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -15,6 +16,7 @@ import "./style.css";
 import { Quiz } from "./classes/Quiz";
 import { handleFullScreen } from "./utils/utils";
 import singleWater from "./assets/single-water.png";
+
 let tileMap: TileMap;
 let player: Player;
 enum GameState {
@@ -23,6 +25,8 @@ enum GameState {
   GameOver,
 }
 let currentState: GameState = GameState.Start;
+let lastFrameTime = performance.now();
+
 window.addEventListener("keydown", (e: KeyboardEvent) => {
   keys[e.key] = true;
 });
@@ -77,8 +81,6 @@ function drawHealthBar(
   ctx.strokeRect(x, y, width, height);
 }
 
-let lastFrameTime = performance.now();
-
 function gameLoop(currentTime: number) {
   if (!gameStatus.isPaused) {
     const deltaTime = currentTime - lastFrameTime;
@@ -94,7 +96,7 @@ export function drawStartScreen() {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
   ctx.font = "40px sans-serif";
-  ctx.fillText("Doodle Jump", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 80);
+  ctx.fillText("Game", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 80);
   ctx.font = "30px sans-serif";
   ctx.fillText("Press Space to Start", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2);
   ctx.font = "22px sans-serif";
@@ -139,6 +141,14 @@ export function gameOverFunction() {
 //check the game stats for same fps in all the devices
 // functions for start,pause and game over screens
 // main game function calls
+const keysArray: TKeys = {};
+// Start the game loop initially
+window.addEventListener("keydown", (e: KeyboardEvent) => {
+  keysArray[e.key] = true;
+});
+window.addEventListener("keyup", (event) => {
+  delete keysArray[event.key];
+});
 function updateGameState(deltaTime: number) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -156,8 +166,8 @@ function updateGameState(deltaTime: number) {
       return;
     }
 
-    player.draw();
-    player.moveY();
+    player.draw(deltaTime);
+    player.moveY(deltaTime);
     player.moveX(deltaTime);
 
     tileMap.moveX(player, deltaTime);
@@ -166,12 +176,16 @@ function updateGameState(deltaTime: number) {
     tileMap.drawFlag(player, deltaTime);
     tileMap.drawAnimal(player, deltaTime);
     tileMap.drawAmmo(player, deltaTime);
-    player.updateBullet();
+    player.updateBullet(deltaTime);
 
     objects.enemy.forEach((enemy) => {
-      enemy.updateEnemyBullet(player);
+      enemy.updateEnemyBullet(player, deltaTime);
       enemy.enemyBulletCollision(player);
     });
+    if (keysArray["f"]) {
+      player.drawBullet(deltaTime);
+    }
+
     if (gameStatus.isQuiz && quizMap.quizMap != null) {
       quizMap.quizMap.draw();
     }
@@ -182,7 +196,6 @@ function updateGameState(deltaTime: number) {
     gameOverFunction();
   }
 }
-// Start the game loop initially
 
 handleFullScreen();
 
@@ -214,7 +227,8 @@ window.addEventListener("keypress", (e: KeyboardEvent) => {
   if (e.code === "KeyP" && currentState === GameState.Playing) {
     gameStatus.isPaused = !gameStatus.isPaused;
     if (!gameStatus.isPaused) {
-      lastFrameTime = performance.now(); // Reset time to avoid time jump
+      // Adjust the lastFrameTime to exclude the paused duration
+      lastFrameTime = performance.now();
       requestAnimationFrame(gameLoop);
     } else {
       drawPauseScreen();

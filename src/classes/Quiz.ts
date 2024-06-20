@@ -10,8 +10,8 @@ import { getRandomValue } from "../utils/utils";
 
 export class Quiz {
   correct: boolean | null = null;
+  private randomIndex: number = getRandomValue(0, quizObj.length);
   private quizBox = { x: 250, y: 50, w: 800, h: 500 };
-  private randomIndex = getRandomValue(0, quizObj.length);
   private selectedOption: number | null = null;
   private optionButtons: {
     x: number;
@@ -25,7 +25,9 @@ export class Quiz {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
-
+  setRandomValue() {
+    this.randomIndex = getRandomValue(0, quizObj.length);
+  }
   draw() {
     if (!gameStatus.isQuiz) return;
 
@@ -143,10 +145,10 @@ export class Quiz {
   }
 
   closeQuiz() {
-    gameStatus.isQuiz = false;
     this.reset();
     document.removeEventListener("keypress", this.handleKeyPress);
     document.removeEventListener("click", this.handleClick);
+    gameStatus.isQuiz = false;
   }
 
   reset() {

@@ -8,7 +8,7 @@ import { Quiz } from "./Quiz";
 
 let frameX = 0;
 let gameFrame = 0;
-
+const frameInterval = 1000 / 3;
 export class Flag extends Base {
   velocity: { x: number };
   quiz: Quiz | null;
@@ -35,9 +35,15 @@ export class Flag extends Base {
     this.outQuiz = false;
   }
 
-  drawFlag() {
+  drawFlag(deltaTime: number) {
     const image = new Image();
+    gameFrame += deltaTime;
+    if (gameFrame >= frameInterval) {
+      frameX++;
+      gameFrame = 0;
+    }
     image.src = flagImg;
+    if (frameX > 3) frameX = 0;
     ctx.drawImage(
       image,
       frameX * this.flagFrame.flagWidth,
@@ -49,13 +55,6 @@ export class Flag extends Base {
       100,
       130
     );
-
-    // Animate frames
-    if (gameFrame % this.flagFrame.flagFrame == 0) {
-      if (frameX < 1) frameX++;
-      else frameX = 0;
-    }
-    gameFrame++;
   }
 
   showQuiz(player: Player) {
@@ -66,6 +65,7 @@ export class Flag extends Base {
       if (quizMap.quizMap != null && quizMap.quizMap.correct != null) {
         setTimeout(() => {
           gameStatus.isQuiz = false;
+          quizMap.quizMap?.setRandomValue();
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
         }, 2000);

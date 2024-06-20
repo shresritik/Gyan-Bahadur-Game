@@ -111,7 +111,7 @@ export class Enemy extends Base {
     this.enemyBullet.push(bullet);
   };
   // if enemy and player are in less than 1000 distance enemy shoots bullet
-  updateEnemyBullet = (player: Player) => {
+  updateEnemyBullet = (player: Player, deltatime: number) => {
     this.enemyBullet.forEach((singleBullet, index) => {
       if (
         singleBullet.position.x <= 0 ||
@@ -130,8 +130,8 @@ export class Enemy extends Base {
           this.position.y
         ) < 1000
       ) {
-        singleBullet.drawBullet(this.tile);
-        singleBullet.moveBullet();
+        singleBullet.drawBullet(deltatime, this.tile);
+        singleBullet.moveBullet(deltatime);
 
         if (detectCollision(player, singleBullet)) {
           if (scoreCount.health > 0 && !this.hitEnemy) {
@@ -206,12 +206,6 @@ export class Enemy extends Base {
         this.directionX *= -1;
       }
       this.position.x += this.directionX * SPEED * (deltaTime / 16.67);
-      // if (this.position.x <= 0) this.position.x += movementSpeed;
-      // else if (this.position.x >= CANVAS_WIDTH)
-      //   this.position.x -= movementSpeed;
-      // else {
-      //   this.position.x -= movementSpeed;
-      // }
     }
   };
 

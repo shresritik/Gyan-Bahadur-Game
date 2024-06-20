@@ -16,6 +16,7 @@ interface IPlayer {
 let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
+const frameInterval = 1000 / 12; // 12 frames per second
 
 export class Player extends Base implements IPlayer {
   stanceFrame: {
@@ -53,25 +54,23 @@ export class Player extends Base implements IPlayer {
   bulletArray: Bullet[] = [];
   directionRight: boolean = true;
   playerSpeed = 2;
-  // maxBullets = 5;
   cooldown = false;
-  // ammo = this.maxBullets;
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
-
-    window.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "f") {
-        this.drawBullet();
-      }
-    });
   }
 
-  draw() {
+  draw(deltaTime: number) {
     const image = new Image();
+    gameFrame += deltaTime;
+    if (gameFrame >= frameInterval) {
+      frameX++;
+      gameFrame = 0;
+    }
 
     if (keys["d"]) {
       image.src = run;
+      if (frameX >= 3) frameX = 0;
 
       ctx.drawImage(
         image,
@@ -84,15 +83,9 @@ export class Player extends Base implements IPlayer {
         100,
         130
       );
-
-      if (gameFrame % this.runFrame.runnerFrame == 0) {
-        if (frameX < 1) frameX++;
-        else frameX = 0;
-      }
-
-      gameFrame++;
     } else if (keys["a"]) {
       image.src = runLeft;
+      if (frameX >= 3) frameX = 0;
 
       ctx.drawImage(
         image,
@@ -105,16 +98,8 @@ export class Player extends Base implements IPlayer {
         100,
         130
       );
-
-      if (gameFrame % this.runFrame.runnerFrame == 0) {
-        if (frameX < 2) frameX++;
-        else frameX = 0;
-      }
-
-      gameFrame++;
     } else if (keys["w"]) {
       image.src = jump;
-
       ctx.drawImage(
         image,
         (frameX + 1) * this.jumpFrame.jumpWidth,
@@ -126,15 +111,16 @@ export class Player extends Base implements IPlayer {
         100,
         120
       );
+      frameX = 0;
     } else {
       image.src = stance;
       ctx.drawImage(image, this.position.x, this.position.y - 75, 80, 150);
+      frameX = 0; // Reset frameX when not running
     }
   }
 
   moveX(deltaTime: number) {
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
-
+    const movementSpeed = SPEED * (deltaTime / 16.67);
     if (this.position.x < 300) {
       if (keys["a"]) {
         this.directionRight = false;
@@ -158,9 +144,9 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  moveY() {
-    this.position.y += this.velocityY;
-    this.velocityY += this.gravity;
+  moveY(deltaTime: number) {
+    this.position.y += this.velocityY * (deltaTime / 16.67);
+    this.velocityY += this.gravity * (deltaTime / 16.67);
   }
 
   checkBoundaryX() {
@@ -171,7 +157,8 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  drawBullet() {
+  drawBullet(deltatime: number) {
+    const movementSpeed = SPEED * (deltatime / 16.67);
     if (
       this.bulletArray.length < ammoObj.ammo &&
       ammoObj.ammo > 0 &&
@@ -179,7 +166,7 @@ export class Player extends Base implements IPlayer {
     ) {
       this.cooldown = true;
       ammoObj.ammo--; // Decrease ammo count
-      const bulletSpeed = this.directionRight ? SPEED : -SPEED;
+      const bulletSpeed = this.directionRight ? movementSpeed : -movementSpeed;
       const bullet = new Bullet(
         { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
         10,
@@ -195,11 +182,11 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  updateBullet() {
+  updateBullet(deltaTime: number) {
     for (let i = 0; i < this.bulletArray.length; i++) {
       const bullet = this.bulletArray[i];
-      bullet.drawBullet();
-      bullet.moveBullet();
+      bullet.drawBullet(deltaTime);
+      bullet.moveBullet(deltaTime);
 
       if (bullet.position.x <= 0 || bullet.position.x >= CANVAS_WIDTH) {
         this.bulletArray.splice(i, 1);

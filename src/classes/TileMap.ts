@@ -245,7 +245,7 @@ export class TileMap {
   drawEnemy(player: Player, deltaTime: number) {
     objects.enemy.forEach((en) => {
       en.draw();
-      en.updateEnemyBullet(player);
+      en.updateEnemyBullet(player, deltaTime);
       en.playerCollision(player);
       en.enemyBulletCollision(player);
       en.moveX(player, deltaTime);
@@ -259,14 +259,14 @@ export class TileMap {
   }
   drawFlag(player: Player, deltaTime: number) {
     objects.flag.forEach((fl) => {
-      fl.drawFlag();
+      fl.drawFlag(deltaTime);
       fl.moveX(player, deltaTime);
       fl.showQuiz(player);
     });
   }
   drawAnimal(player: Player, deltaTime: number) {
     objects.animal.forEach((an) => {
-      an.drawAnimal();
+      an.drawAnimal(deltaTime);
       an.moveX(player, deltaTime);
       an.collidesPlayer(player);
       an.enemyBulletCollision(player);
@@ -274,7 +274,7 @@ export class TileMap {
   }
   drawAmmo(player: Player, deltaTime: number) {
     objects.ammo.forEach((am) => {
-      am.drawAmmo();
+      am.drawAmmo(deltaTime);
       am.moveX(player, deltaTime);
 
       am.collidesPlayer(player);

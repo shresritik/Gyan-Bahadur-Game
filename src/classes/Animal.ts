@@ -6,7 +6,7 @@ import { Player } from "./Player";
 import { detectCollision } from "../utils/utils";
 let frameX = 0;
 let frameY = 0;
-
+const frameInterval = 1000 / 3;
 let gameFrame = 0;
 export class Animal extends Base {
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
@@ -31,10 +31,16 @@ export class Animal extends Base {
     this.tile = tile;
   }
 
-  drawAnimal = () => {
+  drawAnimal = (deltaTime: number) => {
     let image: HTMLImageElement | undefined;
     image = new Image();
+    gameFrame += deltaTime;
+    if (gameFrame >= frameInterval) {
+      frameX++;
+      gameFrame = 0;
+    }
     image.src = dog;
+    if (frameX >= 6) frameX = 0;
     ctx.drawImage(
       image,
 
@@ -47,15 +53,15 @@ export class Animal extends Base {
       90,
       90
     );
-    if (gameFrame % this.dogFrame.dogFrame == 0) {
-      if (frameX < 6) frameX++;
-      else frameX = 0;
-    }
-    gameFrame++;
+    // if (gameFrame % this.dogFrame.dogFrame == 0) {
+    //   if (frameX < 6) frameX++;
+    //   else frameX = 0;
+    // }
+    // gameFrame++;
   };
 
   moveX = (player: Player, deltaTime: number) => {
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
+    const movementSpeed = SPEED * (deltaTime / 16.67);
     if (keys["d"] && player.position.x >= 300) {
       this.position.x -= movementSpeed;
     } else if (keys["a"] && player.position.x >= 300) {
