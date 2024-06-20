@@ -266,6 +266,10 @@ export class TileMap {
       en.enemyBulletCollision();
       en.moveX(player, deltaTime);
     });
+    // objects.enemy.forEach((enemy) => {
+    //   enemy.updateEnemyBullet(player, deltaTime);
+    //   enemy.enemyBulletCollision();
+    // });
   }
   drawFruit(player: Player, deltaTime: number) {
     objects.fruit.forEach((fr) => {

@@ -145,10 +145,12 @@ function updateGameState(deltaTime: number) {
     tileMap.drawAnimal(player, deltaTime);
     tileMap.drawAmmo(player, deltaTime);
     player.updateBullet(deltaTime);
-
+    if (player.position.y > CANVAS_HEIGHT) {
+      gameStatus.gameOver = true;
+    }
     objects.enemy.forEach((enemy) => {
       enemy.updateEnemyBullet(player, deltaTime);
-      enemy.enemyBulletCollision(player);
+      enemy.enemyBulletCollision();
     });
     if (keysArray["f"]) {
       player.fireBullet();

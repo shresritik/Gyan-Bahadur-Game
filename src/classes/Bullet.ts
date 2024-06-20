@@ -52,18 +52,34 @@ export class Bullet extends Base {
 
     if (tile === 4) {
       if (frameY >= 6) frameY = 0;
-
-      ctx.drawImage(
-        this.firerImg,
-        frameX * this.fireFrame.fireWidth,
-        frameY * this.fireFrame.fireHeight,
-        this.fireFrame.fireWidth,
-        this.fireFrame.fireHeight,
-        this.position.x,
-        this.position.y - 45,
-        80,
-        50
-      );
+      if (this.velocityDirection.x == 1) {
+        ctx.drawImage(
+          this.firerImg,
+          frameX * this.fireFrame.fireWidth,
+          frameY * this.fireFrame.fireHeight,
+          this.fireFrame.fireWidth,
+          this.fireFrame.fireHeight,
+          this.position.x,
+          this.position.y - 45,
+          80,
+          50
+        );
+      } else {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(
+          this.firerImg,
+          frameX * this.fireFrame.fireWidth,
+          frameY * this.fireFrame.fireHeight,
+          this.fireFrame.fireWidth,
+          this.fireFrame.fireHeight,
+          -this.position.x - 35,
+          this.position.y - 45,
+          80,
+          50
+        );
+        ctx.restore();
+      }
     } else if (tile === 5) {
       ctx.drawImage(
         this.coronaImg,
@@ -74,18 +90,34 @@ export class Bullet extends Base {
       );
     } else {
       if (frameY >= 6) frameY = 0;
-
-      ctx.drawImage(
-        this.waterImg,
-        frameX * this.fireFrame.fireWidth,
-        frameY * this.fireFrame.fireHeight,
-        this.fireFrame.fireWidth,
-        this.fireFrame.fireHeight,
-        this.position.x,
-        this.position.y - 45,
-        80,
-        50
-      );
+      if (this.velocityDirection.x == 1) {
+        ctx.drawImage(
+          this.waterImg,
+          frameX * this.fireFrame.fireWidth,
+          frameY * this.fireFrame.fireHeight,
+          this.fireFrame.fireWidth,
+          this.fireFrame.fireHeight,
+          this.position.x,
+          this.position.y - 45,
+          80,
+          50
+        );
+      } else {
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(
+          this.waterImg,
+          frameX * this.fireFrame.fireWidth,
+          frameY * this.fireFrame.fireHeight,
+          this.fireFrame.fireWidth,
+          this.fireFrame.fireHeight,
+          -this.position.x + 100,
+          this.position.y - 45,
+          80,
+          50
+        );
+        ctx.restore();
+      }
     }
   }
 

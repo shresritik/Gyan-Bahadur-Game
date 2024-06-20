@@ -4,7 +4,7 @@ import banana from "./assets/banana.png";
 import corona from "./assets/corona.png";
 import singleFire from "./assets/single-fire.png";
 import wall from "./assets/wall.png";
-import flag from "./assets/flag.png";
+import flag from "./assets/single-flag.png";
 import animal from "./assets/dog1.png";
 import ammo from "./assets/single-water.png";
 const images = {
