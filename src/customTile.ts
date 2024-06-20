@@ -190,34 +190,38 @@ function getTileValue(key: ImageKey): number {
 // Create UI elements dynamically
 function createUI() {
   const controlsDiv = document.createElement("div");
-
+  const imgDiv = document.createElement("div");
+  const buttonDiv = document.createElement("div");
+  imgDiv.classList.add("imageDiv");
+  buttonDiv.classList.add("buttonDiv");
   // Create image buttons
   (Object.keys(images) as ImageKey[]).forEach((key) => {
     const img = document.createElement("img");
     img.src = images[key];
     img.onclick = () => selectTile(key);
-    controlsDiv.appendChild(img);
+    imgDiv.appendChild(img);
   });
 
   // Create save button
   const saveButton = document.createElement("button");
   saveButton.innerText = "Save";
   saveButton.onclick = save;
-  controlsDiv.appendChild(saveButton);
+  buttonDiv.appendChild(saveButton);
 
   // Create next button
   const nextButton = document.createElement("button");
   nextButton.innerText = "Next";
   nextButton.onclick = next;
-  controlsDiv.appendChild(nextButton);
+  buttonDiv.appendChild(nextButton);
 
   // Create previous button
   const prevButton = document.createElement("button");
   prevButton.innerText = "Prev";
   prevButton.onclick = prev;
-  controlsDiv.appendChild(prevButton);
+  buttonDiv.appendChild(prevButton);
 
   document.body.appendChild(controlsDiv);
+  controlsDiv.append(imgDiv, buttonDiv);
 }
 
 // Load saved map if exists and render table

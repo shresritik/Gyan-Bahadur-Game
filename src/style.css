@@ -18,10 +18,17 @@ body {
   background-color: rgb(44, 44, 44);
 }
 table {
-  background-color: white;
+  background: url("./assets/bluemoon.png");
+  background-position: center;
+  background-repeat: no-repeat;
   border-spacing: 0;
   border-collapse: collapse;
-  width: fit-content;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: max-content;
+  transform: translateX(-50%);
+  display: none;
 }
 
 .cell {
@@ -33,4 +40,31 @@ table {
 img {
   width: 32px;
   height: 32px;
+}
+canvas {
+  position: relative;
+  display: flex;
+  margin: auto;
+}
+button {
+  padding: 10px 35px;
+  background-color: white;
+  margin-left: 2px;
+  font-size: 15px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  background-color: rgba(255, 0, 0, 0.918);
+  color: white;
+  font-weight: 500;
+}
+
+.imageDiv,
+.buttonDiv {
+  background-color: white;
+  margin: auto;
+  width: max-content;
+  display: none;
+}
+div {
+  margin: 20px;
 }
