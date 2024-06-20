@@ -68,7 +68,7 @@ export class Flag extends Base {
           quizMap.quizMap?.setRandomValue();
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
-        }, 2000);
+        }, 1000);
       }
     }
   }

@@ -1,7 +1,7 @@
 import { Base } from "./Base";
 import dog from "../assets/dogr2.png";
 import { ctx } from "../components/canvas";
-import { SPEED, keys, scoreCount } from "../constants/constants";
+import { SPEED, keys, objects, scoreCount } from "../constants/constants";
 import { Player } from "./Player";
 import { detectCollision } from "../utils/utils";
 let frameX = 0;
@@ -80,11 +80,11 @@ export class Animal extends Base {
       }
     }
   }
-  enemyBulletCollision = (player: Player) => {
-    player.bulletArray.forEach((bull, index) => {
+  enemyBulletCollision = () => {
+    objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
         if (scoreCount.score > 0) scoreCount.score--;
-        player.bulletArray.splice(index, 1);
+        objects.bullet.splice(index, 1);
       }
     });
   };

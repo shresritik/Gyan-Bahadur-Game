@@ -1,5 +1,11 @@
 import { ctx } from "../components/canvas";
-import { CANVAS_WIDTH, SPEED, ammoObj, keys } from "../constants/constants";
+import {
+  CANVAS_WIDTH,
+  SPEED,
+  ammoObj,
+  keys,
+  objects,
+} from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
 import stanceImg from "../assets/stancer2.png";
@@ -53,8 +59,8 @@ export class Player extends Base implements IPlayer {
   gravity = 0.2;
   bulletArray: Bullet[] = [];
   directionRight: boolean = true;
-  playerSpeed = 2;
-  cooldown = false;
+  cooldownTime = 0;
+  cooldownPeriod = 1000; // Cooldown period in milliseconds
 
   // Preloaded images
   stanceImage: HTMLImageElement;
@@ -177,41 +183,38 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  drawBullet(deltatime: number) {
-    const movementSpeed = SPEED * (deltatime / 16.67);
-    if (
-      this.bulletArray.length < ammoObj.ammo &&
-      ammoObj.ammo > 0 &&
-      !this.cooldown
-    ) {
-      this.cooldown = true;
+  fireBullet() {
+    if (this.cooldownTime <= 0 && ammoObj.ammo > 0) {
+      this.cooldownTime = this.cooldownPeriod; // Reset cooldown time
       ammoObj.ammo--; // Decrease ammo count
-      const bulletSpeed = this.directionRight ? movementSpeed : -movementSpeed;
+      const bulletDirection = this.directionRight ? 1 : -1;
+
       const bullet = new Bullet(
         { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
         10,
         10,
-        { x: bulletSpeed }
+        { x: bulletDirection }
       );
-      this.bulletArray.push(bullet);
-
-      // Set a cooldown period (e.g., 500ms)
-      setTimeout(() => {
-        this.cooldown = false;
-      }, 500);
+      objects.bullet.push(bullet);
     }
   }
 
   updateBullet(deltaTime: number) {
-    for (let i = 0; i < this.bulletArray.length; i++) {
-      const bullet = this.bulletArray[i];
+    for (let i = 0; i < objects.bullet.length; i++) {
+      const bullet = objects.bullet[i];
       bullet.drawBullet(deltaTime);
       bullet.moveBullet(deltaTime);
 
       if (bullet.position.x <= 0 || bullet.position.x >= CANVAS_WIDTH) {
-        this.bulletArray.splice(i, 1);
+        objects.bullet.splice(i, 1);
         i--;
       }
+    }
+  }
+
+  updateCooldown(deltaTime: number) {
+    if (this.cooldownTime > 0) {
+      this.cooldownTime -= deltaTime;
     }
   }
 }

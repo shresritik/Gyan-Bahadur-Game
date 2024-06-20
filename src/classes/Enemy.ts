@@ -102,6 +102,7 @@ export class Enemy extends Base {
   //instantialte bullet
   createBullet = (player: Player) => {
     const direction = this.position.x - player.position.x;
+
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y },
       20,
@@ -109,6 +110,7 @@ export class Enemy extends Base {
       { x: direction > 0 ? -1 : 1 }
     );
     this.enemyBullet.push(bullet);
+    objects.enemyBullet.push(bullet);
   };
   // if enemy and player are in less than 1000 distance enemy shoots bullet
   updateEnemyBullet = (player: Player, deltatime: number) => {
@@ -120,6 +122,7 @@ export class Enemy extends Base {
         singleBullet.position.y >= CANVAS_HEIGHT
       ) {
         this.enemyBullet.splice(index, 1);
+        objects.enemyBullet.splice(index, 1);
       }
 
       if (
@@ -139,6 +142,7 @@ export class Enemy extends Base {
             this.hitEnemy = true;
           }
           this.enemyBullet.splice(index, 1);
+          objects.enemyBullet.splice(index, 1);
         } else {
           this.hitEnemy = false;
         }
@@ -159,8 +163,8 @@ export class Enemy extends Base {
     }
   };
   //if corona then hit three bullets to defeat other enemy are defeated with one bullet
-  enemyBulletCollision = (player: Player) => {
-    player.bulletArray.forEach((bull, index) => {
+  enemyBulletCollision = () => {
+    objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
         if (this.tile == 5) {
           if (this.bulletIndex >= 2) {
@@ -186,7 +190,7 @@ export class Enemy extends Base {
           });
         }
 
-        player.bulletArray.splice(index, 1);
+        objects.bullet.splice(index, 1);
       }
     });
   };

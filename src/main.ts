@@ -107,6 +107,7 @@ function gameLoop(currentTime: number) {
 //check the game stats for same fps in all the devices
 // functions for start,pause and game over screens
 // main game function calls
+
 const keysArray: TKeys = {};
 // Start the game loop initially
 window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -135,6 +136,7 @@ function updateGameState(deltaTime: number) {
     player.draw(deltaTime);
     player.moveY(deltaTime);
     player.moveX(deltaTime);
+    player.updateCooldown(deltaTime);
 
     tileMap.moveX(player, deltaTime);
     tileMap.drawEnemy(player, deltaTime);
@@ -149,7 +151,7 @@ function updateGameState(deltaTime: number) {
       enemy.enemyBulletCollision(player);
     });
     if (keysArray["f"]) {
-      player.drawBullet(deltaTime);
+      player.fireBullet();
     }
 
     if (gameStatus.isQuiz && quizMap.quizMap != null) {
@@ -173,14 +175,13 @@ function startGame() {
   objects.flag.length = 0;
   objects.fruit.length = 0;
   objects.platform.length = 0;
+  objects.bullet.length = 0;
+  objects.enemyBullet.length = 0;
   ammoObj.ammo = 5;
   if (player) {
     player.velocityY = 0;
     player.gravity = 0.2;
-    player.bulletArray = [];
     player.directionRight = true;
-    player.playerSpeed = 2;
-    player.cooldown = false;
   }
   currentState = GameState.Playing;
   lastFrameTime = performance.now();

@@ -9,9 +9,8 @@ let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 5; // 5 frames per second
 
-let gameFrame = 0;
 export class Bullet extends Base {
-  velocity: { x: number };
+  velocityDirection: { x: number };
   fireFrame: {
     fireWidth: number;
     fireHeight: number;
@@ -24,6 +23,7 @@ export class Bullet extends Base {
   firerImg: HTMLImageElement;
   coronaImg: HTMLImageElement;
   waterImg: HTMLImageElement;
+  accumulatedTime: number;
 
   constructor(
     position: { x: number; y: number },
@@ -32,21 +32,22 @@ export class Bullet extends Base {
     direction: { x: number }
   ) {
     super(position, h, w);
-    this.velocity = { x: direction.x };
+    this.velocityDirection = { x: direction.x };
     this.firerImg = new Image();
     this.firerImg.src = firer;
     this.coronaImg = new Image();
     this.coronaImg.src = corona;
     this.waterImg = new Image();
     this.waterImg.src = water;
-    // Example speed, adjust as needed
+    this.accumulatedTime = 0;
   }
 
   drawBullet(deltaTime: number, tile?: number) {
-    gameFrame += deltaTime;
-    if (gameFrame >= frameInterval) {
+    this.accumulatedTime += deltaTime;
+
+    if (this.accumulatedTime >= frameInterval) {
       frameY++;
-      gameFrame = 0;
+      this.accumulatedTime = 0;
     }
 
     if (tile === 4) {
@@ -89,6 +90,6 @@ export class Bullet extends Base {
   }
 
   moveBullet(deltaTime: number) {
-    this.position.x += this.velocity.x * ((SPEED * deltaTime) / 16.67);
+    this.position.x += this.velocityDirection.x * ((SPEED * deltaTime) / 16.67);
   }
 }

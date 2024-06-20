@@ -1,5 +1,6 @@
 import { Ammo } from "../classes/Ammo";
 import { Animal } from "../classes/Animal";
+import { Bullet } from "../classes/Bullet";
 import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
@@ -23,6 +24,8 @@ export const objects: {
   flag: Flag[];
   animal: Animal[];
   ammo: Ammo[];
+  bullet: Bullet[];
+  enemyBullet: Bullet[];
 } = {
   platform: [],
   enemy: [],
@@ -30,6 +33,8 @@ export const objects: {
   flag: [],
   animal: [],
   ammo: [],
+  bullet: [],
+  enemyBullet: [],
 };
 export const ammoObj = {
   ammo: 5,

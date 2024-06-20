@@ -1,4 +1,4 @@
-import { objects } from "../constants/constants";
+import { SPEED, keys, objects } from "../constants/constants";
 import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
@@ -238,8 +238,24 @@ export class TileMap {
   };
   moveX = (player: Player, deltaTime: number) => {
     objects.platform.forEach((pl) => {
-      pl.draw(player);
       pl.moveX(player, deltaTime);
+      pl.draw(player);
+    });
+    objects.bullet.forEach((bul) => {
+      const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
+      if (keys["d"] && player.position.x >= 300) {
+        bul.position.x -= movementSpeed;
+      } else if (keys["a"] && player.position.x >= 300) {
+        bul.position.x += movementSpeed;
+      }
+    });
+    objects.enemyBullet.forEach((bul) => {
+      const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
+      if (keys["d"] && player.position.x >= 300) {
+        bul.position.x -= movementSpeed;
+      } else if (keys["a"] && player.position.x >= 300) {
+        bul.position.x += movementSpeed;
+      }
     });
   };
   drawEnemy(player: Player, deltaTime: number) {
@@ -247,7 +263,7 @@ export class TileMap {
       en.draw();
       en.updateEnemyBullet(player, deltaTime);
       en.playerCollision(player);
-      en.enemyBulletCollision(player);
+      en.enemyBulletCollision();
       en.moveX(player, deltaTime);
     });
   }
@@ -269,7 +285,7 @@ export class TileMap {
       an.drawAnimal(deltaTime);
       an.moveX(player, deltaTime);
       an.collidesPlayer(player);
-      an.enemyBulletCollision(player);
+      an.enemyBulletCollision();
     });
   }
   drawAmmo(player: Player, deltaTime: number) {
