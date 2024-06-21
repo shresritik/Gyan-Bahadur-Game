@@ -7,6 +7,8 @@ import wall from "./assets/wall.png";
 import flag from "./assets/single-flag.png";
 import animal from "./assets/dog1.png";
 import ammo from "./assets/single-water.png";
+import none from "./assets/none.png";
+import { isCustom } from "./constants/constants";
 const images = {
   grapes,
   banana,
@@ -16,6 +18,7 @@ const images = {
   flag,
   animal,
   ammo,
+  none,
 };
 
 // Define a type for the keys of the images object
@@ -34,8 +37,10 @@ const cols = 120;
 let mapObj: MapObject = createMapObj(rows, cols);
 
 // Create table element and append to document body
+const customLevel = document.createElement("div");
+customLevel.className = "customLevel";
 const tableEl = document.createElement("table");
-document.body.append(tableEl);
+customLevel.append(tableEl);
 
 let visibleStartIndex = 0; // Start by showing the first 20 columns
 let isMouseDown = false;
@@ -53,6 +58,7 @@ function selectTile(tile: ImageKey) {
 
 // Function to save map to local storage
 function save() {
+  isCustom.custom = true;
   const saveMap = JSON.stringify(mapObj.map);
   localStorage.setItem("map", saveMap);
 }
@@ -109,6 +115,10 @@ function renderTable() {
       tableColumn.addEventListener("mouseover", () => {
         if (isMouseDown) addTile(row, column, tableColumn);
       });
+      tableColumn.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (isMouseDown) addTile(row, column, tableColumn);
+      });
 
       // Add image if the map value is not zero
       if (mapObj.map[row][column] !== 0) {
@@ -129,12 +139,15 @@ function addTile(row: number, column: number, tableColumn: HTMLElement) {
 
   const image = new Image();
   image.src = images[selectedTile];
-  const value = getTileValue(selectedTile);
 
+  const value = getTileValue(selectedTile);
   mapObj.map[row][column] = value;
-  if (!tableColumn.firstChild) {
+  if (images[selectedTile].includes("none")) {
+    tableColumn.innerHTML = "";
+  }
+  if (!tableColumn.firstChild && !images[selectedTile].includes("none")) {
     tableColumn.appendChild(image);
-  } else {
+  } else if (tableColumn.firstChild && !images[selectedTile].includes("none")) {
     (tableColumn.firstChild as HTMLImageElement).src = image.src;
   }
 }
@@ -186,7 +199,18 @@ function getTileValue(key: ImageKey): number {
       return 0;
   }
 }
-
+function reset() {
+  isCustom.custom = false;
+  const tds = document.querySelectorAll("td");
+  tds.forEach((td) => {
+    const images = td.querySelectorAll("img");
+    images.forEach((img) => img.remove());
+  });
+}
+function play() {
+  isCustom.custom = true;
+  customLevel.style.display = "none";
+}
 // Create UI elements dynamically
 function createUI() {
   const controlsDiv = document.createElement("div");
@@ -219,10 +243,21 @@ function createUI() {
   prevButton.innerText = "Prev";
   prevButton.onclick = prev;
   buttonDiv.appendChild(prevButton);
+  // Create reset button
+  const resetButton = document.createElement("button");
+  resetButton.innerText = "Reset";
+  resetButton.onclick = reset;
+  buttonDiv.append(resetButton);
+  // Create play button
+  const playButton = document.createElement("button");
+  playButton.innerText = "Play";
+  playButton.onclick = play;
+  buttonDiv.append(playButton);
 
-  document.body.appendChild(controlsDiv);
   controlsDiv.append(imgDiv, buttonDiv);
+  customLevel.appendChild(controlsDiv);
 }
+document.body.appendChild(customLevel);
 
 // Load saved map if exists and render table
 load();

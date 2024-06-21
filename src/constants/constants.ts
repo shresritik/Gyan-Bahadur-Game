@@ -58,3 +58,5 @@ export const quizObj = [
   },
 ];
 export const levelGrade = { success: false };
+export const menuOptions = { option: "" };
+export const isCustom = { custom: false };

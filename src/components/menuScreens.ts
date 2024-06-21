@@ -2,9 +2,38 @@ import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   levelGrade,
+  menuOptions,
   scoreCount,
 } from "../constants/constants";
 import { ctx } from "./canvas";
+const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
+const menuButtons = ["Start", "Editor", "Instruction"];
+
+document.addEventListener("click", handleClick);
+let optionButtons: any;
+function handleClick(e: MouseEvent) {
+  const { offsetX, offsetY } = e;
+  if (optionButtons) {
+    for (const button of optionButtons) {
+      if (
+        offsetX >= button.x &&
+        offsetY >= button.y &&
+        offsetX <= button.x + button.w &&
+        offsetY <= button.y + button.h
+      ) {
+        let selectedOption = button.option - 1;
+
+        menuOptions.option = menuButtons[selectedOption];
+        if (menuOptions.option == "Editor") {
+          const table = document.querySelector(
+            ".customLevel"
+          ) as HTMLSelectElement;
+          table.style.display = "block";
+        }
+      }
+    }
+  }
+}
 
 export function drawStartScreen() {
   ctx.fillStyle = "#F7F0EA";
@@ -27,6 +56,22 @@ export function drawStartScreen() {
     CANVAS_WIDTH / 5,
     CANVAS_HEIGHT / 2 + 100
   );
+  optionButtons = menuButtons.map((option, index) => {
+    const button = {
+      x: buttonBox.x + 20,
+      y: buttonBox.y + 100 + index * 60,
+      w: buttonBox.w - 40,
+      h: 50,
+      option: index + 1,
+    };
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(button.x, button.y, button.w, button.h);
+    ctx.fillStyle = "white";
+    ctx.fillText(option, button.x + 15, button.y + 31);
+
+    return button;
+  });
 }
 export function gameOverFunction() {
   ctx.fillStyle = "white";

@@ -10,6 +10,8 @@ import {
   ammoObj,
   TKeys,
   levelGrade,
+  menuOptions,
+  isCustom,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -93,6 +95,11 @@ const writeBullet = () => {
   ctx.drawImage(image, 110, 10, 20, 30);
   ctx.fillText(`${ammoObj.ammo}`, 140, 35);
 };
+const writeLevel = () => {
+  ctx.fillStyle = "white";
+  ctx.font = "20px sans-serif";
+  ctx.fillText(`Level: ${levelGrade.success ? "2" : "1"}`, 170, 35);
+};
 
 const drawHealthBar = (
   x = 15,
@@ -131,10 +138,12 @@ const gameLoop = (currentTime: number) => {
 
 const updateGameState = (deltaTime: number) => {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
   switch (currentState) {
     case GameState.Start:
       drawStartScreen();
+      if (menuOptions.option == "Start" || isCustom.custom) {
+        startGame();
+      }
       break;
     case GameState.Playing:
       if (gameStatus.gameOver) {
@@ -142,7 +151,6 @@ const updateGameState = (deltaTime: number) => {
         gameOverFunction();
         break;
       }
-
       player.draw(deltaTime);
       player.moveY(deltaTime);
       player.moveX(deltaTime);
@@ -171,6 +179,7 @@ const updateGameState = (deltaTime: number) => {
 
       writeBullet();
       writeScore();
+      writeLevel();
       drawHealthBar();
       break;
     case GameState.GameOver:
@@ -193,7 +202,12 @@ const startGame = () => {
   objects.enemyBullet.length = 0;
   objects.enemyFireBullet.length = 0;
   ammoObj.ammo = 5;
-
+  if (isCustom.custom && !levelGrade.success) drawObjects(-1);
+  if (!isCustom.custom && !levelGrade.success) drawObjects(1);
+  else if (!isCustom.custom && levelGrade.success) {
+    drawObjects(2);
+  }
+  levelGrade.success = false;
   if (player) {
     player.velocityY = 0;
     player.gravity = 0.2;
@@ -202,11 +216,6 @@ const startGame = () => {
 
   currentState = GameState.Playing;
   lastFrameTime = performance.now();
-  if (!levelGrade.success) drawObjects(1);
-  else {
-    drawObjects(2);
-  }
-  levelGrade.success = false;
 };
 
 setupEventListeners();

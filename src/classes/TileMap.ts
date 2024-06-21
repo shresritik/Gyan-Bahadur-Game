@@ -13,9 +13,11 @@ export class TileMap {
   level: number = 0;
   constructor(level: number) {
     this.level = level;
-    console.log(this.level);
-    if (this.level == 1) {
-      console.log("first");
+    if (this.level == -1) {
+      this.map = localStorage.getItem("map")
+        ? JSON.parse(localStorage.getItem("map")!)
+        : "";
+    } else if (this.level == 1) {
       this.map = [
         [
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

@@ -28,7 +28,6 @@ table {
   left: 50%;
   width: max-content;
   transform: translateX(-50%);
-  display: none;
 }
 
 .cell {
@@ -67,4 +66,7 @@ button {
 }
 div {
   margin: 20px;
+}
+.customLevel {
+  display: none;
 }
