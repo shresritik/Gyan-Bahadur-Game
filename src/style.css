@@ -63,7 +63,7 @@ button {
   background-color: white;
   margin: auto;
   width: max-content;
-  display: none;
+  /* display: none; */
 }
 div {
   margin: 20px;

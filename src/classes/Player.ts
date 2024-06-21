@@ -4,16 +4,17 @@ import {
   SPEED,
   ammoObj,
   keys,
+  levelGrade,
   objects,
 } from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
 import stanceImg from "../assets/stancer2.png";
 import runImg from "../assets/runright-3.png";
-// import runImg from "../assets/run2.png";
-// import runLeftImg from "../assets/run-left.png";
+
 import jumpImg from "../assets/jump2.png";
 import shoot from "../assets/shoot.png";
+import win from "../assets/win.png";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -76,6 +77,7 @@ export class Player extends Base implements IPlayer {
   stanceImage: HTMLImageElement;
   runImage: HTMLImageElement;
   jumpImage: HTMLImageElement;
+  winImage: HTMLImageElement;
   shootImage: HTMLImageElement;
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
@@ -92,6 +94,9 @@ export class Player extends Base implements IPlayer {
     this.jumpImage.src = jumpImg;
     this.shootImage = new Image();
     this.shootImage.src = shoot;
+    this.winImage = new Image();
+
+    this.winImage.src = win;
   }
 
   draw(deltaTime: number) {
@@ -191,7 +196,16 @@ export class Player extends Base implements IPlayer {
         ctx.restore();
       }
     } else {
-      if (!this.directionRight) {
+      if (levelGrade.success) {
+        ctx.drawImage(
+          this.winImage,
+          this.position.x,
+          this.position.y - 75,
+          80,
+          150
+        );
+      }
+      if (!this.directionRight && !levelGrade.success) {
         ctx.save();
         ctx.scale(-1, 1);
         ctx.drawImage(
@@ -202,7 +216,7 @@ export class Player extends Base implements IPlayer {
           150
         );
         ctx.restore();
-      } else {
+      } else if (this.directionRight && !levelGrade.success) {
         ctx.drawImage(
           this.stanceImage,
           this.position.x,

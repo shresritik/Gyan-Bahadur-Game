@@ -9,6 +9,7 @@ import {
   quizMap,
   ammoObj,
   TKeys,
+  levelGrade,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -69,9 +70,8 @@ const setupEventListeners = () => {
     delete keysArray[e.key];
   });
 };
-
-const drawObjects = () => {
-  tileMap = new TileMap();
+const drawObjects = (level: number) => {
+  tileMap = new TileMap(level);
   player = new Player({ x: 20, y: 50 }, 50, 50);
   tileMap.drawMap(player);
   quizMap.quizMap = new Quiz();
@@ -202,7 +202,11 @@ const startGame = () => {
 
   currentState = GameState.Playing;
   lastFrameTime = performance.now();
-  drawObjects();
+  if (!levelGrade.success) drawObjects(1);
+  else {
+    drawObjects(2);
+  }
+  levelGrade.success = false;
 };
 
 setupEventListeners();

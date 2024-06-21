@@ -1,5 +1,11 @@
 import { ctx } from "../components/canvas";
-import { SPEED, gameStatus, keys, quizMap } from "../constants/constants";
+import {
+  SPEED,
+  gameStatus,
+  keys,
+  levelGrade,
+  quizMap,
+} from "../constants/constants";
 import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
@@ -63,19 +69,20 @@ export class Flag extends Base {
   }
 
   showQuiz(player: Player, deltaTime: number) {
+    if (this.outQuiz && this.quizTimer == 0) {
+      this.gameOverTimer += deltaTime;
+      if (this.gameOverTimer >= 1500) {
+        gameStatus.gameOver = true;
+        this.gameOverTimer = 0;
+      }
+    }
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
         this.quizTimer = 0;
         this.gameOverTimer = 0;
       }
-      if (this.outQuiz && this.quizTimer == 0) {
-        this.gameOverTimer += deltaTime;
-        if (this.gameOverTimer >= 1500) {
-          gameStatus.gameOver = true;
-          this.gameOverTimer = 0;
-        }
-      }
+
       if (
         gameStatus.isQuiz &&
         quizMap.quizMap != null &&
@@ -83,16 +90,15 @@ export class Flag extends Base {
       ) {
         this.quizTimer += deltaTime;
 
-        if (this.quizTimer >= 1000) {
+        if (this.quizTimer >= 500) {
           gameStatus.isQuiz = false;
           quizMap.quizMap?.setRandomValue();
+          levelGrade.success = quizMap.quizMap!.correct;
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
           this.quizTimer = 0;
         }
       }
-      // console.log(this.outQuiz, this.gameOverTimer);
-      // if (this.outQuiz && this.gameOverTimer >= 1100)
     }
   }
 
