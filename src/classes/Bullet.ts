@@ -52,7 +52,7 @@ export class Bullet extends Base {
 
     if (tile === 4) {
       if (frameY >= 6) frameY = 0;
-      if (this.velocityDirection.x == 1) {
+      if (this.velocityDirection.x == -1) {
         ctx.drawImage(
           this.firerImg,
           frameX * this.fireFrame.fireWidth,
@@ -90,14 +90,14 @@ export class Bullet extends Base {
       );
     } else {
       if (frameY >= 6) frameY = 0;
-      if (this.velocityDirection.x == 1) {
+      if (this.velocityDirection.x == -1) {
         ctx.drawImage(
           this.waterImg,
           frameX * this.fireFrame.fireWidth,
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          this.position.x,
+          this.position.x - 160,
           this.position.y - 45,
           80,
           50
@@ -111,7 +111,7 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          -this.position.x + 100,
+          -this.position.x - 60,
           this.position.y - 45,
           80,
           50

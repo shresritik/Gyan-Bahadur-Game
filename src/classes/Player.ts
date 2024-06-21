@@ -254,8 +254,7 @@ export class Player extends Base implements IPlayer {
   }
 
   fireBullet() {
-    if (this.cooldownTime <= 0 && ammoObj.ammo > 0) {
-      this.cooldownTime = this.cooldownPeriod; // Reset cooldown time
+    if (ammoObj.ammo > 0) {
       ammoObj.ammo--; // Decrease ammo count
       const bulletDirection = this.directionRight ? 1 : -1;
 

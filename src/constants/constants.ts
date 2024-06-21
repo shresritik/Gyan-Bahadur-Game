@@ -25,6 +25,7 @@ export const objects: {
   animal: Animal[];
   ammo: Ammo[];
   bullet: Bullet[];
+  enemyFireBullet: Bullet[];
   enemyBullet: Bullet[];
 } = {
   platform: [],
@@ -34,6 +35,7 @@ export const objects: {
   animal: [],
   ammo: [],
   bullet: [],
+  enemyFireBullet: [],
   enemyBullet: [],
 };
 export const ammoObj = {
