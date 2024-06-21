@@ -13,6 +13,8 @@ export class Flag extends Base {
   velocity: { x: number };
   quiz: Quiz | null;
   outQuiz: boolean;
+  quizTimer: number;
+  gameOverTimer: number;
   flagFrame: {
     flagWidth: number;
     flagHeight: number;
@@ -23,6 +25,7 @@ export class Flag extends Base {
     flagFrame: 100,
   };
   flagImage: HTMLImageElement;
+
   constructor(
     position: { x: number; y: number },
     h: number,
@@ -33,6 +36,8 @@ export class Flag extends Base {
     this.velocity = { x: direction.x };
     this.quiz = null;
     this.outQuiz = false;
+    this.quizTimer = 0;
+    this.gameOverTimer = 0;
     this.flagImage = new Image();
     this.flagImage.src = flagImg;
   }
@@ -57,19 +62,37 @@ export class Flag extends Base {
     );
   }
 
-  showQuiz(player: Player) {
+  showQuiz(player: Player, deltaTime: number) {
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
+        this.quizTimer = 0;
+        this.gameOverTimer = 0;
       }
-      if (quizMap.quizMap != null && quizMap.quizMap.correct != null) {
-        setTimeout(() => {
+      if (this.outQuiz && this.quizTimer == 0) {
+        this.gameOverTimer += deltaTime;
+        if (this.gameOverTimer >= 1500) {
+          gameStatus.gameOver = true;
+          this.gameOverTimer = 0;
+        }
+      }
+      if (
+        gameStatus.isQuiz &&
+        quizMap.quizMap != null &&
+        quizMap.quizMap.correct != null
+      ) {
+        this.quizTimer += deltaTime;
+
+        if (this.quizTimer >= 1000) {
           gameStatus.isQuiz = false;
           quizMap.quizMap?.setRandomValue();
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
-        }, 1000);
+          this.quizTimer = 0;
+        }
       }
+      // console.log(this.outQuiz, this.gameOverTimer);
+      // if (this.outQuiz && this.gameOverTimer >= 1100)
     }
   }
 

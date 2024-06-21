@@ -102,6 +102,7 @@ export class Bullet extends Base {
           80,
           50
         );
+        ctx.strokeRect(this.position.x - 160, this.position.y - 45, 80, 50);
       } else {
         ctx.save();
         ctx.scale(-1, 1);
@@ -112,11 +113,12 @@ export class Bullet extends Base {
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
           -this.position.x - 60,
-          this.position.y - 45,
+          this.position.y,
           80,
           50
         );
         ctx.restore();
+        ctx.strokeRect(this.position.x - 160, this.position.y - 45, 80, 50);
       }
     }
   }

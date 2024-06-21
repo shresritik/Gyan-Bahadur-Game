@@ -83,7 +83,7 @@ export class Animal extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
-        if (scoreCount.score > 0) scoreCount.score--;
+        if (scoreCount.score > 0) scoreCount.health--;
         objects.bullet.splice(index, 1);
       }
     });

@@ -66,13 +66,14 @@ export class Enemy extends Base {
           this.spriteWidth,
           this.spriteHeight,
           this.position.x + 20,
-          this.position.y - 20,
-          60,
-          60
+          this.position.y - 50,
+          70,
+          70
         );
       } else if (this.tile == 5) {
-        ctx.drawImage(image, this.position.x, this.position.y - 20, 60, 60);
+        ctx.drawImage(image, this.position.x, this.position.y - 50, 70, 70);
       }
+      ctx.strokeRect(this.position.x, this.position.y - 50, 100, 100);
     } else {
       image.onload = () => {
         if (this.tile == 4) {
@@ -166,6 +167,7 @@ export class Enemy extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
+        console.log("this", this);
         if (this.tile == 5) {
           if (this.bulletIndex >= 2) {
             scoreCount.score++;

@@ -281,7 +281,7 @@ export class TileMap {
     objects.flag.forEach((fl) => {
       fl.drawFlag(deltaTime);
       fl.moveX(player, deltaTime);
-      fl.showQuiz(player);
+      fl.showQuiz(player, deltaTime);
     });
   }
   drawAnimal(player: Player, deltaTime: number) {
