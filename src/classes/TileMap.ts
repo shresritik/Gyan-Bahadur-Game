@@ -4,7 +4,7 @@ import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
 import { Flag } from "./Flag";
 import { Fruit } from "./Fruit";
-import { Plat } from "./Plat";
+import { Plat } from "./Platform";
 import { Player } from "./Player";
 
 export class TileMap {
@@ -359,9 +359,13 @@ export class TileMap {
           );
         } else if (tile == 4 || tile == 5) {
           const newEnemy = new Enemy(
-            { x: column * this.tileSize, y: row * this.tileSize },
-            this.tileSize,
-            this.tileSize,
+            {
+              x: column * this.tileSize,
+              y:
+                tile == 4 ? row * this.tileSize - 60 : row * this.tileSize - 30,
+            },
+            80,
+            100,
             tile
           );
 
@@ -388,9 +392,9 @@ export class TileMap {
         } else if (tile == 7) {
           objects.animal.push(
             new Animal(
-              { x: column * this.tileSize, y: row * this.tileSize },
-              this.tileSize,
-              this.tileSize,
+              { x: column * this.tileSize, y: row * this.tileSize - 70 },
+              100,
+              120,
               tile
             )
           );

@@ -35,13 +35,16 @@ export class Plat extends Base {
     }
 
     if (detectCollision(player, this)) {
+      // if player lands on platform keep it on top of it
       if (this.position.y >= player.position.y) {
         player.position.y = this.position.y - player.h;
         player.velocityY = 0;
         if (keys["w"]) {
-          player.velocityY = -12;
+          player.velocityY = -8;
         }
-      } else if (player.position.y >= this.position.y) {
+      }
+      //if player is below the platform don't let it jump above it
+      else if (player.position.y >= this.position.y) {
         player.velocityY = 0.4;
       }
     }

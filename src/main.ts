@@ -75,7 +75,7 @@ const setupEventListeners = () => {
 };
 const drawObjects = (level: number) => {
   tileMap = new TileMap(level);
-  player = new Player({ x: 20, y: 50 }, 50, 50);
+  player = new Player({ x: 20, y: 100 }, 120, 60);
   tileMap.drawMap(player);
   quizMap.quizMap = new Quiz();
 };
@@ -155,7 +155,6 @@ const updateGameState = (deltaTime: number) => {
       player.draw(deltaTime);
       player.moveY(deltaTime);
       player.moveX(deltaTime);
-      player.updateCooldown(deltaTime);
 
       tileMap.moveX(player, deltaTime);
       tileMap.drawEnemy(player, deltaTime);

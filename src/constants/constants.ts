@@ -4,7 +4,7 @@ import { Bullet } from "../classes/Bullet";
 import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
-import { Plat } from "../classes/Plat";
+import { Plat } from "../classes/Platform";
 import { Quiz } from "../classes/Quiz";
 export interface TKeys {
   [keys: string]: boolean;

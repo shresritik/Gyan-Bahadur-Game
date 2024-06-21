@@ -60,9 +60,9 @@ export class Bullet extends Base {
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
           this.position.x,
-          this.position.y - 45,
-          80,
-          50
+          this.position.y,
+          this.w,
+          this.h
         );
       } else {
         ctx.save();
@@ -73,10 +73,10 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          -this.position.x - 35,
-          this.position.y - 45,
-          80,
-          50
+          -this.position.x,
+          this.position.y,
+          this.w,
+          this.h
         );
         ctx.restore();
       }
@@ -97,10 +97,10 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          this.position.x - 120,
-          this.position.y - 80,
-          80,
-          50
+          this.position.x,
+          this.position.y,
+          this.w,
+          this.h
         );
       } else {
         ctx.save();
@@ -111,10 +111,10 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          -this.position.x - 140,
-          this.position.y - 80,
-          80,
-          50
+          -this.position.x - this.w,
+          this.position.y,
+          this.w,
+          this.h
         );
         ctx.restore();
       }

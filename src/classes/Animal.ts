@@ -49,9 +49,9 @@ export class Animal extends Base {
       this.dogFrame.dogWidth,
       this.dogFrame.dogHeight,
       this.position.x,
-      this.position.y - 70,
-      100,
-      120
+      this.position.y,
+      this.w,
+      this.h
     );
   };
 

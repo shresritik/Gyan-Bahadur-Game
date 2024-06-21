@@ -65,13 +65,13 @@ export class Enemy extends Base {
           0,
           this.spriteWidth,
           this.spriteHeight,
-          this.position.x + 20,
-          this.position.y - 60,
+          this.position.x,
+          this.position.y,
           80,
           100
         );
       } else if (this.tile == 5) {
-        ctx.drawImage(image, this.position.x, this.position.y - 45, 80, 80);
+        ctx.drawImage(image, this.position.x, this.position.y, 80, 80);
       }
     } else {
       image.onload = () => {
@@ -82,13 +82,13 @@ export class Enemy extends Base {
             0,
             this.spriteWidth,
             this.spriteHeight,
-            this.position.x - 10,
-            this.position.y - 20,
+            this.position.x,
+            this.position.y,
             80,
             100
           );
         } else if (this.tile == 5) {
-          ctx.drawImage(image, this.position.x, this.position.y - 45, 80, 80);
+          ctx.drawImage(image, this.position.x, this.position.y, 80, 80);
         }
       };
     }
@@ -98,9 +98,9 @@ export class Enemy extends Base {
     const direction = this.position.x - player.position.x;
 
     const bullet = new Bullet(
-      { x: this.position.x, y: this.position.y },
-      20,
-      20,
+      { x: this.position.x, y: this.position.y - 30 },
+      50,
+      80,
       { x: direction > 0 ? -1 : 1 }
     );
     this.enemyBullet.push(bullet);

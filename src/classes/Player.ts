@@ -50,7 +50,6 @@ export class Player extends Base implements IPlayer {
   gravity = 0.2;
   directionRight: boolean = true;
   cooldownTime = 0;
-  cooldownPeriod = 1000; // Cooldown period in milliseconds
 
   // Preloaded images
   stanceImage: HTMLImageElement;
@@ -95,8 +94,8 @@ export class Player extends Base implements IPlayer {
         frameY * this.runFrame.height,
         this.runFrame.width,
         this.runFrame.height,
-        this.position.x,
-        this.position.y - 65,
+        this.position.x - 20,
+        this.position.y,
         100,
         130
       );
@@ -112,8 +111,8 @@ export class Player extends Base implements IPlayer {
         frameY * this.runFrame.height,
         this.runFrame.width,
         this.runFrame.height,
-        -this.position.x - this.runFrame.width, // Adjust for the mirrored position
-        this.position.y - 65,
+        -this.position.x - this.runFrame.width - 40, // Adjust for the mirrored position
+        this.position.y,
         100,
         130
       );
@@ -124,7 +123,7 @@ export class Player extends Base implements IPlayer {
           this.jumpImage,
 
           this.position.x,
-          this.position.y - 90,
+          this.position.y,
           80,
           180
         );
@@ -135,8 +134,8 @@ export class Player extends Base implements IPlayer {
         ctx.drawImage(
           this.jumpImage,
 
-          -this.position.x - 30,
-          this.position.y - 90,
+          -this.position.x - 80,
+          this.position.y,
           80,
           180
         );
@@ -154,7 +153,7 @@ export class Player extends Base implements IPlayer {
           this.shootFrame.width,
           this.shootFrame.height,
           this.position.x,
-          this.position.y - 80,
+          this.position.y,
           100,
           150
         );
@@ -168,7 +167,7 @@ export class Player extends Base implements IPlayer {
           this.shootFrame.width,
           this.shootFrame.height,
           -this.position.x - this.shootFrame.width,
-          this.position.y - 80,
+          this.position.y,
           100,
           150
         );
@@ -176,21 +175,15 @@ export class Player extends Base implements IPlayer {
       }
     } else {
       if (levelGrade.success) {
-        ctx.drawImage(
-          this.winImage,
-          this.position.x,
-          this.position.y - 75,
-          80,
-          150
-        );
+        ctx.drawImage(this.winImage, this.position.x, this.position.y, 80, 150);
       }
       if (!this.directionRight && !levelGrade.success) {
         ctx.save();
         ctx.scale(-1, 1);
         ctx.drawImage(
           this.stanceImage,
-          -this.position.x - this.stanceFrame.width, // Adjust for the mirrored position
-          this.position.y - 75,
+          -this.position.x - this.stanceFrame.width - 40, // Adjust for the mirrored position
+          this.position.y,
           80,
           150
         );
@@ -199,7 +192,7 @@ export class Player extends Base implements IPlayer {
         ctx.drawImage(
           this.stanceImage,
           this.position.x,
-          this.position.y - 75,
+          this.position.y,
           80,
           150
         );
@@ -207,6 +200,7 @@ export class Player extends Base implements IPlayer {
 
       frameX = 0; // Reset frameX when not running
     }
+    ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
   }
 
   moveX(deltaTime: number) {
@@ -222,14 +216,6 @@ export class Player extends Base implements IPlayer {
 
       this.checkBoundaryX();
     }
-
-    // if (keys["a"]) {
-    //   this.directionRight = false;
-    // }
-
-    // if (keys["d"]) {
-    //   this.directionRight = true;
-    // }
   }
 
   moveY(deltaTime: number) {
@@ -251,9 +237,12 @@ export class Player extends Base implements IPlayer {
       const bulletDirection = this.directionRight ? 1 : -1;
 
       const bullet = new Bullet(
-        { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
-        10,
-        10,
+        {
+          x: !this.directionRight ? this.position.x - 50 : this.position.x,
+          y: this.position.y + 20,
+        },
+        50,
+        80,
         { x: bulletDirection }
       );
       objects.bullet.push(bullet);
@@ -270,12 +259,6 @@ export class Player extends Base implements IPlayer {
         objects.bullet.splice(i, 1);
         i--;
       }
-    }
-  }
-
-  updateCooldown(deltaTime: number) {
-    if (this.cooldownTime > 0) {
-      this.cooldownTime -= deltaTime;
     }
   }
 }
