@@ -53,6 +53,7 @@ const setupEventListeners = () => {
         startGame();
       }
     }
+
     if (e.code === "KeyP" && currentState === GameState.Playing) {
       gameStatus.isPaused = !gameStatus.isPaused;
       if (!gameStatus.isPaused) {

@@ -26,45 +26,24 @@ let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
 const frameInterval = 1000 / 12; // 12 frames per second
+type Frame = {
+  width: number;
+  height: number;
+};
 
 export class Player extends Base implements IPlayer {
-  stanceFrame: {
-    stanceWidth: number;
-    stanceHeight: number;
-    stanceFrame: number;
-  } = {
-    stanceWidth: 30,
-    stanceHeight: 52,
-    stanceFrame: 0,
+  stanceFrame: Frame = {
+    width: 30,
+    height: 52,
   };
-  shootFrame: {
-    shootWidth: number;
-    shootHeight: number;
-    shootFrame: number;
-  } = {
-    shootWidth: 61,
-    shootHeight: 81,
-    shootFrame: 15,
+  shootFrame: Frame = {
+    width: 61,
+    height: 81,
   };
 
-  runFrame: {
-    runWidth: number;
-    runHeight: number;
-    runnerFrame: number;
-  } = {
-    runWidth: 46,
-    runHeight: 52,
-    runnerFrame: 15,
-  };
-
-  jumpFrame: {
-    jumpWidth: number;
-    jumpHeight: number;
-    jumpFrame: number;
-  } = {
-    jumpWidth: 44,
-    jumpHeight: 55,
-    jumpFrame: 20,
+  runFrame: Frame = {
+    width: 45.5,
+    height: 52,
   };
 
   velocityY = 0;
@@ -112,10 +91,10 @@ export class Player extends Base implements IPlayer {
       if (frameX >= 8) frameX = 0;
       ctx.drawImage(
         this.runImage,
-        frameX * this.runFrame.runWidth,
-        frameY * this.runFrame.runHeight,
-        this.runFrame.runWidth,
-        this.runFrame.runHeight,
+        frameX * this.runFrame.width,
+        frameY * this.runFrame.height,
+        this.runFrame.width,
+        this.runFrame.height,
         this.position.x,
         this.position.y - 65,
         100,
@@ -129,11 +108,11 @@ export class Player extends Base implements IPlayer {
       ctx.scale(-1, 1);
       ctx.drawImage(
         this.runImage,
-        frameX * this.runFrame.runWidth,
-        frameY * this.runFrame.runHeight,
-        this.runFrame.runWidth,
-        this.runFrame.runHeight,
-        -this.position.x - this.runFrame.runWidth, // Adjust for the mirrored position
+        frameX * this.runFrame.width,
+        frameY * this.runFrame.height,
+        this.runFrame.width,
+        this.runFrame.height,
+        -this.position.x - this.runFrame.width, // Adjust for the mirrored position
         this.position.y - 65,
         100,
         130
@@ -170,10 +149,10 @@ export class Player extends Base implements IPlayer {
       if (this.directionRight) {
         ctx.drawImage(
           this.shootImage,
-          frameX * this.shootFrame.shootWidth,
-          frameY * this.shootFrame.shootHeight,
-          this.shootFrame.shootWidth,
-          this.shootFrame.shootHeight,
+          frameX * this.shootFrame.width,
+          frameY * this.shootFrame.height,
+          this.shootFrame.width,
+          this.shootFrame.height,
           this.position.x,
           this.position.y - 80,
           100,
@@ -184,11 +163,11 @@ export class Player extends Base implements IPlayer {
         ctx.scale(-1, 1);
         ctx.drawImage(
           this.shootImage,
-          frameX * this.shootFrame.shootWidth,
-          frameY * this.shootFrame.shootHeight,
-          this.shootFrame.shootWidth,
-          this.shootFrame.shootHeight,
-          -this.position.x - this.shootFrame.shootWidth,
+          frameX * this.shootFrame.width,
+          frameY * this.shootFrame.height,
+          this.shootFrame.width,
+          this.shootFrame.height,
+          -this.position.x - this.shootFrame.width,
           this.position.y - 80,
           100,
           150
@@ -210,7 +189,7 @@ export class Player extends Base implements IPlayer {
         ctx.scale(-1, 1);
         ctx.drawImage(
           this.stanceImage,
-          -this.position.x - this.stanceFrame.stanceWidth, // Adjust for the mirrored position
+          -this.position.x - this.stanceFrame.width, // Adjust for the mirrored position
           this.position.y - 75,
           80,
           150

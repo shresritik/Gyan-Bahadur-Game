@@ -2,6 +2,7 @@ import { ctx } from "../components/canvas";
 import {
   SPEED,
   gameStatus,
+  isCustom,
   keys,
   levelGrade,
   quizMap,
@@ -73,6 +74,7 @@ export class Flag extends Base {
       this.gameOverTimer += deltaTime;
       if (this.gameOverTimer >= 1500) {
         gameStatus.gameOver = true;
+        if (isCustom.custom) isCustom.custom = false;
         this.gameOverTimer = 0;
       }
     }

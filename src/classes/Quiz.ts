@@ -136,10 +136,10 @@ export class Quiz {
   }
 
   checkAnswer(option: number, currentQuiz: any) {
-    if (option === currentQuiz.answerIndex) {
+    if (option === currentQuiz.answerIndex && this.correct == null) {
       scoreCount.score += 10;
       this.correct = true;
-    } else {
+    } else if (this.correct == null) {
       this.correct = false;
     }
   }
