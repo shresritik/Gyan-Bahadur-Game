@@ -97,12 +97,11 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          this.position.x - 160,
-          this.position.y - 45,
+          this.position.x - 120,
+          this.position.y - 80,
           80,
           50
         );
-        ctx.strokeRect(this.position.x - 160, this.position.y - 45, 80, 50);
       } else {
         ctx.save();
         ctx.scale(-1, 1);
@@ -112,13 +111,12 @@ export class Bullet extends Base {
           frameY * this.fireFrame.fireHeight,
           this.fireFrame.fireWidth,
           this.fireFrame.fireHeight,
-          -this.position.x - 60,
-          this.position.y,
+          -this.position.x - 140,
+          this.position.y - 80,
           80,
           50
         );
         ctx.restore();
-        ctx.strokeRect(this.position.x - 160, this.position.y - 45, 80, 50);
       }
     }
   }

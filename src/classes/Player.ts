@@ -68,7 +68,6 @@ export class Player extends Base implements IPlayer {
 
   velocityY = 0;
   gravity = 0.2;
-  bulletArray: Bullet[] = [];
   directionRight: boolean = true;
   cooldownTime = 0;
   cooldownPeriod = 1000; // Cooldown period in milliseconds
@@ -259,10 +258,7 @@ export class Player extends Base implements IPlayer {
       const bulletDirection = this.directionRight ? 1 : -1;
 
       const bullet = new Bullet(
-        {
-          x: this.position.x + this.w / 2 + 55,
-          y: this.position.y + this.h / 2 - 20,
-        },
+        { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
         10,
         10,
         { x: bulletDirection }

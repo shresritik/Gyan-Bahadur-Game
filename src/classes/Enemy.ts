@@ -66,14 +66,13 @@ export class Enemy extends Base {
           this.spriteWidth,
           this.spriteHeight,
           this.position.x + 20,
-          this.position.y - 50,
-          70,
-          70
+          this.position.y - 60,
+          80,
+          100
         );
       } else if (this.tile == 5) {
-        ctx.drawImage(image, this.position.x, this.position.y - 50, 70, 70);
+        ctx.drawImage(image, this.position.x, this.position.y - 45, 80, 80);
       }
-      ctx.strokeRect(this.position.x, this.position.y - 50, 100, 100);
     } else {
       image.onload = () => {
         if (this.tile == 4) {
@@ -84,18 +83,12 @@ export class Enemy extends Base {
             this.spriteWidth,
             this.spriteHeight,
             this.position.x - 10,
-            this.position.y - 10,
-            50,
-            50
+            this.position.y - 20,
+            80,
+            100
           );
         } else if (this.tile == 5) {
-          ctx.drawImage(
-            image,
-            this.position.x - 10,
-            this.position.y - 10,
-            50,
-            50
-          );
+          ctx.drawImage(image, this.position.x, this.position.y - 45, 80, 80);
         }
       };
     }
@@ -167,7 +160,6 @@ export class Enemy extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
-        console.log("this", this);
         if (this.tile == 5) {
           if (this.bulletIndex >= 2) {
             scoreCount.score++;

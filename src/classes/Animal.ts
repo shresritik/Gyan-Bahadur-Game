@@ -49,15 +49,10 @@ export class Animal extends Base {
       this.dogFrame.dogWidth,
       this.dogFrame.dogHeight,
       this.position.x,
-      this.position.y - 45,
-      90,
-      90
+      this.position.y - 70,
+      100,
+      120
     );
-    // if (gameFrame % this.dogFrame.dogFrame == 0) {
-    //   if (frameX < 6) frameX++;
-    //   else frameX = 0;
-    // }
-    // gameFrame++;
   };
 
   moveX = (player: Player, deltaTime: number) => {
@@ -75,7 +70,7 @@ export class Animal extends Base {
         scoreCount.health > 0 &&
         currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
       ) {
-        scoreCount.health -= 10;
+        scoreCount.health -= 5;
         this.lastHealthDecreaseTime = currentTime; // Update the last decrease time
       }
     }
@@ -83,7 +78,7 @@ export class Animal extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
-        if (scoreCount.score > 0) scoreCount.health--;
+        if (scoreCount.health > 0) scoreCount.health -= 5;
         objects.bullet.splice(index, 1);
       }
     });
