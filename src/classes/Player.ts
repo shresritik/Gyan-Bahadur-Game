@@ -200,7 +200,6 @@ export class Player extends Base implements IPlayer {
 
       frameX = 0; // Reset frameX when not running
     }
-    ctx.strokeRect(this.position.x, this.position.y, this.w, this.h);
   }
 
   moveX(deltaTime: number) {
