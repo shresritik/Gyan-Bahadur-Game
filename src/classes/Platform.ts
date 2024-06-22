@@ -13,7 +13,7 @@ export class Plat extends Base {
     this.image.src = "images/wall.png";
   }
 
-  draw = (player: Player) => {
+  draw = () => {
     if (this.image.complete) {
       ctx.drawImage(
         this.image,

@@ -94,13 +94,15 @@ export class Enemy extends Base {
         }
       };
     }
-    ctx.strokeRect(this.position.x, this.position.y, 80, 80);
   };
 
   createBullet = (player: Player) => {
     const direction = this.position.x - player.position.x;
     const bullet = new Bullet(
-      { x: this.position.x, y: this.position.y - 30 },
+      {
+        x: this.position.x,
+        y: this.tile == 4 ? this.position.y - 30 : this.position.y + 30,
+      },
       50,
       80,
       { x: direction > 0 ? -1 : 1 }

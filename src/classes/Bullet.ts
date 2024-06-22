@@ -81,13 +81,7 @@ export class Bullet extends Base {
         ctx.restore();
       }
     } else if (tile === 5) {
-      ctx.drawImage(
-        this.coronaImg,
-        this.position.x,
-        this.position.y - 10,
-        32,
-        32
-      );
+      ctx.drawImage(this.coronaImg, this.position.x, this.position.y, 32, 32);
     } else {
       if (frameY >= 6) frameY = 0;
       if (this.velocityDirection.x == -1) {

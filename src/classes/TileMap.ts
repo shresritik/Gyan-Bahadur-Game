@@ -414,7 +414,7 @@ export class TileMap {
   moveX = (player: Player, deltaTime: number) => {
     objects.platform.forEach((pl) => {
       pl.moveX(player, deltaTime);
-      pl.draw(player);
+      pl.draw();
       pl.playerCollision(player);
       objects.enemy.forEach((en) => {
         en.platformCollision(pl);
