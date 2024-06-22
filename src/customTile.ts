@@ -200,8 +200,17 @@ function getTileValue(key: ImageKey): number {
   }
 }
 function reset() {
-  isCustom.custom = false;
+  isCustom.custom = false; // Assuming isCustom is a global variable or state
   const tds = document.querySelectorAll("td");
+
+  // Reset mapObj.map values to 0
+  for (let row = 0; row < mapObj.map.length; row++) {
+    for (let col = 0; col < mapObj.map[row].length; col++) {
+      mapObj.map[row][col] = 0;
+    }
+  }
+
+  // Remove all images from table cells
   tds.forEach((td) => {
     const images = td.querySelectorAll("img");
     images.forEach((img) => img.remove());
@@ -209,6 +218,11 @@ function reset() {
 }
 function play() {
   isCustom.custom = true;
+  customLevel.style.display = "none";
+}
+function back() {
+  isCustom.custom = false;
+  customLevel.style.display = "block";
   customLevel.style.display = "none";
 }
 // Create UI elements dynamically
@@ -253,6 +267,10 @@ function createUI() {
   playButton.innerText = "Play";
   playButton.onclick = play;
   buttonDiv.append(playButton);
+  const backButton = document.createElement("button");
+  backButton.innerText = "Back";
+  backButton.onclick = back;
+  buttonDiv.append(backButton);
 
   controlsDiv.append(imgDiv, buttonDiv);
   customLevel.appendChild(controlsDiv);

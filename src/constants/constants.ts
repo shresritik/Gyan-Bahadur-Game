@@ -65,6 +65,6 @@ export const quizObj = [
     error: "Empty became PM in 2079 B.S",
   },
 ];
-export const levelGrade = { success: false };
+export const levelGrade = { success: false, customLevel: false };
 export const menuOptions = { option: "", start: false };
 export const isCustom = { custom: false };

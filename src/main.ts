@@ -145,7 +145,6 @@ const updateGameState = (deltaTime: number) => {
     gameState.currentState == GameState.Start &&
     (menuOptions.option == "Start" || isCustom.custom)
   ) {
-    console.log("first", menuOptions.option, isCustom.custom);
     startGame();
   }
   switch (gameState.currentState) {
@@ -214,10 +213,12 @@ export const startGame = () => {
   objects.enemyFireBullet.length = 0;
   ammoObj.ammo = 5;
   if (isCustom.custom && !levelGrade.success) drawObjects(-1);
-  if (!isCustom.custom && !levelGrade.success) drawObjects(1);
-  else if (!isCustom.custom && levelGrade.success) {
+  if (!isCustom.custom && (!levelGrade.success || levelGrade.customLevel))
+    drawObjects(1);
+  else if (!isCustom.custom && levelGrade.success && !levelGrade.customLevel) {
     drawObjects(2);
   }
+  console.log(isCustom.custom, levelGrade.customLevel, levelGrade.success);
   levelGrade.success = false;
   if (player) {
     player.velocityY = 0;

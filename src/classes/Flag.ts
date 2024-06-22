@@ -74,7 +74,10 @@ export class Flag extends Base {
       this.gameOverTimer += deltaTime;
       if (this.gameOverTimer >= 1500) {
         gameStatus.gameOver = true;
-        if (isCustom.custom) isCustom.custom = false;
+        if (isCustom.custom) {
+          isCustom.custom = false;
+          levelGrade.customLevel = false;
+        }
         this.gameOverTimer = 0;
       }
     }
