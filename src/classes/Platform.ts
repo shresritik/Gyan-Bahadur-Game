@@ -35,41 +35,46 @@ export class Plat extends Base {
       };
     }
   };
+
   playerCollision(player: Player) {
     if (detectCollision(player, this)) {
+      // Vertical Collision: Player lands on top or hits the bottom of the platform
       if (
-        Math.abs(this.position.x - (player.position.x + player.w)) < 6 &&
-        this.position.y < player.position.y + player.h
+        player.position.y + player.h > this.position.y &&
+        player.position.y + player.h <= this.position.y + this.h / 2
       ) {
-        player.position.x = this.position.x - player.w;
-      }
-      console.log(
-        player.position.x,
-        this.position.x + this.w,
-        this.position.y,
-        player.position.y
-      );
-      if (
-        Math.abs(player.position.x - (this.position.x + this.w)) < 30 &&
-        player.position.y > this.position.y &&
-        !player.directionRight
-      ) {
-        player.position.x = this.position.x + this.w;
-      }
-      if (
-        this.position.y >= player.position.y &&
-        player.position.x + player.w > this.position.x
-      ) {
-        // if player lands on platform keep it on top of it
+        // Player lands on the platform
         player.position.y = this.position.y - player.h;
         player.velocityY = 0;
         if (keys["w"]) {
           player.velocityY = -8;
         }
-      }
-      //if player is below the platform don't let it jump above it
-      else if (player.position.y >= this.position.y) {
+      } else if (
+        player.position.y < this.position.y + this.h &&
+        player.position.y >= this.position.y + this.h / 2
+      ) {
+        // Player hits the bottom of the platform
         player.velocityY = 0.4;
+      }
+
+      // Horizontal Collision: Player collides from the left or right
+      if (
+        player.position.x < this.position.x + this.w &&
+        player.position.x + player.w > this.position.x
+      ) {
+        if (
+          player.position.x < this.position.x &&
+          player.position.y + player.h > this.position.y
+        ) {
+          // Player collides with the left side of the platform
+          player.position.x = this.position.x - player.w;
+        } else if (
+          player.position.x + player.w > this.position.x + this.w &&
+          player.position.y + player.h > this.position.y
+        ) {
+          // Player collides with the right side of the platform
+          player.position.x = this.position.x + this.w;
+        }
       }
     }
   }
