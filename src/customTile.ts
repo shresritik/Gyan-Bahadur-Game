@@ -58,7 +58,7 @@ function selectTile(tile: ImageKey) {
 
 // Function to save map to local storage
 function save() {
-  isCustom.custom = true;
+  // isCustom.custom = true;
   const saveMap = JSON.stringify(mapObj.map);
   localStorage.setItem("map", saveMap);
 }

@@ -1,6 +1,9 @@
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  GameState,
+  gameState,
+  gameStatus,
   levelGrade,
   menuOptions,
   scoreCount,
@@ -11,6 +14,8 @@ const menuButtons = ["Start", "Editor", "Instruction"];
 
 document.addEventListener("click", handleClick);
 let optionButtons: any;
+let homeButton: any; // Add this line to store the "Return to Home" button properties
+
 function handleClick(e: MouseEvent) {
   const { offsetX, offsetY } = e;
   if (optionButtons) {
@@ -22,8 +27,11 @@ function handleClick(e: MouseEvent) {
         offsetY <= button.y + button.h
       ) {
         let selectedOption = button.option - 1;
-
+        console.log(menuButtons[selectedOption]);
         menuOptions.option = menuButtons[selectedOption];
+
+        gameStatus.isPaused = false;
+
         if (menuOptions.option == "Editor") {
           const table = document.querySelector(
             ".customLevel"
@@ -33,9 +41,22 @@ function handleClick(e: MouseEvent) {
       }
     }
   }
+
+  // Add this block to handle clicks on the "Return to Home" button
+  if (homeButton) {
+    if (
+      offsetX >= homeButton.x &&
+      offsetY >= homeButton.y &&
+      offsetX <= homeButton.x + homeButton.w &&
+      offsetY <= homeButton.y + homeButton.h
+    ) {
+      drawStartScreen(); // Show the start screen
+    }
+  }
 }
 
 export function drawStartScreen() {
+  gameState.currentState = GameState.Start;
   ctx.fillStyle = "#F7F0EA";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
@@ -73,6 +94,7 @@ export function drawStartScreen() {
     return button;
   });
 }
+
 export function gameOverFunction() {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -97,11 +119,25 @@ export function gameOverFunction() {
   );
 
   ctx.fillText(
-    `Press Space to restart`,
+    `Press P to restart`,
     CANVAS_WIDTH / 4 - 20,
     CANVAS_HEIGHT / 2 + 100
   );
+
+  // Draw "Return to Home" button
+  homeButton = {
+    x: CANVAS_WIDTH / 4 - 20,
+    y: CANVAS_HEIGHT / 2 + 150,
+    w: 200,
+    h: 50,
+  };
+
+  ctx.fillStyle = "blue";
+  ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
+  ctx.fillStyle = "white";
+  ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
 }
+
 export function drawPauseScreen() {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -109,4 +145,18 @@ export function drawPauseScreen() {
   ctx.font = "30px sans-serif";
   ctx.fillText("Game Paused", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2);
   ctx.fillText("Press P to Resume", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 50);
+  ctx.fillText("Press L to Menu", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 90);
+
+  // Draw "Return to Home" button
+  homeButton = {
+    x: CANVAS_WIDTH / 4,
+    y: CANVAS_HEIGHT / 2 + 130,
+    w: 200,
+    h: 50,
+  };
+
+  ctx.fillStyle = "blue";
+  ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
+  ctx.fillStyle = "white";
+  ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
 }

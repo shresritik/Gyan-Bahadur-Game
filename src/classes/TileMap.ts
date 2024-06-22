@@ -415,6 +415,10 @@ export class TileMap {
     objects.platform.forEach((pl) => {
       pl.moveX(player, deltaTime);
       pl.draw(player);
+      pl.playerCollision(player);
+      objects.enemy.forEach((en) => {
+        en.platformCollision(pl);
+      });
     });
     objects.bullet.forEach((bul) => {
       const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application

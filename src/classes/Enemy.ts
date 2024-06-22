@@ -13,6 +13,7 @@ import { Player } from "./Player";
 import fireImg from "../assets/fire.png";
 import coronaImg from "../assets/corona.png";
 import { Bullet } from "./Bullet";
+import { Plat } from "./Platform";
 
 export class Enemy extends Base {
   imageX: number = 0;
@@ -51,10 +52,11 @@ export class Enemy extends Base {
       Enemy.coronaImage.src = coronaImg;
     }
   }
+
   startShooting(player: Player) {
     this.bulletInterval = setInterval(() => this.createBullet(player), 3000); // create bullet objects every 3 seconds
   }
-  //if tile==4 draw fire image else corona image
+
   draw = () => {
     const image = this.tile === 4 ? Enemy.fireImage : Enemy.coronaImage;
     if (image.complete) {
@@ -93,10 +95,9 @@ export class Enemy extends Base {
       };
     }
   };
-  //instantialte bullet
+
   createBullet = (player: Player) => {
     const direction = this.position.x - player.position.x;
-
     const bullet = new Bullet(
       { x: this.position.x, y: this.position.y - 30 },
       50,
@@ -106,7 +107,7 @@ export class Enemy extends Base {
     this.enemyBullet.push(bullet);
     objects.enemyBullet.push(bullet);
   };
-  // if enemy and player are in less than 1000 distance enemy shoots bullet
+
   updateEnemyBullet = (player: Player, deltatime: number) => {
     this.enemyBullet.forEach((singleBullet, index) => {
       if (
@@ -143,7 +144,7 @@ export class Enemy extends Base {
       }
     });
   };
-  //if player collides with the enemy for 1000 cooldown time then decrease health continuously
+
   playerCollision = (player: Player) => {
     const currentTime = Date.now();
     if (detectCollision(player, this)) {
@@ -156,7 +157,20 @@ export class Enemy extends Base {
       }
     }
   };
-  //if corona then hit three bullets to defeat other enemy are defeated with one bullet
+
+  platformCollision = (platform: Plat) => {
+    if (this.tile == 5) {
+      if (
+        this.position.x + this.w > platform.position.x &&
+        this.position.x < platform.position.x + platform.w &&
+        this.position.y + this.h > platform.position.y &&
+        this.position.y < platform.position.y + platform.h
+      ) {
+        this.directionX *= -1;
+      }
+    }
+  };
+
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
@@ -188,22 +202,35 @@ export class Enemy extends Base {
       }
     });
   };
-  // sprite for fire
-  // move the enemy only if the player.x reaches 300 this creates parallex effect
 
   moveX = (player: Player, deltaTime: number) => {
     this.elapsedFrame++;
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
+
     const movementSpeed = (SPEED * deltaTime) / 16.67;
-    if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
-    else if (keys["a"] && player.position.x >= 300)
+
+    // Parallax effect for player movement
+    if (keys["d"] && player.position.x >= 300) {
+      this.position.x -= movementSpeed;
+    } else if (keys["a"] && player.position.x >= 300) {
       this.position.x += movementSpeed;
-    if (this.tile == 5) {
-      if (this.position.x <= 0 || this.position.x + this.w > CANVAS_WIDTH) {
-        this.directionX *= -1;
-      }
+    }
+
+    // Move enemy if tile is 5
+    if (this.tile === 5) {
+      // Update position based on direction
       this.position.x += this.directionX * SPEED * (deltaTime / 16.67);
+
+      // Check boundaries
+      if (this.position.x <= 0 || this.position.x + this.w >= CANVAS_WIDTH) {
+        this.directionX *= -1; // Change direction upon reaching canvas boundary
+      }
+
+      // Check platform collisions
+      objects.platform.forEach((platform) => {
+        this.platformCollision(platform);
+      });
     }
   };
 

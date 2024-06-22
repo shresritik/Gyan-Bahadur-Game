@@ -12,6 +12,8 @@ import {
   levelGrade,
   menuOptions,
   isCustom,
+  gameState,
+  GameState,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -27,12 +29,8 @@ import {
 
 let tileMap: TileMap;
 let player: Player;
-enum GameState {
-  Start,
-  Playing,
-  GameOver,
-}
-let currentState: GameState = GameState.Start;
+
+// export let gameState.currentState: GameState = GameState.Start;
 let lastFrameTime = performance.now();
 
 const keysArray: TKeys = {};
@@ -46,15 +44,17 @@ const setupEventListeners = () => {
     keysArray[e.key] = true;
 
     if (e.code === "Space") {
+      console.log("first", gameState.currentState);
       if (
-        currentState === GameState.Start ||
-        currentState === GameState.GameOver
+        gameState.currentState === GameState.Start ||
+        gameState.currentState === GameState.GameOver
       ) {
+        console.log("first", gameState.currentState);
         startGame();
       }
     }
 
-    if (e.code === "KeyP" && currentState === GameState.Playing) {
+    if (e.code === "KeyP" && gameState.currentState === GameState.Playing) {
       gameStatus.isPaused = !gameStatus.isPaused;
       if (!gameStatus.isPaused) {
         lastFrameTime = performance.now();
@@ -73,6 +73,7 @@ const setupEventListeners = () => {
     delete keysArray[e.key];
   });
 };
+
 const drawObjects = (level: number) => {
   tileMap = new TileMap(level);
   player = new Player({ x: 20, y: 100 }, 120, 60);
@@ -96,6 +97,7 @@ const writeBullet = () => {
   ctx.drawImage(image, 110, 10, 20, 30);
   ctx.fillText(`${ammoObj.ammo}`, 140, 35);
 };
+
 const writeLevel = () => {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
@@ -139,16 +141,21 @@ const gameLoop = (currentTime: number) => {
 
 const updateGameState = (deltaTime: number) => {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  switch (currentState) {
+  if (
+    gameState.currentState == GameState.Start &&
+    (menuOptions.option == "Start" || isCustom.custom)
+  ) {
+    console.log("first", menuOptions.option, isCustom.custom);
+    startGame();
+  }
+  switch (gameState.currentState) {
     case GameState.Start:
       drawStartScreen();
-      if (menuOptions.option == "Start" || isCustom.custom) {
-        startGame();
-      }
+
       break;
     case GameState.Playing:
       if (gameStatus.gameOver) {
-        currentState = GameState.GameOver;
+        gameState.currentState = GameState.GameOver;
         gameOverFunction();
         break;
       }
@@ -171,6 +178,9 @@ const updateGameState = (deltaTime: number) => {
       objects.enemy.forEach((enemy) => {
         enemy.updateEnemyBullet(player, deltaTime);
         enemy.enemyBulletCollision();
+        objects.platform.forEach((platform) => {
+          enemy.platformCollision(platform);
+        });
       });
 
       if (gameStatus.isQuiz && quizMap.quizMap != null) {
@@ -188,8 +198,9 @@ const updateGameState = (deltaTime: number) => {
   }
 };
 
-const startGame = () => {
+export const startGame = () => {
   gameStatus.gameOver = false;
+  gameStatus.isPaused = false;
   scoreCount.score = 0;
   scoreCount.health = 100;
   objects.ammo.length = 0;
@@ -214,7 +225,7 @@ const startGame = () => {
     player.directionRight = true;
   }
 
-  currentState = GameState.Playing;
+  gameState.currentState = GameState.Playing;
   lastFrameTime = performance.now();
 };
 

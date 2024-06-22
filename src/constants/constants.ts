@@ -14,6 +14,14 @@ export const CANVAS_WIDTH = 1280;
 export const CANVAS_HEIGHT = 640;
 export const SPEED = 2;
 export const COLOR = "#F7F0EA";
+export enum GameState {
+  Start,
+  Playing,
+  GameOver,
+}
+export const gameState = {
+  currentState: GameState.Start,
+};
 export const gameStatus = { gameOver: false, isPaused: false, isQuiz: false };
 export const scoreCount = { score: 0, health: 100 };
 export const quizMap: { quizMap: Quiz | null } = { quizMap: null };
@@ -58,5 +66,5 @@ export const quizObj = [
   },
 ];
 export const levelGrade = { success: false };
-export const menuOptions = { option: "" };
+export const menuOptions = { option: "", start: false };
 export const isCustom = { custom: false };
