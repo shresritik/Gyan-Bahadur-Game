@@ -362,7 +362,7 @@ export class TileMap {
             {
               x: column * this.tileSize,
               y:
-                tile == 4 ? row * this.tileSize - 60 : row * this.tileSize - 30,
+                tile == 4 ? row * this.tileSize - 60 : row * this.tileSize - 70,
             },
             80,
             100,

@@ -2,7 +2,6 @@ import { ctx } from "../components/canvas";
 import { SPEED, keys } from "../constants/constants";
 import { detectCollision } from "../utils/utils";
 import { Base } from "./Base";
-import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 
 export class Plat extends Base {

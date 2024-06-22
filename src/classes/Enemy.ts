@@ -94,6 +94,7 @@ export class Enemy extends Base {
         }
       };
     }
+    ctx.strokeRect(this.position.x, this.position.y, 80, 80);
   };
 
   createBullet = (player: Player) => {
@@ -159,15 +160,8 @@ export class Enemy extends Base {
   };
 
   platformCollision = (platform: Plat) => {
-    if (this.tile == 5) {
-      if (
-        this.position.x + this.w > platform.position.x &&
-        this.position.x < platform.position.x + platform.w &&
-        this.position.y + this.h > platform.position.y &&
-        this.position.y < platform.position.y + platform.h
-      ) {
-        this.directionX *= -1;
-      }
+    if (detectCollision(this, platform)) {
+      this.directionX *= -1;
     }
   };
 
