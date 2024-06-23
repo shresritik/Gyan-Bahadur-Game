@@ -7,7 +7,7 @@ import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Platform";
 import { Player } from "../classes/Player";
 import { toggleFullScreen } from "../components/toggleFullScreen";
-import { TKeys } from "../constants/constants";
+import { CANVAS_WIDTH, TKeys } from "../constants/constants";
 /**
  * Generates a random integer value between min (inclusive) and max (exclusive).
  * @param min The minimum value (inclusive).
@@ -81,3 +81,8 @@ export const normalizeVector = (vector: { x: number; y: number }) => {
     y: vector.y / length,
   };
 };
+export function audioOnCanvas(audio: HTMLMediaElement, caller: Tdetector) {
+  if (caller.position.x <= CANVAS_WIDTH && caller.position.x >= 0) {
+    audio.play();
+  }
+}

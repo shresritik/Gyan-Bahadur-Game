@@ -444,6 +444,7 @@ export class TileMap {
       en.playerCollision(player);
       en.enemyBulletCollision();
       en.moveX(player, deltaTime);
+      en.audioEnemy();
     });
     // objects.enemy.forEach((enemy) => {
     //   enemy.updateEnemyBullet(player, deltaTime);

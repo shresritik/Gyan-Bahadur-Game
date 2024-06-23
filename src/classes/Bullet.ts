@@ -4,6 +4,7 @@ import { Base } from "./Base";
 import firer from "../assets/firer.png";
 import water from "../assets/water.png";
 import corona from "../assets/corona.png";
+import { explosionAudio, waterAudio } from "../components/audio";
 
 let frameX = 0;
 let frameY = 0;
@@ -54,6 +55,7 @@ export class Bullet extends Base {
     }
 
     if (tile === 4) {
+      explosionAudio.play();
       if (frameY >= 6) frameY = 0;
       if (this.velocityDirection.x == -1) {
         ctx.drawImage(
@@ -86,6 +88,7 @@ export class Bullet extends Base {
     } else if (tile === 5) {
       ctx.drawImage(this.coronaImg, this.position.x, this.position.y, 32, 32);
     } else {
+      waterAudio.play();
       if (frameY >= 6) frameY = 0;
       if (this.velocityDirection.x == -1) {
         ctx.drawImage(

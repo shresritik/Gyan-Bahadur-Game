@@ -7,15 +7,16 @@ import {
   levelGrade,
   quizMap,
 } from "../constants/constants";
-import { detectCollision } from "../utils/utils";
+import { audioOnCanvas, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
 import { Quiz } from "./Quiz";
+import { flagAudio } from "../components/audio";
 
 let frameX = 0;
 let gameFrame = 0;
-const frameInterval = 1000 / 3;
+const frameInterval = 1000 / 6;
 export class Flag extends Base {
   velocity: { x: number };
   quiz: Quiz | null;
@@ -50,6 +51,7 @@ export class Flag extends Base {
   }
 
   drawFlag(deltaTime: number) {
+    audioOnCanvas(flagAudio, this);
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
@@ -98,7 +100,7 @@ export class Flag extends Base {
         if (this.quizTimer >= 500) {
           gameStatus.isQuiz = false;
           quizMap.quizMap?.setRandomValue();
-          levelGrade.success = quizMap.quizMap!.correct;
+          levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
           quizMap.quizMap!.correct = null;
           this.outQuiz = true;
           this.quizTimer = 0;

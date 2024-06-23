@@ -3,7 +3,9 @@ import { SPEED, ammoObj, keys, objects } from "../constants/constants";
 import { Base } from "./Base";
 import water from "../assets/h-water.png";
 import { Player } from "./Player";
-import { detectCollision } from "../utils/utils";
+import { audioOnCanvas, detectCollision } from "../utils/utils";
+import { ammoAudio } from "../components/audio";
+
 let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 5;
@@ -35,6 +37,7 @@ export class Ammo extends Base {
   }
 
   drawAmmo(deltaTime: number) {
+    audioOnCanvas(ammoAudio, this);
     gameFrame += deltaTime;
     if (gameFrame >= frameInterval) {
       frameX++;
@@ -53,11 +56,6 @@ export class Ammo extends Base {
       50,
       80
     );
-    // if (gameFrame % this.fireFrame.fireFrame == 0) {
-    //   if (frameX < 6) frameX++;
-    //   else frameX = 0;
-    // }
-    // gameFrame++;
   }
   collidesPlayer(player: Player) {
     if (detectCollision(player, this)) {

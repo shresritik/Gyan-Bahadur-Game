@@ -100,9 +100,11 @@ export function gameOverFunction() {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
   ctx.font = "40px sans-serif";
-  if (levelGrade.success)
+  if (levelGrade.success == "success") {
     ctx.fillText("You Win", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 100);
-  else ctx.fillText("You Lose", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 100);
+  } else {
+    ctx.fillText("You Lose", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 100);
+  }
 
   ctx.fillText("Game Over", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 50);
   let maxScore = localStorage.getItem("maxScore");

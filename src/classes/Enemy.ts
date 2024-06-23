@@ -14,6 +14,7 @@ import fireImg from "../assets/fire.png";
 import coronaImg from "../assets/corona.png";
 import { Bullet } from "./Bullet";
 import { Plat } from "./Platform";
+import { coronaAudio, damageAudio, fireAudio } from "../components/audio";
 
 export class Enemy extends Base {
   imageX: number = 0;
@@ -95,7 +96,15 @@ export class Enemy extends Base {
       };
     }
   };
-
+  audioEnemy() {
+    if (this.position.x <= CANVAS_WIDTH && this.position.x >= 0) {
+      if (this.tile == 4) {
+        fireAudio.play();
+      } else if (this.tile == 5) {
+        coronaAudio.play();
+      }
+    }
+  }
   createBullet = (player: Player) => {
     const direction = this.position.x - player.position.x;
     const bullet = new Bullet(
@@ -136,6 +145,7 @@ export class Enemy extends Base {
         singleBullet.moveBullet(deltatime);
 
         if (detectCollision(player, singleBullet)) {
+          damageAudio.play();
           if (scoreCount.health > 0 && !this.hitEnemy) {
             scoreCount.health--;
             this.hitEnemy = true;
@@ -152,6 +162,8 @@ export class Enemy extends Base {
   playerCollision = (player: Player) => {
     const currentTime = Date.now();
     if (detectCollision(player, this)) {
+      damageAudio.play();
+
       if (
         scoreCount.health > 0 &&
         currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
@@ -171,6 +183,7 @@ export class Enemy extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
+        damageAudio.play();
         if (this.tile == 5) {
           if (this.bulletIndex >= 2) {
             scoreCount.score++;

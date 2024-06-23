@@ -14,6 +14,7 @@ import {
   isCustom,
   gameState,
   GameState,
+  audioLevel,
 } from "./constants/constants";
 import { Player } from "./classes/Player";
 import { TileMap } from "./classes/TileMap";
@@ -26,6 +27,21 @@ import {
   drawStartScreen,
   gameOverFunction,
 } from "./components/menuScreens";
+import {
+  ammoAudio,
+  barkAudio,
+  coronaAudio,
+  damageAudio,
+  eatingAudio,
+  explosionAudio,
+  fireAudio,
+  flagAudio,
+  loseAudio,
+  runAudio,
+  sadAudio,
+  waterAudio,
+  winAudio,
+} from "./components/audio";
 
 let tileMap: TileMap;
 let player: Player;
@@ -44,7 +60,6 @@ const setupEventListeners = () => {
     keysArray[e.key] = true;
 
     if (e.code === "Space") {
-      console.log("first", gameState.currentState);
       if (
         gameState.currentState === GameState.Start ||
         gameState.currentState === GameState.GameOver
@@ -52,6 +67,39 @@ const setupEventListeners = () => {
         console.log("first", gameState.currentState);
         startGame();
       }
+    }
+
+    if (e.code === "KeyM") {
+      if (!audioLevel.isMuted) {
+        winAudio.muted = true;
+        loseAudio.muted = true;
+        eatingAudio.muted = true;
+        flagAudio.muted = true;
+        coronaAudio.muted = true;
+        fireAudio.muted = true;
+        damageAudio.muted = true;
+        waterAudio.muted = true;
+        explosionAudio.muted = true;
+        barkAudio.muted = true;
+        sadAudio.muted = true;
+        ammoAudio.muted = true;
+        runAudio.muted = true;
+      } else {
+        winAudio.muted = false;
+        loseAudio.muted = false;
+        eatingAudio.muted = false;
+        flagAudio.muted = false;
+        coronaAudio.muted = false;
+        fireAudio.muted = false;
+        damageAudio.muted = false;
+        waterAudio.muted = false;
+        explosionAudio.muted = false;
+        barkAudio.muted = false;
+        sadAudio.muted = false;
+        ammoAudio.muted = false;
+        runAudio.muted = false;
+      }
+      audioLevel.isMuted = !audioLevel.isMuted;
     }
 
     if (e.code === "KeyP" && gameState.currentState === GameState.Playing) {
@@ -104,7 +152,11 @@ const writeBullet = () => {
 const writeLevel = () => {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
-  ctx.fillText(`Level: ${levelGrade.success ? "2" : "1"}`, 170, 35);
+  ctx.fillText(
+    `Level: ${levelGrade.success == "success" ? "2" : "1"}`,
+    170,
+    35
+  );
 };
 
 const drawHealthBar = (
@@ -173,7 +225,8 @@ const updateGameState = (deltaTime: number) => {
       tileMap.drawAmmo(player, deltaTime);
       player.updateBullet(deltaTime);
 
-      if (player.position.y > CANVAS_HEIGHT) {
+      if (player.position.y >= CANVAS_HEIGHT) {
+        loseAudio.play();
         gameStatus.gameOver = true;
       }
 
@@ -214,6 +267,7 @@ export const startGame = () => {
   objects.bullet.length = 0;
   objects.enemyBullet.length = 0;
   objects.enemyFireBullet.length = 0;
+  audioLevel.isMuted = false;
   ammoObj.ammo = 5;
   if (isCustom.custom && !levelGrade.success) drawObjects(-1);
   if (!isCustom.custom && (!levelGrade.success || levelGrade.customLevel))
@@ -221,8 +275,7 @@ export const startGame = () => {
   else if (!isCustom.custom && levelGrade.success && !levelGrade.customLevel) {
     drawObjects(2);
   }
-  console.log(isCustom.custom, levelGrade.customLevel, levelGrade.success);
-  levelGrade.success = false;
+  levelGrade.success = "";
   if (player) {
     player.velocityY = 0;
     player.gravity = 0.2;

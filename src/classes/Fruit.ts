@@ -5,6 +5,7 @@ import { Base } from "./Base";
 import { Player } from "./Player";
 import banana from "../assets/banana.png";
 import grape from "../assets/grapes.png";
+import { eatingAudio } from "../components/audio";
 
 export class Fruit extends Base {
   tile: number = 0;
@@ -44,6 +45,7 @@ export class Fruit extends Base {
       ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
 
       if (detectCollision(player, this)) {
+        eatingAudio.play();
         if (scoreCount.health < 100) scoreCount.health++;
         objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
       }
@@ -52,6 +54,8 @@ export class Fruit extends Base {
         ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
 
         if (detectCollision(player, this)) {
+          eatingAudio.play();
+
           if (scoreCount.health < 100) scoreCount.health++;
           objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
         }

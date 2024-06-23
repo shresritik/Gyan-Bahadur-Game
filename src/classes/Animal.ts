@@ -4,10 +4,13 @@ import { ctx } from "../components/canvas";
 import { SPEED, keys, objects, scoreCount } from "../constants/constants";
 import { Player } from "./Player";
 import { detectCollision } from "../utils/utils";
+import { barkAudio, sadAudio } from "../components/audio";
+
 let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 3;
 let gameFrame = 0;
+
 export class Animal extends Base {
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
   healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
@@ -66,6 +69,8 @@ export class Animal extends Base {
   collidesPlayer(player: Player) {
     const currentTime = Date.now();
     if (detectCollision(player, this)) {
+      barkAudio.play();
+
       if (
         scoreCount.health > 0 &&
         currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
@@ -78,6 +83,7 @@ export class Animal extends Base {
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
+        sadAudio.play();
         if (scoreCount.health > 0) scoreCount.health -= 5;
         objects.bullet.splice(index, 1);
       }
