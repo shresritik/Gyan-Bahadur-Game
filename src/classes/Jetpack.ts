@@ -27,6 +27,7 @@ export class Jetpack extends Base {
   collidesPlayer(player: Player, deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (detectCollision(player, this)) {
+      player.velocityY = 0;
       player.velocityY -= movementSpeed;
       player.gravity = 0;
       player.jetpackPickupTime = Date.now(); // Set the pickup time

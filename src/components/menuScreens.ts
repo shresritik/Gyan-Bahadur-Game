@@ -49,7 +49,8 @@ function handleClick(e: MouseEvent) {
       offsetX <= homeButton.x + homeButton.w &&
       offsetY <= homeButton.y + homeButton.h
     ) {
-      drawStartScreen(); // Show the start screen
+      window.location.reload();
+      // drawStartScreen(); // Show the start screen
     }
   }
 }
@@ -60,9 +61,8 @@ export function drawStartScreen() {
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
   ctx.font = "40px sans-serif";
-  ctx.fillText("Game", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 80);
-  ctx.font = "30px sans-serif";
-  ctx.fillText("Press Space to Start", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2);
+  ctx.fillText("Gyan Bahadur", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 80);
+
   ctx.font = "22px sans-serif";
   ctx.fillText(
     "Move Left: a key. Move Right:d key",
@@ -118,9 +118,8 @@ export function gameOverFunction() {
     CANVAS_WIDTH / 4 + 30,
     CANVAS_HEIGHT / 2 + 40
   );
-
   ctx.fillText(
-    `Press P to restart`,
+    `Press Space to continue`,
     CANVAS_WIDTH / 4 - 20,
     CANVAS_HEIGHT / 2 + 100
   );
@@ -129,14 +128,14 @@ export function gameOverFunction() {
   homeButton = {
     x: CANVAS_WIDTH / 4 - 20,
     y: CANVAS_HEIGHT / 2 + 150,
-    w: 200,
+    w: 180,
     h: 50,
   };
-
-  ctx.fillStyle = "blue";
+  ctx.fillStyle = "red";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
+  ctx.font = "15pt sans-serif";
   ctx.fillStyle = "white";
-  ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
+  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }
 
 export function drawPauseScreen() {
@@ -146,22 +145,21 @@ export function drawPauseScreen() {
   ctx.font = "30px sans-serif";
   ctx.fillText("Game Paused", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2);
   ctx.fillText("Press P to Resume", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 50);
-  ctx.fillText("Press L to Menu", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 90);
 
   // Draw "Return to Home" button
   homeButton = {
     x: CANVAS_WIDTH / 4,
     y: CANVAS_HEIGHT / 2 + 130,
-    w: 200,
+    w: 180,
     h: 50,
   };
 
   ctx.fillStyle = "blue";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
+  ctx.font = "15pt sans-serif";
   ctx.fillStyle = "white";
-  ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
+  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }
 // FIXME FIX menuscreens
-//TODO add boosts
 //TODO add about
 //TODO update projectile

@@ -85,7 +85,7 @@ export class Player extends Base implements IPlayer {
       gameFrame = 0;
     }
 
-    if (keys["d"]) {
+    if (keys["d"] || keys["ArrowRight"]) {
       runAudio.play();
       this.directionRight = true;
 
@@ -101,7 +101,7 @@ export class Player extends Base implements IPlayer {
         100,
         130
       );
-    } else if (keys["a"]) {
+    } else if (keys["a"] || keys["ArrowLeft"]) {
       runAudio.play();
 
       this.directionRight = false;
@@ -121,7 +121,7 @@ export class Player extends Base implements IPlayer {
         130
       );
       ctx.restore();
-    } else if (keys["w"]) {
+    } else if (keys["w"] || keys["ArrowUp"]) {
       if (this.directionRight) {
         ctx.drawImage(
           this.jumpImage,
@@ -210,11 +210,11 @@ export class Player extends Base implements IPlayer {
   moveX(deltaTime: number) {
     const movementSpeed = SPEED * (deltaTime / 16.67);
     if (this.position.x < 300) {
-      if (keys["a"]) {
+      if (keys["a"] || keys["ArrowLeft"]) {
         this.position.x -= movementSpeed;
       }
 
-      if (keys["d"]) {
+      if (keys["d"] || keys["ArrowRight"]) {
         this.position.x += movementSpeed;
       }
 

@@ -4,8 +4,8 @@ import { Bullet } from "../classes/Bullet";
 import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
+import { Jetpack } from "../classes/Jetpack";
 import { Plat } from "../classes/Platform";
-import { Powerup } from "../classes/Jetpack";
 import { Quiz } from "../classes/Quiz";
 export interface TKeys {
   [keys: string]: boolean;
@@ -36,7 +36,7 @@ export const objects: {
   bullet: Bullet[];
   enemyFireBullet: Bullet[];
   enemyBullet: Bullet[];
-  jet: Powerup[];
+  jet: Jetpack[];
 } = {
   platform: [],
   enemy: [],
@@ -68,7 +68,7 @@ export const quizObj = [
     error: "Empty became PM in 2079 B.S",
   },
 ];
-export const levelGrade = { success: "", customLevel: false };
+export const levelGrade = { success: "", customLevel: false, play: false };
 export const menuOptions = { option: "", start: false };
-export const isCustom = { custom: false };
+export const isCustom: { custom: boolean } = { custom: false };
 export const audioLevel = { isMuted: false };

@@ -76,10 +76,7 @@ export class Flag extends Base {
       this.gameOverTimer += deltaTime;
       if (this.gameOverTimer >= 1500) {
         gameStatus.gameOver = true;
-        if (isCustom.custom) {
-          isCustom.custom = false;
-          levelGrade.customLevel = false;
-        }
+
         this.gameOverTimer = 0;
       }
     }
@@ -89,6 +86,7 @@ export class Flag extends Base {
         this.quizTimer = 0;
         this.gameOverTimer = 0;
       }
+      console.log(deltaTime);
 
       if (
         gameStatus.isQuiz &&
@@ -96,12 +94,17 @@ export class Flag extends Base {
         quizMap.quizMap.correct != null
       ) {
         this.quizTimer += deltaTime;
-
         if (this.quizTimer >= 500) {
-          gameStatus.isQuiz = false;
-          quizMap.quizMap?.setRandomValue();
+          // gameStatus.isQuiz = false;
           levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
-          quizMap.quizMap!.correct = null;
+          if (isCustom.custom) {
+            levelGrade.customLevel = true;
+            levelGrade.customLevel = true;
+          } else {
+            levelGrade.customLevel = false;
+          }
+          quizMap.quizMap.closeQuiz();
+          // quizMap.quizMap!.correct = null;
           this.outQuiz = true;
           this.quizTimer = 0;
         }

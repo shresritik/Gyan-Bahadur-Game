@@ -44,14 +44,14 @@ const setupEventListeners = () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     keys[e.key] = true;
     keysArray[e.key] = true;
-
     if (e.code === "Space") {
       if (
         gameState.currentState === GameState.Start ||
         gameState.currentState === GameState.GameOver
       ) {
-        console.log("first", gameState.currentState);
-        startGame();
+        if (levelGrade.success == "success") {
+          startGame(1);
+        }
       }
     }
 
@@ -153,15 +153,18 @@ const gameLoop = (currentTime: number) => {
 
 const updateGameState = (deltaTime: number) => {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  if (
-    gameState.currentState == GameState.Start &&
-    (menuOptions.option == "Start" || isCustom.custom)
-  ) {
-    startGame();
-  }
+
   switch (gameState.currentState) {
     case GameState.Start:
-      drawStartScreen();
+      if (
+        menuOptions.option == "Start" ||
+        (isCustom.custom && !levelGrade.customLevel)
+      ) {
+        startGame();
+        levelGrade.customLevel = true;
+      } else {
+        drawStartScreen();
+      }
 
       break;
     case GameState.Playing:
@@ -170,18 +173,18 @@ const updateGameState = (deltaTime: number) => {
         gameOverFunction();
         break;
       }
-      player.draw(deltaTime);
-      player.moveY(deltaTime);
-      player.moveX(deltaTime);
+      player?.draw(deltaTime);
+      player?.moveY(deltaTime);
+      player?.moveX(deltaTime);
 
-      tileMap.moveX(player, deltaTime);
-      tileMap.drawEnemy(player, deltaTime);
-      tileMap.drawFruit(player, deltaTime);
-      tileMap.drawFlag(player, deltaTime);
-      tileMap.drawAnimal(player, deltaTime);
-      tileMap.drawAmmo(player, deltaTime);
-      tileMap.drawJet(player, deltaTime);
-      player.updateBullet(deltaTime);
+      tileMap?.moveX(player, deltaTime);
+      tileMap?.drawEnemy(player, deltaTime);
+      tileMap?.drawFruit(player, deltaTime);
+      tileMap?.drawFlag(player, deltaTime);
+      tileMap?.drawAnimal(player, deltaTime);
+      tileMap?.drawAmmo(player, deltaTime);
+      tileMap?.drawJet(player, deltaTime);
+      player?.updateBullet(deltaTime);
 
       if (player.position.y >= CANVAS_HEIGHT) {
         loseAudio.play();
@@ -211,7 +214,7 @@ const updateGameState = (deltaTime: number) => {
   }
 };
 
-export const startGame = () => {
+export const startGame = (value?: number) => {
   gameStatus.gameOver = false;
   gameStatus.isPaused = false;
   scoreCount.score = 0;
@@ -225,22 +228,33 @@ export const startGame = () => {
   objects.bullet.length = 0;
   objects.enemyBullet.length = 0;
   objects.enemyFireBullet.length = 0;
+  objects.jet.length = 0;
   audioLevel.isMuted = false;
+  levelGrade.customLevel = false;
   ammoObj.ammo = 5;
   bgmAudio.pause();
-  if (isCustom.custom && !levelGrade.success) drawObjects(-1);
-  if (!isCustom.custom && (!levelGrade.success || levelGrade.customLevel))
+
+  if (menuOptions.option == "Start") {
     drawObjects(1);
-  else if (!isCustom.custom && levelGrade.success && !levelGrade.customLevel) {
-    drawObjects(2);
+    menuOptions.option = "";
   }
+  if (levelGrade.success == "success" && value == 1) {
+    drawObjects(2);
+    levelGrade.success = "fail";
+  }
+  if (isCustom.custom == true && menuOptions.option == "Editor") {
+    drawObjects(-1);
+    menuOptions.option = "";
+  }
+
   levelGrade.success = "";
   if (player) {
-    player.velocityY = 0;
-    player.gravity = 0.2;
     player.directionRight = true;
     bgmAudio.autoplay = true;
     bgmAudio.play();
+    bgmAudio.volume = 0.8;
+    player.velocityY = 0;
+    player.gravity = 0.2;
   }
 
   gameState.currentState = GameState.Playing;
