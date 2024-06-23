@@ -10,7 +10,7 @@ import {
 } from "../constants/constants";
 import { ctx } from "./canvas";
 const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
-const menuButtons = ["Start", "Editor", "Instruction"];
+const menuButtons = ["Start", "Editor"];
 
 document.addEventListener("click", handleClick);
 let optionButtons: any;
@@ -65,16 +65,31 @@ export function drawStartScreen() {
 
   ctx.font = "22px sans-serif";
   ctx.fillText(
-    "Move Left: a key. Move Right:d key",
+    "Move Left: a/left key. Move Right:d/right key. Up: w/up key",
     CANVAS_WIDTH / 5,
     CANVAS_HEIGHT / 2 + 40
   );
-  ctx.fillText("Bullet: f key ", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 + 70);
+  ctx.fillText(
+    "Bullet: f key. Projectile: g key ",
+    CANVAS_WIDTH / 5,
+    CANVAS_HEIGHT / 2 + 70
+  );
   ctx.font = "22px sans-serif";
   ctx.fillText(
     "Pause/Resume: p key",
     CANVAS_WIDTH / 5,
     CANVAS_HEIGHT / 2 + 100
+  );
+  ctx.font = "22px sans-serif";
+  ctx.fillText(
+    "Score is increased if the enemy is defeated. Health is decreased if enemy hits the player ",
+    255,
+    CANVAS_HEIGHT / 2 + 170
+  );
+  ctx.fillText(
+    "or the player hits/collides with the dog. Health is increased with the food",
+    255,
+    CANVAS_HEIGHT / 2 + 200
   );
   optionButtons = menuButtons.map((option, index) => {
     const button = {
