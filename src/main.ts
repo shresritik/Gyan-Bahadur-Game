@@ -27,26 +27,12 @@ import {
   drawStartScreen,
   gameOverFunction,
 } from "./components/menuScreens";
-import {
-  ammoAudio,
-  barkAudio,
-  coronaAudio,
-  damageAudio,
-  eatingAudio,
-  explosionAudio,
-  fireAudio,
-  flagAudio,
-  loseAudio,
-  runAudio,
-  sadAudio,
-  waterAudio,
-  winAudio,
-} from "./components/audio";
+import { bgmAudio, loseAudio } from "./components/audio";
+import { muteOption } from "./components/mute";
 
 let tileMap: TileMap;
 let player: Player;
 
-// export let gameState.currentState: GameState = GameState.Start;
 let lastFrameTime = performance.now();
 
 const keysArray: TKeys = {};
@@ -70,36 +56,7 @@ const setupEventListeners = () => {
     }
 
     if (e.code === "KeyM") {
-      if (!audioLevel.isMuted) {
-        winAudio.muted = true;
-        loseAudio.muted = true;
-        eatingAudio.muted = true;
-        flagAudio.muted = true;
-        coronaAudio.muted = true;
-        fireAudio.muted = true;
-        damageAudio.muted = true;
-        waterAudio.muted = true;
-        explosionAudio.muted = true;
-        barkAudio.muted = true;
-        sadAudio.muted = true;
-        ammoAudio.muted = true;
-        runAudio.muted = true;
-      } else {
-        winAudio.muted = false;
-        loseAudio.muted = false;
-        eatingAudio.muted = false;
-        flagAudio.muted = false;
-        coronaAudio.muted = false;
-        fireAudio.muted = false;
-        damageAudio.muted = false;
-        waterAudio.muted = false;
-        explosionAudio.muted = false;
-        barkAudio.muted = false;
-        sadAudio.muted = false;
-        ammoAudio.muted = false;
-        runAudio.muted = false;
-      }
-      audioLevel.isMuted = !audioLevel.isMuted;
+      muteOption();
     }
 
     if (e.code === "KeyP" && gameState.currentState === GameState.Playing) {
@@ -223,6 +180,7 @@ const updateGameState = (deltaTime: number) => {
       tileMap.drawFlag(player, deltaTime);
       tileMap.drawAnimal(player, deltaTime);
       tileMap.drawAmmo(player, deltaTime);
+      tileMap.drawJet(player, deltaTime);
       player.updateBullet(deltaTime);
 
       if (player.position.y >= CANVAS_HEIGHT) {
@@ -269,6 +227,7 @@ export const startGame = () => {
   objects.enemyFireBullet.length = 0;
   audioLevel.isMuted = false;
   ammoObj.ammo = 5;
+  bgmAudio.pause();
   if (isCustom.custom && !levelGrade.success) drawObjects(-1);
   if (!isCustom.custom && (!levelGrade.success || levelGrade.customLevel))
     drawObjects(1);
@@ -280,6 +239,8 @@ export const startGame = () => {
     player.velocityY = 0;
     player.gravity = 0.2;
     player.directionRight = true;
+    bgmAudio.autoplay = true;
+    bgmAudio.play();
   }
 
   gameState.currentState = GameState.Playing;

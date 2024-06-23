@@ -27,7 +27,6 @@ function handleClick(e: MouseEvent) {
         offsetY <= button.y + button.h
       ) {
         let selectedOption = button.option - 1;
-        console.log(menuButtons[selectedOption]);
         menuOptions.option = menuButtons[selectedOption];
 
         gameStatus.isPaused = false;
@@ -163,7 +162,6 @@ export function drawPauseScreen() {
   ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
 }
 // FIXME FIX menuscreens
-//TODO ADD music
 //TODO add boosts
 //TODO add about
 //TODO update projectile

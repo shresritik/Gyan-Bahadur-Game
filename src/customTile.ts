@@ -8,6 +8,7 @@ import flag from "./assets/single-flag.png";
 import animal from "./assets/dog1.png";
 import ammo from "./assets/single-water.png";
 import none from "./assets/none.png";
+import jet from "./assets/jetpack.png";
 import { isCustom } from "./constants/constants";
 const images = {
   grapes,
@@ -19,6 +20,7 @@ const images = {
   animal,
   ammo,
   none,
+  jet,
 };
 
 // Define a type for the keys of the images object
@@ -171,6 +173,8 @@ function getTileKey(value: number): ImageKey | null {
       return "animal";
     case 8:
       return "ammo";
+    case 9:
+      return "jet";
     default:
       return null;
   }
@@ -195,6 +199,8 @@ function getTileValue(key: ImageKey): number {
       return 7;
     case "ammo":
       return 8;
+    case "jet":
+      return 9;
     default:
       return 0;
   }

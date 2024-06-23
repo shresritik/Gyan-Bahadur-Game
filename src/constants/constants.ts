@@ -5,6 +5,7 @@ import { Enemy } from "../classes/Enemy";
 import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Platform";
+import { Powerup } from "../classes/Jetpack";
 import { Quiz } from "../classes/Quiz";
 export interface TKeys {
   [keys: string]: boolean;
@@ -35,6 +36,7 @@ export const objects: {
   bullet: Bullet[];
   enemyFireBullet: Bullet[];
   enemyBullet: Bullet[];
+  jet: Powerup[];
 } = {
   platform: [],
   enemy: [],
@@ -45,6 +47,7 @@ export const objects: {
   bullet: [],
   enemyFireBullet: [],
   enemyBullet: [],
+  jet: [],
 };
 export const ammoObj = {
   ammo: 5,

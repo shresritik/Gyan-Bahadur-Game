@@ -225,6 +225,9 @@ export class Player extends Base implements IPlayer {
   moveY(deltaTime: number) {
     this.position.y += this.velocityY * (deltaTime / 16.67);
     this.velocityY += this.gravity * (deltaTime / 16.67);
+    if (this.position.y <= 0) {
+      this.position.y = 0;
+    }
   }
 
   checkBoundaryX() {

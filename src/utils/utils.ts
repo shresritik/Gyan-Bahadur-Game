@@ -6,6 +6,7 @@ import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
 import { Plat } from "../classes/Platform";
 import { Player } from "../classes/Player";
+import { Jetpack } from "../classes/Jetpack";
 import { toggleFullScreen } from "../components/toggleFullScreen";
 import { CANVAS_WIDTH, TKeys } from "../constants/constants";
 /**
@@ -26,7 +27,16 @@ export function getRandomValue(min: number, max: number): number {
  * @param other The enemy to check collision against.
  * @returns True if there is a collision, false otherwise.
  */
-type Tdetector = Player | Plat | Bullet | Enemy | Fruit | Flag | Animal | Ammo;
+type Tdetector =
+  | Player
+  | Plat
+  | Bullet
+  | Enemy
+  | Fruit
+  | Flag
+  | Animal
+  | Ammo
+  | Jetpack;
 
 export function detectCollision(
   entity1: Tdetector,

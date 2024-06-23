@@ -6,6 +6,7 @@ import { Flag } from "./Flag";
 import { Fruit } from "./Fruit";
 import { Plat } from "./Platform";
 import { Player } from "./Player";
+import { Jetpack } from "./Jetpack";
 
 export class TileMap {
   tileSize: number = 32;
@@ -132,7 +133,7 @@ export class TileMap {
           0, 0, 0, 0, 0,
         ],
         [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -407,6 +408,14 @@ export class TileMap {
               tile
             )
           );
+        } else if (tile == 9) {
+          objects.jet.push(
+            new Jetpack(
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
+            )
+          );
         }
       }
     }
@@ -478,6 +487,13 @@ export class TileMap {
       am.moveX(player, deltaTime);
 
       am.collidesPlayer(player);
+    });
+  }
+  drawJet(player: Player, deltaTime: number) {
+    objects.jet.forEach((am) => {
+      am.drawJet();
+
+      am.collidesPlayer(player, deltaTime);
     });
   }
 }
