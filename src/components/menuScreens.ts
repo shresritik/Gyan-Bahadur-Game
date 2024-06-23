@@ -160,3 +160,8 @@ export function drawPauseScreen() {
   ctx.fillStyle = "white";
   ctx.fillText("Return to Home", homeButton.x + 15, homeButton.y + 31);
 }
+// FIXME FIX menuscreens
+//TODO ADD music
+//TODO add boosts
+//TODO add about
+//TODO update projectile

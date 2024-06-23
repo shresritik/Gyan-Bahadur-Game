@@ -1,5 +1,6 @@
 import { ctx } from "../components/canvas";
 import {
+  CANVAS_HEIGHT,
   CANVAS_WIDTH,
   SPEED,
   ammoObj,
@@ -11,7 +12,6 @@ import { Base } from "./Base";
 import { Bullet } from "./Bullet";
 import stanceImg from "../assets/stancer2.png";
 import runImg from "../assets/runright-3.png";
-
 import jumpImg from "../assets/jump2.png";
 import shoot from "../assets/shoot.png";
 import win from "../assets/win.png";
@@ -121,7 +121,6 @@ export class Player extends Base implements IPlayer {
       if (this.directionRight) {
         ctx.drawImage(
           this.jumpImage,
-
           this.position.x,
           this.position.y,
           80,
@@ -133,7 +132,6 @@ export class Player extends Base implements IPlayer {
         ctx.scale(-1, 1);
         ctx.drawImage(
           this.jumpImage,
-
           -this.position.x - 80,
           this.position.y,
           80,
@@ -143,7 +141,7 @@ export class Player extends Base implements IPlayer {
       }
 
       frameX = 0;
-    } else if (keys["f"]) {
+    } else if (keys["f"] || keys["g"]) {
       if (frameX >= 2) frameX = 0;
       if (this.directionRight) {
         ctx.drawImage(
@@ -230,19 +228,22 @@ export class Player extends Base implements IPlayer {
     }
   }
 
-  fireBullet() {
+  fireBullet(angleVal: number) {
     if (ammoObj.ammo > 0) {
       ammoObj.ammo--; // Decrease ammo count
       const bulletDirection = this.directionRight ? 1 : -1;
 
       const bullet = new Bullet(
         {
-          x: !this.directionRight ? this.position.x - 50 : this.position.x,
+          x: this.directionRight
+            ? this.position.x + this.w
+            : this.position.x - 50,
           y: this.position.y + 20,
         },
         50,
         80,
-        { x: bulletDirection }
+        { x: bulletDirection },
+        Math.PI - angleVal
       );
       objects.bullet.push(bullet);
     }
@@ -254,7 +255,12 @@ export class Player extends Base implements IPlayer {
       bullet.drawBullet(deltaTime);
       bullet.moveBullet(deltaTime);
 
-      if (bullet.position.x <= 0 || bullet.position.x >= CANVAS_WIDTH) {
+      if (
+        bullet.position.x <= 0 ||
+        bullet.position.x >= CANVAS_WIDTH ||
+        bullet.position.y <= 0 ||
+        bullet.position.y >= CANVAS_HEIGHT
+      ) {
         objects.bullet.splice(i, 1);
         i--;
       }

@@ -24,12 +24,14 @@ export class Bullet extends Base {
   coronaImg: HTMLImageElement;
   waterImg: HTMLImageElement;
   accumulatedTime: number;
-
+  angle: number;
+  bulletSpeed: number = 2;
   constructor(
     position: { x: number; y: number },
     h: number,
     w: number,
-    direction: { x: number }
+    direction: { x: number },
+    angle: number
   ) {
     super(position, h, w);
     this.velocityDirection = { x: direction.x };
@@ -40,6 +42,7 @@ export class Bullet extends Base {
     this.waterImg = new Image();
     this.waterImg.src = water;
     this.accumulatedTime = 0;
+    this.angle = angle;
   }
 
   drawBullet(deltaTime: number, tile?: number) {
@@ -116,6 +119,27 @@ export class Bullet extends Base {
   }
 
   moveBullet(deltaTime: number) {
-    this.position.x += this.velocityDirection.x * ((SPEED * deltaTime) / 16.67);
+    const movementSpeed = ((SPEED * deltaTime) / 16.67) * this.bulletSpeed;
+    if (this.position.y <= 300) {
+      // If bullet reaches certain height (100 in this example), change direction to move downwards
+      this.angle = -(3 * Math.PI) / 4; // Example downward angle (45 degrees in radians), adjust as needed
+    }
+
+    if (this.angle !== 0) {
+      // Calculate velocities based on angle
+      const angleDirection = this.velocityDirection.x * movementSpeed;
+      const vx = -angleDirection * Math.cos(this.angle);
+      const vy =
+        this.velocityDirection.x == 1
+          ? -angleDirection * Math.sin(this.angle)
+          : angleDirection * Math.sin(this.angle);
+
+      // Update position
+      this.position.x += vx;
+      this.position.y += vy; // Invert y because canvas y-axis is typically inverted
+    } else {
+      // Update position with only horizontal movement
+      this.position.x += this.velocityDirection.x * movementSpeed;
+    }
   }
 }

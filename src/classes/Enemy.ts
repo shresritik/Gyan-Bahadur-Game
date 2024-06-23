@@ -105,7 +105,8 @@ export class Enemy extends Base {
       },
       50,
       80,
-      { x: direction > 0 ? -1 : 1 }
+      { x: direction > 0 ? -1 : 1 },
+      Math.PI
     );
     this.enemyBullet.push(bullet);
     objects.enemyBullet.push(bullet);

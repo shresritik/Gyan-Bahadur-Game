@@ -64,7 +64,10 @@ const setupEventListeners = () => {
       }
     }
     if (e.key === "f" && player) {
-      player.fireBullet();
+      player.fireBullet(Math.PI);
+    } else if (keys["g"]) {
+      const angle = Math.PI / 6; // Fire at 30 degrees or -45 degrees based on direction
+      player.fireBullet(angle);
     }
   });
 
