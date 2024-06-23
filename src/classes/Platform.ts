@@ -1,6 +1,6 @@
 import { ctx } from "../components/canvas";
-import { SPEED, keys } from "../constants/constants";
-import { detectCollision } from "../utils/utils";
+import { keys } from "../constants/constants";
+import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 
@@ -45,7 +45,7 @@ export class Plat extends Base {
         // Player lands on the platform
         player.position.y = this.position.y - player.h;
         player.velocityY = 0;
-        if (keys["w"]) {
+        if (keys["w"] || keys["ArrowUp"]) {
           player.velocityY = -8;
         }
       } else if (
@@ -79,11 +79,12 @@ export class Plat extends Base {
   }
 
   moveX = (player: Player, deltaTime: number) => {
-    const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-    if (keys["d"] && player.position.x >= 300) {
-      this.position.x -= movementSpeed;
-    } else if (keys["a"] && player.position.x >= 300) {
-      this.position.x += movementSpeed;
-    }
+    // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
+    // if (keys["d"] && player.position.x >= 300) {
+    //   this.position.x -= movementSpeed;
+    // } else if (keys["a"] && player.position.x >= 300) {
+    //   this.position.x += movementSpeed;
+    // }
+    backgroundMovement(player, this, deltaTime);
   };
 }

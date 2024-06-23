@@ -1,9 +1,13 @@
 import { ctx } from "../components/canvas";
-import { SPEED, ammoObj, keys, objects } from "../constants/constants";
+import { ammoObj, objects } from "../constants/constants";
 import { Base } from "./Base";
 import water from "../assets/h-water.png";
 import { Player } from "./Player";
-import { audioOnCanvas, detectCollision } from "../utils/utils";
+import {
+  audioOnCanvas,
+  backgroundMovement,
+  detectCollision,
+} from "../utils/utils";
 import { ammoAudio } from "../components/audio";
 
 let frameX = 0;
@@ -67,10 +71,11 @@ export class Ammo extends Base {
     }
   }
   moveX(player: Player, deltaTime: number) {
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
+    backgroundMovement(player, this, deltaTime);
+    // const movementSpeed = (SPEED * deltaTime) / 16.67;
 
-    if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
-    else if (keys["a"] && player.position.x >= 300)
-      this.position.x += movementSpeed;
+    // if ((keys["d"] || keys["ArrowRight"])&& player.position.x >= 300) this.position.x -= movementSpeed;
+    // else if (keys["a"] && player.position.x >= 300)
+    //   this.position.x += movementSpeed;
   }
 }

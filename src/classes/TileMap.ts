@@ -1,4 +1,4 @@
-import { SPEED, keys, objects } from "../constants/constants";
+import { objects } from "../constants/constants";
 import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
@@ -7,6 +7,7 @@ import { Fruit } from "./Fruit";
 import { Plat } from "./Platform";
 import { Player } from "./Player";
 import { Jetpack } from "./Jetpack";
+import { backgroundMovement } from "../utils/utils";
 
 export class TileMap {
   tileSize: number = 32;
@@ -430,20 +431,22 @@ export class TileMap {
       });
     });
     objects.bullet.forEach((bul) => {
-      const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-      if (keys["d"] && player.position.x >= 300) {
-        bul.position.x -= movementSpeed;
-      } else if (keys["a"] && player.position.x >= 300) {
-        bul.position.x += movementSpeed;
-      }
+      // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
+      // if (keys["d"] && player.position.x >= 300) {
+      //   bul.position.x -= movementSpeed;
+      // } else if (keys["a"] && player.position.x >= 300) {
+      //   bul.position.x += movementSpeed;
+      // }
+      backgroundMovement(player, bul, deltaTime);
     });
     objects.enemyBullet.forEach((bul) => {
-      const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-      if (keys["d"] && player.position.x >= 300) {
-        bul.position.x -= movementSpeed;
-      } else if (keys["a"] && player.position.x >= 300) {
-        bul.position.x += movementSpeed;
-      }
+      // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
+      // if (keys["d"] && player.position.x >= 300) {
+      //   bul.position.x -= movementSpeed;
+      // } else if (keys["a"] && player.position.x >= 300) {
+      //   bul.position.x += movementSpeed;
+      // }
+      backgroundMovement(player, bul, deltaTime);
     });
   };
   drawEnemy(player: Player, deltaTime: number) {

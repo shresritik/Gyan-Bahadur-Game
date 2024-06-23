@@ -1,6 +1,6 @@
 import { ctx } from "../components/canvas";
-import { SPEED, keys, objects, scoreCount } from "../constants/constants";
-import { detectCollision } from "../utils/utils";
+import { objects, scoreCount } from "../constants/constants";
+import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import banana from "../assets/banana.png";
@@ -64,11 +64,12 @@ export class Fruit extends Base {
   };
 
   moveX = (player: Player, deltaTime: number) => {
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
-    if (keys["d"] && player.position.x >= 300) {
-      this.position.x -= movementSpeed;
-    } else if (keys["a"] && player.position.x >= 300) {
-      this.position.x += movementSpeed;
-    }
+    // const movementSpeed = (SPEED * deltaTime) / 16.67;
+    // if (keys["d"] && player.position.x >= 300) {
+    //   this.position.x -= movementSpeed;
+    // } else if (keys["a"] && player.position.x >= 300) {
+    //   this.position.x += movementSpeed;
+    // }
+    backgroundMovement(player, this, deltaTime);
   };
 }

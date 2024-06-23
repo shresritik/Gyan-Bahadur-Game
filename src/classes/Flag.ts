@@ -1,13 +1,15 @@
 import { ctx } from "../components/canvas";
 import {
-  SPEED,
   gameStatus,
   isCustom,
-  keys,
   levelGrade,
   quizMap,
 } from "../constants/constants";
-import { audioOnCanvas, detectCollision } from "../utils/utils";
+import {
+  audioOnCanvas,
+  backgroundMovement,
+  detectCollision,
+} from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
@@ -113,11 +115,12 @@ export class Flag extends Base {
   }
 
   moveX = (player: Player, deltaTime: number) => {
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
-    if (keys["d"] && player.position.x >= 300) {
-      this.position.x -= movementSpeed;
-    } else if (keys["a"] && player.position.x >= 300) {
-      this.position.x += movementSpeed;
-    }
+    // const movementSpeed = (SPEED * deltaTime) / 16.67;
+    // if (keys["d"] && player.position.x >= 300) {
+    //   this.position.x -= movementSpeed;
+    // } else if (keys["a"] && player.position.x >= 300) {
+    //   this.position.x += movementSpeed;
+    // }
+    backgroundMovement(player, this, deltaTime);
   };
 }

@@ -2,12 +2,15 @@ import { ctx } from "../components/canvas";
 import {
   SPEED,
   scoreCount,
-  keys,
   objects,
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
 } from "../constants/constants";
-import { detectCollision, getDistance } from "../utils/utils";
+import {
+  backgroundMovement,
+  detectCollision,
+  getDistance,
+} from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import fireImg from "../assets/fire.png";
@@ -218,14 +221,16 @@ export class Enemy extends Base {
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
 
-    const movementSpeed = (SPEED * deltaTime) / 16.67;
+    // const movementSpeed = (SPEED * deltaTime) / 16.67;
 
     // Parallax effect for player movement
-    if (keys["d"] && player.position.x >= 300) {
-      this.position.x -= movementSpeed;
-    } else if (keys["a"] && player.position.x >= 300) {
-      this.position.x += movementSpeed;
-    }
+    // if (keys["d"] && player.position.x >= 300) {
+    //   this.position.x -= movementSpeed;
+    // } else if (keys["a"] && player.position.x >= 300) {
+    //   this.position.x += movementSpeed;
+    // }
+
+    backgroundMovement(player, this, deltaTime);
 
     // Move enemy if tile is 5
     if (this.tile === 5) {
