@@ -494,6 +494,7 @@ export class TileMap {
       am.drawJet();
 
       am.collidesPlayer(player, deltaTime);
+      am.moveX(player, deltaTime);
     });
   }
 }

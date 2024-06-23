@@ -58,7 +58,7 @@ export class Player extends Base implements IPlayer {
   jumpImage: HTMLImageElement;
   winImage: HTMLImageElement;
   shootImage: HTMLImageElement;
-
+  jetpackPickupTime: number | null = null;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
 
@@ -97,7 +97,7 @@ export class Player extends Base implements IPlayer {
         this.runFrame.width,
         this.runFrame.height,
         this.position.x - 20,
-        this.position.y,
+        this.position.y + 10,
         100,
         130
       );
@@ -116,7 +116,7 @@ export class Player extends Base implements IPlayer {
         this.runFrame.width,
         this.runFrame.height,
         -this.position.x - this.runFrame.width - 40, // Adjust for the mirrored position
-        this.position.y,
+        this.position.y + 10,
         100,
         130
       );
@@ -223,6 +223,15 @@ export class Player extends Base implements IPlayer {
   }
 
   moveY(deltaTime: number) {
+    // If jetpackPickupTime is set and 10 seconds have passed, reset gravity and jetpackPickupTime
+    if (this.jetpackPickupTime) {
+      const elapsedTime = Date.now() - this.jetpackPickupTime;
+      if (elapsedTime >= 10000) {
+        this.gravity = 0.2; // Reset to original gravity value
+        this.jetpackPickupTime = null;
+      }
+    }
+
     this.position.y += this.velocityY * (deltaTime / 16.67);
     this.velocityY += this.gravity * (deltaTime / 16.67);
     if (this.position.y <= 0) {

@@ -21,16 +21,19 @@ export class Jetpack extends Base {
       this.position.x,
       this.position.y - 40,
       50,
-      80
+      60
     );
   }
   collidesPlayer(player: Player, deltaTime: number) {
+    const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (detectCollision(player, this)) {
-      player.velocityY -= 1;
+      player.velocityY -= movementSpeed;
       player.gravity = 0;
+      player.jetpackPickupTime = Date.now(); // Set the pickup time
       objects.jet = objects.jet.filter((j) => j != this);
     }
   }
+
   moveX(player: Player, deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
 
