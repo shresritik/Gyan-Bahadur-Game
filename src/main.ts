@@ -23,6 +23,7 @@ import { Quiz } from "./classes/Quiz";
 import { handleFullScreen } from "./utils/utils";
 import singleWater from "./assets/single-water.png";
 import {
+  drawAboutScreen,
   drawPauseScreen,
   drawStartScreen,
   gameOverFunction,
@@ -44,7 +45,7 @@ const setupEventListeners = () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     keys[e.key] = true;
     keysArray[e.key] = true;
-    if (e.code === "Space") {
+    if (e.code === "Space" && levelGrade.level != 2) {
       if (
         gameState.currentState === GameState.Start ||
         gameState.currentState === GameState.GameOver
@@ -158,11 +159,13 @@ const updateGameState = (deltaTime: number) => {
     case GameState.Start:
       if (menuOptions.option == "Start" || menuOptions.option == "Play") {
         startGame();
+      } else if (menuOptions.option == "About") {
+        drawAboutScreen();
       } else {
         drawStartScreen();
       }
-
       break;
+
     case GameState.Playing:
       if (gameStatus.gameOver) {
         gameState.currentState = GameState.GameOver;
@@ -226,6 +229,7 @@ export const startGame = (value?: number) => {
   objects.jet.length = 0;
   audioLevel.isMuted = false;
   ammoObj.ammo = 5;
+  levelGrade.level = 0;
   bgmAudio.pause();
 
   if (menuOptions.option == "Start") {

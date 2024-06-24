@@ -1,12 +1,23 @@
 import { ctx } from "../components/canvas";
 import { SPEED, objects } from "../constants/constants";
 import { Base } from "./Base";
-import jet from "../assets/jetpack.png";
+import jet from "../assets/jetpack2.png";
 import { Player } from "./Player";
 import { backgroundMovement, detectCollision } from "../utils/utils";
-
+type Frame = {
+  width: number;
+  height: number;
+};
+let frameX = 0;
+let frameY = 0;
+const frameInterval = 1000 / 5;
+let gameFrame = 0;
 export class Jetpack extends Base {
   jetImg: HTMLImageElement;
+  jetFrame: Frame = {
+    width: 508,
+    height: 523,
+  };
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
@@ -14,15 +25,32 @@ export class Jetpack extends Base {
     this.jetImg.src = jet;
   }
 
-  drawJet() {
+  drawJet(deltaTime: number) {
+    if (frameX >= 3) frameX = 0;
+    gameFrame += deltaTime;
+    if (gameFrame >= frameInterval) {
+      frameX++;
+      gameFrame = 0;
+    }
     ctx.drawImage(
       this.jetImg,
-
+      frameX * this.jetFrame.width,
+      frameY * this.jetFrame.height,
+      this.jetFrame.width,
+      this.jetFrame.height,
       this.position.x,
-      this.position.y - 40,
+      this.position.y,
       50,
       60
     );
+    // ctx.drawImage(
+    //   this.jetImg,
+
+    //   this.position.x,
+    //   this.position.y - 40,
+    //   50,
+    //   60
+    // );
   }
   collidesPlayer(player: Player, deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;

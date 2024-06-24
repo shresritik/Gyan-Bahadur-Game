@@ -1,4 +1,4 @@
-import { level1, level2, objects } from "../constants/constants";
+import { level1, level2, levelGrade, objects } from "../constants/constants";
 import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
@@ -12,16 +12,15 @@ import { backgroundMovement } from "../utils/utils";
 export class TileMap {
   tileSize: number = 32;
   map: any = [];
-  level: number = 0;
   constructor(level: number) {
-    this.level = level;
-    if (this.level == -1) {
+    levelGrade.level = level;
+    if (levelGrade.level == -1) {
       this.map = localStorage.getItem("map")
         ? JSON.parse(localStorage.getItem("map")!)
         : "";
-    } else if (this.level == 1) {
+    } else if (levelGrade.level == 1) {
       this.map = level1;
-    } else if (this.level == 2) {
+    } else if (levelGrade.level == 2) {
       this.map = level2;
     }
   }
@@ -172,7 +171,7 @@ export class TileMap {
   }
   drawJet(player: Player, deltaTime: number) {
     objects.jet.forEach((am) => {
-      am.drawJet();
+      am.drawJet(deltaTime);
 
       am.collidesPlayer(player, deltaTime);
       am.moveX(player, deltaTime);

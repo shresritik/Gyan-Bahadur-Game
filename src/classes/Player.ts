@@ -16,6 +16,7 @@ import jumpImg from "../assets/jump2.png";
 import shoot from "../assets/shoot.png";
 import win from "../assets/win.png";
 import { loseAudio, runAudio, winAudio } from "../components/audio";
+import jet from "../assets/jetpack2.png";
 
 interface IPlayer {
   position: { x: number; y: number };
@@ -31,6 +32,7 @@ type Frame = {
   width: number;
   height: number;
 };
+let framex = 0;
 
 export class Player extends Base implements IPlayer {
   stanceFrame: Frame = {
@@ -46,6 +48,10 @@ export class Player extends Base implements IPlayer {
     width: 45.5,
     height: 52,
   };
+  jetFrame: Frame = {
+    width: 508,
+    height: 523,
+  };
 
   velocityY = 0;
   gravity = 0.2;
@@ -58,10 +64,12 @@ export class Player extends Base implements IPlayer {
   jumpImage: HTMLImageElement;
   winImage: HTMLImageElement;
   shootImage: HTMLImageElement;
+  jetImg: HTMLImageElement;
   jetpackPickupTime: number | null = null;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
-
+    this.jetImg = new Image();
+    this.jetImg.src = jet;
     // Preload images
     this.stanceImage = new Image();
     this.stanceImage.src = stanceImg;
@@ -85,7 +93,26 @@ export class Player extends Base implements IPlayer {
       gameFrame = 0;
     }
 
-    if (keys["d"] || keys["ArrowRight"]) {
+    if (this.jetpackPickupTime) {
+      if (framex >= 3) framex = 0;
+      gameFrame += deltaTime;
+      if (gameFrame >= 1000 / 12) {
+        framex++;
+        gameFrame = 0;
+      }
+      ctx.drawImage(
+        this.jetImg,
+        framex * this.jetFrame.width,
+        0 * this.jetFrame.height,
+        this.jetFrame.width,
+        this.jetFrame.height,
+        this.position.x,
+        this.position.y + 30,
+        50,
+        60
+      );
+    }
+    if ((keys["d"] || keys["ArrowRight"]) && !this.jetpackPickupTime) {
       runAudio.play();
       this.directionRight = true;
 
@@ -101,7 +128,7 @@ export class Player extends Base implements IPlayer {
         100,
         130
       );
-    } else if (keys["a"] || keys["ArrowLeft"]) {
+    } else if ((keys["a"] || keys["ArrowLeft"]) && !this.jetpackPickupTime) {
       runAudio.play();
 
       this.directionRight = false;
@@ -121,7 +148,7 @@ export class Player extends Base implements IPlayer {
         130
       );
       ctx.restore();
-    } else if (keys["w"] || keys["ArrowUp"]) {
+    } else if ((keys["w"] || keys["ArrowUp"]) && !this.jetpackPickupTime) {
       if (this.directionRight) {
         ctx.drawImage(
           this.jumpImage,
