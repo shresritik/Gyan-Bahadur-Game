@@ -66,7 +66,6 @@ export class Flag extends Base {
       this.gameOverTimer += deltaTime;
       if (this.gameOverTimer >= 1500) {
         gameStatus.gameOver = true;
-
         this.gameOverTimer = 0;
       }
     }
@@ -74,7 +73,7 @@ export class Flag extends Base {
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
-        // this.quizTimer = 0;
+        this.quizTimer = Date.now();
         this.gameOverTimer = 0;
       }
 
@@ -83,26 +82,17 @@ export class Flag extends Base {
         quizMap.quizMap != null &&
         quizMap.quizMap.correct != null
       ) {
-        // this.quizTimer += deltaTime;
-        let timer = setTimeout(() => {
-          if (quizMap.quizMap) {
-            quizMap.quizMap.closeQuiz();
-            this.outQuiz = true;
-            // this.quizTimer = 0;
-          }
-          clearTimeout(timer);
-        }, 800);
+        const currentTime = Date.now();
+        if (currentTime - this.quizTimer >= 800) {
+          quizMap.quizMap.closeQuiz();
+          this.outQuiz = true;
+          this.quizTimer = 0;
+        }
       }
     }
   }
 
   moveX = (player: Player, deltaTime: number) => {
-    // const movementSpeed = (SPEED * deltaTime) / 16.67;
-    // if (keys["d"] && player.position.x >= 300) {
-    //   this.position.x -= movementSpeed;
-    // } else if (keys["a"] && player.position.x >= 300) {
-    //   this.position.x += movementSpeed;
-    // }
     backgroundMovement(player, this, deltaTime);
   };
 }

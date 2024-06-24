@@ -210,6 +210,18 @@ const updateGameState = (deltaTime: number) => {
       gameOverFunction();
       break;
   }
+
+  // Ensure bgmAudio is playing
+  if (
+    gameState.currentState === GameState.Start &&
+    !audioLevel.isMuted &&
+    bgmAudio.paused
+  ) {
+    bgmAudio.play();
+    bgmAudio.autoplay = true;
+    bgmAudio.play();
+    bgmAudio.volume = 0.8;
+  }
 };
 
 export const startGame = (value?: number) => {
