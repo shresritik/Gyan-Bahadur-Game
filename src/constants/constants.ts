@@ -52,7 +52,14 @@ export const objects: {
 export const ammoObj = {
   ammo: 5,
 };
-export const quizObj = [
+export type Tquiz = {
+  id: number;
+  question: string;
+  answerIndex: number;
+  options: string[];
+  error: string;
+};
+export const quizObj: Tquiz[] = [
   {
     id: 0,
     question: "Who is PM of Nepal in 2081 B.S",
@@ -79,7 +86,8 @@ export const levelGrade = { success: "", level: 0 };
 export const menuOptions = { option: "" };
 export const isCustom: { custom: boolean } = { custom: false };
 export const audioLevel = { isMuted: false };
-export const level1 = [
+export type Ttile = number[][];
+export const level1: Ttile = [
   [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

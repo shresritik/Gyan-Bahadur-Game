@@ -15,7 +15,6 @@ let frameY = 0;
 const frameInterval = 1000 / 5;
 let gameFrame = 0;
 export class Ammo extends Base {
-  velocity: { x: number };
   bulletIndex: number;
   fireFrame: {
     fireWidth: number;
@@ -27,14 +26,8 @@ export class Ammo extends Base {
     fireFrame: 40,
   };
   ammoImg: HTMLImageElement;
-  constructor(
-    position: { x: number; y: number },
-    h: number,
-    w: number,
-    direction: { x: number }
-  ) {
+  constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
-    this.velocity = { x: direction.x }; // Example speed, adjust as needed
     this.bulletIndex = 0;
     this.ammoImg = new Image();
     this.ammoImg.src = water;

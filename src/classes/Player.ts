@@ -205,7 +205,13 @@ export class Player extends Base implements IPlayer {
     } else {
       if (levelGrade.success == "success") {
         winAudio.play();
-        ctx.drawImage(this.winImage, this.position.x, this.position.y, 80, 150);
+        ctx.drawImage(
+          this.winImage,
+          this.position.x,
+          this.position.y + 10,
+          80,
+          125
+        );
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }

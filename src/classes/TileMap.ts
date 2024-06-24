@@ -1,4 +1,10 @@
-import { level1, level2, levelGrade, objects } from "../constants/constants";
+import {
+  Ttile,
+  level1,
+  level2,
+  levelGrade,
+  objects,
+} from "../constants/constants";
 import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
@@ -11,7 +17,7 @@ import { backgroundMovement } from "../utils/utils";
 
 export class TileMap {
   tileSize: number = 32;
-  map: any = [];
+  map: Ttile = [];
   constructor(level: number) {
     levelGrade.level = level;
     if (levelGrade.level == -1) {
@@ -68,8 +74,7 @@ export class TileMap {
             new Flag(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
-              this.tileSize,
-              tile
+              this.tileSize
             )
           );
         } else if (tile == 7) {
@@ -86,8 +91,7 @@ export class TileMap {
             new Ammo(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
-              this.tileSize,
-              tile
+              this.tileSize
             )
           );
         } else if (tile == 9) {

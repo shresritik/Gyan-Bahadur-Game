@@ -15,7 +15,6 @@ let frameX = 0;
 let gameFrame = 0;
 const frameInterval = 1000 / 6;
 export class Flag extends Base {
-  velocity: { x: number };
   quiz: Quiz | null;
   outQuiz: boolean;
   quizTimer: number;
@@ -31,14 +30,8 @@ export class Flag extends Base {
   };
   flagImage: HTMLImageElement;
 
-  constructor(
-    position: { x: number; y: number },
-    h: number,
-    w: number,
-    direction: { x: number }
-  ) {
+  constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
-    this.velocity = { x: direction.x };
     this.quiz = null;
     this.outQuiz = false;
     this.quizTimer = 0;

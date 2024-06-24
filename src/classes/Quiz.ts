@@ -2,6 +2,7 @@ import { ctx } from "../components/canvas";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
+  Tquiz,
   gameStatus,
   levelGrade,
   quizObj,
@@ -136,7 +137,7 @@ export class Quiz {
     }
   }
 
-  checkAnswer(option: number, currentQuiz: any) {
+  checkAnswer(option: number, currentQuiz: Tquiz) {
     if (option === currentQuiz.answerIndex && this.correct == null) {
       scoreCount.score += 10;
       this.correct = true;

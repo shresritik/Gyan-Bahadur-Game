@@ -11,10 +11,16 @@ import {
 import { ctx } from "./canvas";
 const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
 const menuButtons = ["Start", "Editor", "About"];
-
+type TButton = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  option?: number;
+};
 document.addEventListener("click", handleClick);
-let optionButtons: any;
-let homeButton: any; // Add this line to store the "Return to Home" button properties
+let optionButtons: TButton[];
+let homeButton: TButton; // Add this line to store the "Return to Home" button properties
 
 function handleClick(e: MouseEvent) {
   const { offsetX, offsetY } = e;
@@ -26,7 +32,7 @@ function handleClick(e: MouseEvent) {
         offsetX <= button.x + button.w &&
         offsetY <= button.y + button.h
       ) {
-        let selectedOption = button.option - 1;
+        let selectedOption = button.option! - 1;
         menuOptions.option = menuButtons[selectedOption];
 
         gameStatus.isPaused = false;
@@ -66,7 +72,7 @@ export function drawStartScreen() {
   ctx.font = "22px sans-serif";
 
   optionButtons = menuButtons.map((option, index) => {
-    const button = {
+    const button: TButton = {
       x: buttonBox.x + 20,
       y: buttonBox.y + 100 + index * 60,
       w: buttonBox.w - 40,
