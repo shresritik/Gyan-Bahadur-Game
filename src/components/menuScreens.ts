@@ -10,7 +10,7 @@ import {
 } from "../constants/constants";
 import { ctx } from "./canvas";
 const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
-const menuButtons = ["Start", "Editor", "About"];
+const menuButtons = ["Start", "Editor", "Instruction"];
 type TButton = {
   x: number;
   y: number;
@@ -18,6 +18,9 @@ type TButton = {
   h: number;
   option?: number;
 };
+import foreImg from "../assets/foreground.png";
+const foreImage = new Image();
+foreImage.src = foreImg;
 document.addEventListener("click", handleClick);
 let optionButtons: TButton[];
 let homeButton: TButton; // Add this line to store the "Return to Home" button properties
@@ -63,19 +66,20 @@ function handleClick(e: MouseEvent) {
 
 export function drawStartScreen() {
   gameState.currentState = GameState.Start;
-  // ctx.fillStyle = "#F7F0EA";
-  // ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.fillStyle = "red";
-  ctx.font = "40px sans-serif";
-  ctx.fillText("Gyan Bahadur", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 80);
 
-  ctx.font = "22px sans-serif";
+  ctx.drawImage(foreImage, 80, 100, foreImage.width, foreImage.height);
+
+  ctx.fillStyle = "white";
+  ctx.font = "80px Paytone One";
+  ctx.fillText("Gyan Bahadur", CANVAS_WIDTH / 3 + 200, 270);
+
+  ctx.font = "22px Paytone One";
 
   optionButtons = menuButtons.map((option, index) => {
     const button: TButton = {
       x: buttonBox.x + 20,
-      y: buttonBox.y + 100 + index * 60,
-      w: buttonBox.w - 40,
+      y: buttonBox.y + 250 + index * 60,
+      w: buttonBox.w,
       h: 50,
       option: index + 1,
     };
@@ -83,77 +87,72 @@ export function drawStartScreen() {
     ctx.fillStyle = "red";
     ctx.fillRect(button.x, button.y, button.w, button.h);
     ctx.fillStyle = "white";
-    ctx.fillText(option, button.x + 15, button.y + 31);
+    ctx.fillText(option, button.x + 47, button.y + 31);
 
     return button;
   });
 }
 export function drawAboutScreen() {
-  ctx.fillStyle = "#F7F0EA";
+  ctx.fillStyle = "rgba(0,0,0,0.7)";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "white";
   ctx.font = "22px sans-serif";
   ctx.fillText(
     "Move Left: a/left key. Move Right:d/right key. Up: w/up key",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 - 40
+    CANVAS_HEIGHT / 2 - 100
   );
   ctx.fillText(
     "Bullet: f key. Projectile: g key ",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 - 10
+    CANVAS_HEIGHT / 2 - 70
   );
-  ctx.font = "22px sans-serif";
+  ctx.fillText("Pause/Resume: p key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 40);
+  ctx.fillText("Mute/Unmute: m key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 10);
   ctx.fillText(
-    "Pause/Resume: p key",
+    "Full Screen: Alt + Enter key",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 + 20 + 0
-  );
-  ctx.font = "22px sans-serif";
-  ctx.fillText(
-    "Score is increased if the enemy is defeated. Health is decreased if enemy hits the player ",
-    255,
-    CANVAS_HEIGHT / 2 + 50
+    CANVAS_HEIGHT / 2 + 20
   );
   ctx.fillText(
-    "or the player hits/collides with the dog. Health is increased with the food",
-    255,
-    CANVAS_HEIGHT / 2 + 80
+    "Score is increased if the enemy (virus/fire) is defeated. ",
+    CANVAS_WIDTH / 5,
+    (3 * CANVAS_HEIGHT) / 5
+  );
+  ctx.fillText(
+    "Health is decreased if enemy hits the player.",
+    CANVAS_WIDTH / 5,
+    (3 * CANVAS_HEIGHT) / 5 + 30
+  );
+  ctx.fillText(
+    "Health is decreased if the player hits/collides with the dog.",
+    CANVAS_WIDTH / 5,
+    (3 * CANVAS_HEIGHT) / 5 + 60
+  );
+  ctx.fillText(
+    "Health is increased with the food",
+    CANVAS_WIDTH / 5,
+    (3 * CANVAS_HEIGHT) / 5 + 90
   );
   homeButton = {
-    x: CANVAS_WIDTH / 4 - 20,
-    y: CANVAS_HEIGHT / 2 + 150,
-    w: 180,
+    x: CANVAS_WIDTH / 4 - 60,
+    y: CANVAS_HEIGHT / 2 + 180,
+    w: 200,
     h: 50,
   };
+  ctx.font = "22px Paytone One";
+
   ctx.fillStyle = "red";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
-  ctx.font = "15pt sans-serif";
   ctx.fillStyle = "white";
-  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
-  // optionButtons = menuButtons.map((option, index) => {
-  //   const button = {
-  //     x: buttonBox.x + 20,
-  //     y: buttonBox.y + 100 + index * 60,
-  //     w: buttonBox.w - 40,
-  //     h: 50,
-  //     option: index + 1,
-  //   };
-
-  //   ctx.fillStyle = "red";
-  //   ctx.fillRect(button.x, button.y, button.w, button.h);
-  //   ctx.fillStyle = "white";
-  //   ctx.fillText(option, button.x + 15, button.y + 31);
-
-  //   return button;
-  // });
+  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 32);
 }
 
 export function gameOverFunction() {
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
-  ctx.font = "40px sans-serif";
+  ctx.font = "40px Paytone One";
   if (levelGrade.success == "success") {
     ctx.fillText("You Win", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 100);
   } else {
@@ -162,15 +161,15 @@ export function gameOverFunction() {
 
   ctx.fillText("Game Over", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 50);
   let maxScore = localStorage.getItem("maxScore");
-  ctx.font = "30px sans-serif";
+  ctx.font = "30px Paytone One ";
   ctx.fillText(
     `High Score: ${maxScore}`,
-    CANVAS_WIDTH / 4 + 30,
+    CANVAS_WIDTH / 4 + 20,
     CANVAS_HEIGHT / 2
   );
   ctx.fillText(
     `Your Score: ${scoreCount.score}`,
-    CANVAS_WIDTH / 4 + 30,
+    CANVAS_WIDTH / 4 + 20,
     CANVAS_HEIGHT / 2 + 40
   );
   if (
@@ -180,7 +179,7 @@ export function gameOverFunction() {
   ) {
     ctx.fillText(
       `Press Space to continue`,
-      CANVAS_WIDTH / 4 - 20,
+      CANVAS_WIDTH / 4 + 20,
       CANVAS_HEIGHT / 2 + 100
     );
     menuOptions.option = "";
@@ -188,37 +187,36 @@ export function gameOverFunction() {
 
   // Draw "Return to Home" button
   homeButton = {
-    x: CANVAS_WIDTH / 4 - 20,
+    x: CANVAS_WIDTH / 4 + 20,
     y: CANVAS_HEIGHT / 2 + 150,
-    w: 180,
+    w: 250,
     h: 50,
   };
   ctx.fillStyle = "red";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
-  ctx.font = "15pt sans-serif";
   ctx.fillStyle = "white";
-  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
+  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 33);
 }
 
 export function drawPauseScreen() {
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "rgba(0,0,0,0.7)";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.fillStyle = "red";
-  ctx.font = "30px sans-serif";
+  ctx.fillStyle = "white";
+  ctx.font = "30px Paytone One ";
   ctx.fillText("Game Paused", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2);
   ctx.fillText("Press P to Resume", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 50);
 
   // Draw "Return to Home" button
   homeButton = {
     x: CANVAS_WIDTH / 4,
-    y: CANVAS_HEIGHT / 2 + 130,
-    w: 180,
+    y: CANVAS_HEIGHT / 2 + 70,
+    w: 200,
     h: 50,
   };
+  ctx.font = "22px Paytone One ";
 
-  ctx.fillStyle = "blue";
+  ctx.fillStyle = "red";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
-  ctx.font = "15pt sans-serif";
   ctx.fillStyle = "white";
   ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }

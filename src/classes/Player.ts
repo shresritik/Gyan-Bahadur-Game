@@ -6,6 +6,7 @@ import {
   ammoObj,
   keys,
   levelGrade,
+  menuOptions,
   objects,
 } from "../constants/constants";
 import { Base } from "./Base";
@@ -203,7 +204,8 @@ export class Player extends Base implements IPlayer {
         ctx.restore();
       }
     } else {
-      if (levelGrade.success == "success") {
+      // FIXME success in level 2
+      if (levelGrade.success == "success" && menuOptions.option != "") {
         winAudio.play();
         ctx.drawImage(
           this.winImage,
@@ -215,7 +217,11 @@ export class Player extends Base implements IPlayer {
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }
-      if (!this.directionRight && levelGrade.success != "success") {
+      if (
+        (!this.directionRight && levelGrade.success != "success") ||
+        menuOptions.option == "" ||
+        menuOptions.option == "Start"
+      ) {
         ctx.save();
         ctx.scale(-1, 1);
         ctx.drawImage(
@@ -226,7 +232,11 @@ export class Player extends Base implements IPlayer {
           150
         );
         ctx.restore();
-      } else if (this.directionRight && levelGrade.success != "success") {
+      } else if (
+        (this.directionRight && levelGrade.success != "success") ||
+        menuOptions.option == "" ||
+        menuOptions.option == "Start"
+      ) {
         ctx.drawImage(
           this.stanceImage,
           this.position.x,
@@ -254,11 +264,33 @@ export class Player extends Base implements IPlayer {
       this.checkBoundaryX();
     }
   }
+  #drawJetTimer(
+    elapsedTime: number,
 
+    x = 15,
+    y = 85,
+    width = 200,
+    height = 20,
+    maxTime: number = 10000
+  ) {
+    ctx.fillStyle = "#000";
+    ctx.fillRect(x, y, width, height);
+    ctx.fillStyle = "white";
+
+    const healthWidth = (1 - elapsedTime / maxTime) * width;
+    ctx.fillText(` ${Math.floor((healthWidth * 100) / 200)}%`, 215, 103);
+
+    ctx.fillStyle = "#00C1EE";
+    ctx.fillRect(x, y, healthWidth, height);
+
+    ctx.strokeStyle = "#fff";
+    ctx.strokeRect(x, y, width, height);
+  }
   moveY(deltaTime: number) {
     // If jetpackPickupTime is set and 10 seconds have passed, reset gravity and jetpackPickupTime
     if (this.jetpackPickupTime) {
-      const elapsedTime = Date.now() - this.jetpackPickupTime;
+      let elapsedTime = Date.now() - this.jetpackPickupTime;
+      this.#drawJetTimer(elapsedTime);
       if (elapsedTime >= 10000) {
         this.gravity = 0.2; // Reset to original gravity value
         this.jetpackPickupTime = null;

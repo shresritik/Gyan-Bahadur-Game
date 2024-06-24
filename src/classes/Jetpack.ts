@@ -43,14 +43,6 @@ export class Jetpack extends Base {
       50,
       60
     );
-    // ctx.drawImage(
-    //   this.jetImg,
-
-    //   this.position.x,
-    //   this.position.y - 40,
-    //   50,
-    //   60
-    // );
   }
   collidesPlayer(player: Player, deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
@@ -58,6 +50,7 @@ export class Jetpack extends Base {
       player.velocityY = 0;
       player.velocityY -= movementSpeed;
       player.gravity = 0;
+
       player.jetpackPickupTime = Date.now(); // Set the pickup time
       objects.jet = objects.jet.filter((j) => j != this);
     }

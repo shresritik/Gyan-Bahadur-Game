@@ -242,23 +242,21 @@ function createUI() {
     imgDiv.appendChild(img);
   });
 
-  // Create save button
-  const saveButton = document.createElement("button");
-  saveButton.innerText = "Save";
-  saveButton.onclick = save;
-  buttonDiv.appendChild(saveButton);
-
+  const backButton = document.createElement("button");
+  backButton.innerText = "Back";
+  backButton.onclick = back;
+  buttonDiv.append(backButton);
+  // Create previous button
+  const prevButton = document.createElement("button");
+  prevButton.innerText = "Prev";
+  prevButton.onclick = prev;
+  buttonDiv.appendChild(prevButton);
   // Create next button
   const nextButton = document.createElement("button");
   nextButton.innerText = "Next";
   nextButton.onclick = next;
   buttonDiv.appendChild(nextButton);
 
-  // Create previous button
-  const prevButton = document.createElement("button");
-  prevButton.innerText = "Prev";
-  prevButton.onclick = prev;
-  buttonDiv.appendChild(prevButton);
   // Create reset button
   const resetButton = document.createElement("button");
   resetButton.innerText = "Reset";
@@ -269,10 +267,11 @@ function createUI() {
   playButton.innerText = "Play";
   playButton.onclick = play;
   buttonDiv.append(playButton);
-  const backButton = document.createElement("button");
-  backButton.innerText = "Back";
-  backButton.onclick = back;
-  buttonDiv.append(backButton);
+  // Create save button
+  const saveButton = document.createElement("button");
+  saveButton.innerText = "Save";
+  saveButton.onclick = save;
+  buttonDiv.appendChild(saveButton);
 
   controlsDiv.append(imgDiv, buttonDiv);
   customLevel.appendChild(controlsDiv);

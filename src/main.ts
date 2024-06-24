@@ -28,7 +28,7 @@ import {
   drawStartScreen,
   gameOverFunction,
 } from "./components/menuScreens";
-import { bgmAudio, loseAudio } from "./components/audio";
+import { bgmAudio, loseAudio, winAudio } from "./components/audio";
 import { muteOption } from "./components/mute";
 
 let tileMap: TileMap;
@@ -163,7 +163,7 @@ const updateGameState = (deltaTime: number) => {
     case GameState.Start:
       if (menuOptions.option == "Start" || menuOptions.option == "Play") {
         startGame();
-      } else if (menuOptions.option == "About") {
+      } else if (menuOptions.option == "Instruction") {
         drawAboutScreen();
       } else {
         drawStartScreen();
@@ -235,7 +235,7 @@ export const startGame = (value?: number) => {
   ammoObj.ammo = 5;
   levelGrade.level = 0;
   bgmAudio.pause();
-
+  if (winAudio.played) winAudio.pause();
   if (menuOptions.option == "Start") {
     drawObjects(1);
     // menuOptions.option = "";
