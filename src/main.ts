@@ -238,21 +238,21 @@ export const startGame = (value?: number) => {
 
   if (menuOptions.option == "Start") {
     drawObjects(1);
-    menuOptions.option = "";
+    // menuOptions.option = "";
   }
   if (levelGrade.success == "success" && value == 1) {
     drawObjects(2);
-    levelGrade.success = "fail";
+    // levelGrade.success = "fail";
   }
   if (
     isCustom.custom == true &&
     (menuOptions.option == "Editor" || menuOptions.option == "Play")
   ) {
     drawObjects(-1);
+
     // menuOptions.option = "";
   }
 
-  levelGrade.success = "";
   if (player) {
     player.directionRight = true;
     bgmAudio.autoplay = true;

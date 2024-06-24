@@ -15,12 +15,16 @@ export class TileMap {
   constructor(level: number) {
     levelGrade.level = level;
     if (levelGrade.level == -1) {
+      levelGrade.success = "";
       this.map = localStorage.getItem("map")
         ? JSON.parse(localStorage.getItem("map")!)
         : "";
     } else if (levelGrade.level == 1) {
+      levelGrade.success = "";
       this.map = level1;
     } else if (levelGrade.level == 2) {
+      levelGrade.success = "success";
+
       this.map = level2;
     }
   }

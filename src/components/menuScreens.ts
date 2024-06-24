@@ -167,7 +167,6 @@ export function gameOverFunction() {
     CANVAS_WIDTH / 4 + 30,
     CANVAS_HEIGHT / 2 + 40
   );
-  console.log(levelGrade.success, levelGrade.level, menuOptions.option);
   if (
     levelGrade.success == "success" &&
     levelGrade.level != 2 &&

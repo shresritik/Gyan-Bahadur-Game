@@ -67,6 +67,13 @@ export const quizObj = [
     options: ["Empty", "Sher Bahadur Deuba", "K.P Oli"],
     error: "Empty became PM in 2079 B.S",
   },
+  {
+    id: 2,
+    question: "Which is the highest mountain in the world",
+    answerIndex: 2,
+    options: ["Mt Fuji", "Mt Everest", "Mt Kanchanjunga"],
+    error: "Mt Everest is the highest mountain of 8848m",
+  },
 ];
 export const levelGrade = { success: "", level: 0 };
 export const menuOptions = { option: "" };
