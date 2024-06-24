@@ -82,7 +82,7 @@ export const quizObj: Tquiz[] = [
     error: "Mt Everest is the highest mountain of 8848m",
   },
 ];
-export const levelGrade = { success: "", level: 0 };
+export const levelGrade = { success: "", level: 0, levelVal: 0 };
 export const menuOptions = { option: "" };
 export const isCustom: { custom: boolean } = { custom: false };
 export const audioLevel = { isMuted: false };

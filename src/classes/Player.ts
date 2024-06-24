@@ -6,7 +6,6 @@ import {
   ammoObj,
   keys,
   levelGrade,
-  menuOptions,
   objects,
 } from "../constants/constants";
 import { Base } from "./Base";
@@ -204,8 +203,7 @@ export class Player extends Base implements IPlayer {
         ctx.restore();
       }
     } else {
-      // FIXME success in level 2
-      if (levelGrade.success == "success" && menuOptions.option != "") {
+      if (levelGrade.success == "success") {
         winAudio.play();
         ctx.drawImage(
           this.winImage,
@@ -217,11 +215,7 @@ export class Player extends Base implements IPlayer {
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }
-      if (
-        (!this.directionRight && levelGrade.success != "success") ||
-        menuOptions.option == "" ||
-        menuOptions.option == "Start"
-      ) {
+      if (!this.directionRight && levelGrade.success != "success") {
         ctx.save();
         ctx.scale(-1, 1);
         ctx.drawImage(
@@ -232,11 +226,7 @@ export class Player extends Base implements IPlayer {
           150
         );
         ctx.restore();
-      } else if (
-        (this.directionRight && levelGrade.success != "success") ||
-        menuOptions.option == "" ||
-        menuOptions.option == "Start"
-      ) {
+      } else if (this.directionRight && levelGrade.success != "success") {
         ctx.drawImage(
           this.stanceImage,
           this.position.x,

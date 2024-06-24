@@ -84,7 +84,6 @@ export class Flag extends Base {
         quizMap.quizMap.correct != null
       ) {
         // this.quizTimer += deltaTime;
-
         let timer = setTimeout(() => {
           if (quizMap.quizMap) {
             quizMap.quizMap.closeQuiz();

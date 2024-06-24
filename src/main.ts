@@ -114,11 +114,7 @@ const writeBullet = () => {
 const writeLevel = () => {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
-  ctx.fillText(
-    `Level: ${levelGrade.success == "success" ? "2" : "1"}`,
-    170,
-    35
-  );
+  ctx.fillText(`Level: ${levelGrade.level}`, 170, 35);
 };
 
 const drawHealthBar = (

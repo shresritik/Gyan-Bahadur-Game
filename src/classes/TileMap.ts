@@ -29,7 +29,7 @@ export class TileMap {
       levelGrade.success = "";
       this.map = level1;
     } else if (levelGrade.level == 2) {
-      levelGrade.success = "success";
+      levelGrade.success = "";
 
       this.map = level2;
     }
