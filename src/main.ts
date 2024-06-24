@@ -45,7 +45,11 @@ const setupEventListeners = () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     keys[e.key] = true;
     keysArray[e.key] = true;
-    if (e.code === "Space" && levelGrade.level != 2) {
+    if (
+      e.code === "Space" &&
+      levelGrade.level != 2 &&
+      menuOptions.option != "Play"
+    ) {
       if (
         gameState.currentState === GameState.Start ||
         gameState.currentState === GameState.GameOver
@@ -245,7 +249,7 @@ export const startGame = (value?: number) => {
     (menuOptions.option == "Editor" || menuOptions.option == "Play")
   ) {
     drawObjects(-1);
-    menuOptions.option = "";
+    // menuOptions.option = "";
   }
 
   levelGrade.success = "";

@@ -178,6 +178,7 @@ export function gameOverFunction() {
       CANVAS_WIDTH / 4 - 20,
       CANVAS_HEIGHT / 2 + 100
     );
+    menuOptions.option = "";
   }
 
   // Draw "Return to Home" button
@@ -218,4 +219,3 @@ export function drawPauseScreen() {
 }
 //TODO update projectile
 //FIXME quiz timer
-//FIXME custom gamelevel continue
