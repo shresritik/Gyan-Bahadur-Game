@@ -152,7 +152,6 @@ export class Quiz {
   }
 
   reset() {
-    this.correct = null;
     this.randomIndex = getRandomValue(0, quizObj.length);
     this.selectedOption = null;
   }

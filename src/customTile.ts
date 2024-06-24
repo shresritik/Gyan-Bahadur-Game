@@ -9,7 +9,7 @@ import animal from "./assets/dog1.png";
 import ammo from "./assets/single-water.png";
 import none from "./assets/none.png";
 import jet from "./assets/jetpack.png";
-import { isCustom, levelGrade } from "./constants/constants";
+import { isCustom, levelGrade, menuOptions } from "./constants/constants";
 const images = {
   grapes,
   banana,
@@ -224,8 +224,8 @@ function reset() {
 }
 function play() {
   isCustom.custom = true;
-  levelGrade.play = true;
   customLevel.style.display = "none";
+  menuOptions.option = "Play";
 }
 function back() {
   isCustom.custom = false;

@@ -88,7 +88,6 @@ export class Flag extends Base {
         this.quizTimer = 0;
         this.gameOverTimer = 0;
       }
-      console.log(deltaTime);
 
       if (
         gameStatus.isQuiz &&
@@ -96,20 +95,35 @@ export class Flag extends Base {
         quizMap.quizMap.correct != null
       ) {
         this.quizTimer += deltaTime;
-        if (this.quizTimer >= 500) {
-          // gameStatus.isQuiz = false;
-          levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
-          if (isCustom.custom) {
-            levelGrade.customLevel = true;
-            levelGrade.customLevel = true;
-          } else {
-            levelGrade.customLevel = false;
+        let timer = setTimeout(() => {
+          if (quizMap.quizMap) {
+            levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
+            // if (isCustom.custom) {
+            //   levelGrade.customLevel = false;
+            // } else {
+            //   levelGrade.customLevel = true;
+            // }
+            quizMap.quizMap.closeQuiz();
+            // quizMap.quizMap!.correct = null;
+            this.outQuiz = true;
+            this.quizTimer = 0;
           }
-          quizMap.quizMap.closeQuiz();
-          // quizMap.quizMap!.correct = null;
-          this.outQuiz = true;
-          this.quizTimer = 0;
-        }
+          clearTimeout(timer);
+        }, 800);
+        // if (this.quizTimer >= 500) {
+        // gameStatus.isQuiz = false;
+        // levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
+        // if (isCustom.custom) {
+        //   levelGrade.customLevel = true;
+        //   levelGrade.customLevel = true;
+        // } else {
+        //   levelGrade.customLevel = false;
+        // }
+        // quizMap.quizMap.closeQuiz();
+        // // quizMap.quizMap!.correct = null;
+        // this.outQuiz = true;
+        // this.quizTimer = 0;
+        // }
       }
     }
   }

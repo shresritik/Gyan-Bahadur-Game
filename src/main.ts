@@ -158,10 +158,10 @@ const updateGameState = (deltaTime: number) => {
     case GameState.Start:
       if (
         menuOptions.option == "Start" ||
-        (isCustom.custom && !levelGrade.customLevel)
+        menuOptions.option == "Play"
+        // (isCustom.custom && levelGrade.customLevel)
       ) {
         startGame();
-        levelGrade.customLevel = true;
       } else {
         drawStartScreen();
       }
@@ -230,7 +230,7 @@ export const startGame = (value?: number) => {
   objects.enemyFireBullet.length = 0;
   objects.jet.length = 0;
   audioLevel.isMuted = false;
-  levelGrade.customLevel = false;
+  // levelGrade.customLevel = false;
   ammoObj.ammo = 5;
   bgmAudio.pause();
 
@@ -242,7 +242,10 @@ export const startGame = (value?: number) => {
     drawObjects(2);
     levelGrade.success = "fail";
   }
-  if (isCustom.custom == true && menuOptions.option == "Editor") {
+  if (
+    isCustom.custom == true &&
+    (menuOptions.option == "Editor" || menuOptions.option == "Play")
+  ) {
     drawObjects(-1);
     menuOptions.option = "";
   }

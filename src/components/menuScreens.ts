@@ -49,8 +49,8 @@ function handleClick(e: MouseEvent) {
       offsetX <= homeButton.x + homeButton.w &&
       offsetY <= homeButton.y + homeButton.h
     ) {
-      window.location.reload();
-      // drawStartScreen(); // Show the start screen
+      // window.location.reload();
+      drawStartScreen(); // Show the start screen
     }
   }
 }
@@ -175,6 +175,5 @@ export function drawPauseScreen() {
   ctx.fillStyle = "white";
   ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }
-// FIXME FIX menuscreens
 //TODO add about
 //TODO update projectile
