@@ -9,7 +9,7 @@ import animal from "./assets/dog1.png";
 import ammo from "./assets/single-water.png";
 import none from "./assets/none.png";
 import jet from "./assets/jetpack.png";
-import { isCustom, levelGrade, menuOptions } from "./constants/constants";
+import { isCustom, menuOptions } from "./constants/constants";
 const images = {
   grapes,
   banana,
@@ -60,7 +60,6 @@ function selectTile(tile: ImageKey) {
 
 // Function to save map to local storage
 function save() {
-  // isCustom.custom = true;
   const saveMap = JSON.stringify(mapObj.map);
   localStorage.setItem("map", saveMap);
 }

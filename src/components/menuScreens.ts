@@ -133,11 +133,13 @@ export function gameOverFunction() {
     CANVAS_WIDTH / 4 + 30,
     CANVAS_HEIGHT / 2 + 40
   );
-  ctx.fillText(
-    `Press Space to continue`,
-    CANVAS_WIDTH / 4 - 20,
-    CANVAS_HEIGHT / 2 + 100
-  );
+  if (levelGrade.success == "success") {
+    ctx.fillText(
+      `Press Space to continue`,
+      CANVAS_WIDTH / 4 - 20,
+      CANVAS_HEIGHT / 2 + 100
+    );
+  }
 
   // Draw "Return to Home" button
   homeButton = {
@@ -177,3 +179,4 @@ export function drawPauseScreen() {
 }
 //TODO add about
 //TODO update projectile
+//FIXME quiz timer

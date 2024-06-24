@@ -3,6 +3,7 @@ import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
   gameStatus,
+  levelGrade,
   quizObj,
   scoreCount,
 } from "../constants/constants";
@@ -139,8 +140,10 @@ export class Quiz {
     if (option === currentQuiz.answerIndex && this.correct == null) {
       scoreCount.score += 10;
       this.correct = true;
+      levelGrade.success = "success";
     } else if (this.correct == null) {
       this.correct = false;
+      levelGrade.success = "fail";
     }
   }
 

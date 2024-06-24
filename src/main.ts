@@ -156,11 +156,7 @@ const updateGameState = (deltaTime: number) => {
 
   switch (gameState.currentState) {
     case GameState.Start:
-      if (
-        menuOptions.option == "Start" ||
-        menuOptions.option == "Play"
-        // (isCustom.custom && levelGrade.customLevel)
-      ) {
+      if (menuOptions.option == "Start" || menuOptions.option == "Play") {
         startGame();
       } else {
         drawStartScreen();
@@ -173,9 +169,6 @@ const updateGameState = (deltaTime: number) => {
         gameOverFunction();
         break;
       }
-      player?.draw(deltaTime);
-      player?.moveY(deltaTime);
-      player?.moveX(deltaTime);
 
       tileMap?.moveX(player, deltaTime);
       tileMap?.drawEnemy(player, deltaTime);
@@ -185,7 +178,9 @@ const updateGameState = (deltaTime: number) => {
       tileMap?.drawAmmo(player, deltaTime);
       tileMap?.drawJet(player, deltaTime);
       player?.updateBullet(deltaTime);
-
+      player?.draw(deltaTime);
+      player?.moveY(deltaTime);
+      player?.moveX(deltaTime);
       if (player.position.y >= CANVAS_HEIGHT) {
         loseAudio.play();
         gameStatus.gameOver = true;
@@ -230,7 +225,6 @@ export const startGame = (value?: number) => {
   objects.enemyFireBullet.length = 0;
   objects.jet.length = 0;
   audioLevel.isMuted = false;
-  // levelGrade.customLevel = false;
   ammoObj.ammo = 5;
   bgmAudio.pause();
 

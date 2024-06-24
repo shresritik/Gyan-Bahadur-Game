@@ -1,10 +1,5 @@
 import { ctx } from "../components/canvas";
-import {
-  gameStatus,
-  isCustom,
-  levelGrade,
-  quizMap,
-} from "../constants/constants";
+import { gameStatus, quizMap } from "../constants/constants";
 import {
   audioOnCanvas,
   backgroundMovement,
@@ -74,7 +69,7 @@ export class Flag extends Base {
   }
 
   showQuiz(player: Player, deltaTime: number) {
-    if (this.outQuiz && this.quizTimer == 0) {
+    if (this.outQuiz) {
       this.gameOverTimer += deltaTime;
       if (this.gameOverTimer >= 1500) {
         gameStatus.gameOver = true;
@@ -82,10 +77,11 @@ export class Flag extends Base {
         this.gameOverTimer = 0;
       }
     }
+
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
-        this.quizTimer = 0;
+        // this.quizTimer = 0;
         this.gameOverTimer = 0;
       }
 
@@ -94,36 +90,16 @@ export class Flag extends Base {
         quizMap.quizMap != null &&
         quizMap.quizMap.correct != null
       ) {
-        this.quizTimer += deltaTime;
+        // this.quizTimer += deltaTime;
+
         let timer = setTimeout(() => {
           if (quizMap.quizMap) {
-            levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
-            // if (isCustom.custom) {
-            //   levelGrade.customLevel = false;
-            // } else {
-            //   levelGrade.customLevel = true;
-            // }
             quizMap.quizMap.closeQuiz();
-            // quizMap.quizMap!.correct = null;
             this.outQuiz = true;
-            this.quizTimer = 0;
+            // this.quizTimer = 0;
           }
           clearTimeout(timer);
         }, 800);
-        // if (this.quizTimer >= 500) {
-        // gameStatus.isQuiz = false;
-        // levelGrade.success = quizMap.quizMap!.correct ? "success" : "fail";
-        // if (isCustom.custom) {
-        //   levelGrade.customLevel = true;
-        //   levelGrade.customLevel = true;
-        // } else {
-        //   levelGrade.customLevel = false;
-        // }
-        // quizMap.quizMap.closeQuiz();
-        // // quizMap.quizMap!.correct = null;
-        // this.outQuiz = true;
-        // this.quizTimer = 0;
-        // }
       }
     }
   }
