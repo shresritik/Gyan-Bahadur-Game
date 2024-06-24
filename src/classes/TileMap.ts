@@ -13,7 +13,7 @@ import { Fruit } from "./Fruit";
 import { Plat } from "./Platform";
 import { Player } from "./Player";
 import { Jetpack } from "./Jetpack";
-import { backgroundMovement } from "../utils/utils";
+import { backgroundMovement, getRandomValue } from "../utils/utils";
 
 export class TileMap {
   tileSize: number = 32;
@@ -60,13 +60,15 @@ export class TileMap {
 
           newEnemy.startShooting(player);
           objects.enemy.push(newEnemy);
-        } else if (tile == 2 || tile == 3) {
+        } else if (tile == 2) {
+          let val = getRandomValue(2, 4);
+
           objects.fruit.push(
             new Fruit(
               { x: column * this.tileSize, y: row * this.tileSize },
               this.tileSize,
               this.tileSize,
-              tile
+              val
             )
           );
         } else if (tile == 6) {

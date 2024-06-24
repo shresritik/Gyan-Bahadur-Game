@@ -1,6 +1,5 @@
 // Image imports
 import grapes from "./assets/grapes.png";
-import banana from "./assets/banana.png";
 import corona from "./assets/corona.png";
 import singleFire from "./assets/single-fire.png";
 import wall from "./assets/wall.png";
@@ -12,7 +11,6 @@ import jet from "./assets/jetpack.png";
 import { isCustom, menuOptions } from "./constants/constants";
 const images = {
   grapes,
-  banana,
   corona,
   singleFire,
   wall,
@@ -160,8 +158,7 @@ function getTileKey(value: number): ImageKey | null {
       return "wall";
     case 2:
       return "grapes";
-    case 3:
-      return "banana";
+
     case 4:
       return "singleFire";
     case 5:
@@ -186,8 +183,7 @@ function getTileValue(key: ImageKey): number {
       return 1;
     case "grapes":
       return 2;
-    case "banana":
-      return 3;
+
     case "singleFire":
       return 4;
     case "corona":
