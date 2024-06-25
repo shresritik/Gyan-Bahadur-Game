@@ -28,7 +28,7 @@ export const writeBullet = (image: HTMLImageElement) => {
 export const writeLevel = () => {
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
-  ctx.fillText(`Level: ${levelGrade.level}`, 170, 35);
+  ctx.fillText(`Level: ${Math.abs(levelGrade.level)}`, 170, 35);
 };
 
 export const drawHealthBar = (

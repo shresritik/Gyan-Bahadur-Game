@@ -71,8 +71,7 @@ div {
 }
 .customLevel {
   display: none;
-  position: absolute;
-  top: 0px;
+
   margin: auto;
   flex-direction: column;
   align-items: center;
@@ -85,6 +84,4 @@ div {
   align-items: end;
   justify-content: end;
   height: 100%;
-  position: relative;
-  top: 69vh;
 }

@@ -138,10 +138,11 @@ export class Bullet extends Base {
       this.velocityDirection.x *
       ((SPEED * deltaTime) / 16.67) *
       this.#bulletSpeed;
-    if (this.position.y <= 300) {
-      this.angle = -(3 * Math.PI) / 4;
-    }
+
     if (this.angle !== 0) {
+      if (this.position.y <= 300) {
+        this.angle = -(3 * Math.PI) / 4;
+      }
       this.#bulletProjectile(movementSpeed);
     } else {
       this.position.x += movementSpeed;

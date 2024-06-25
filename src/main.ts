@@ -65,6 +65,9 @@ const setupEventListeners = () => {
     if (e.code === "KeyM") {
       muteOption();
     }
+    if (e.code === "KeyN") {
+      bgmAudio.muted = !bgmAudio.muted;
+    }
 
     if (e.code === "KeyP" && gameState.currentState === GameState.Playing) {
       gameStatus.isPaused = !gameStatus.isPaused;

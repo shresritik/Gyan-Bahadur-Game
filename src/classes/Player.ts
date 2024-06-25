@@ -17,7 +17,12 @@ import runImg from "../assets/runright-3.png";
 import jumpImg from "../assets/jump2.png";
 import shoot from "../assets/shoot.png";
 import win from "../assets/win.png";
-import { loseAudio, runAudio, winAudio } from "../components/audio";
+import {
+  loseAudio,
+  rocketAudio,
+  runAudio,
+  winAudio,
+} from "../components/audio";
 import jet from "../assets/jetpack2.png";
 import { Frame } from "../types/types";
 
@@ -79,6 +84,10 @@ export class Player extends Base {
   }
   #drawJetPack(deltaTime: number) {
     if (this.jetpackPickupTime) {
+      rocketAudio.play();
+      rocketAudio.volume = 0.5;
+      rocketAudio.autoplay = true;
+
       if (this.#jetFrame.framex! >= 3) this.#jetFrame.framex = 0;
       gameFrame += deltaTime;
       if (gameFrame >= 1000 / 12) {
@@ -193,10 +202,10 @@ export class Player extends Base {
       125
     );
   }
-  #drawStanceLeft() {
+  #drawStanceRight() {
     ctx.drawImage(this.#stanceImage, this.position.x, this.position.y, 80, 150);
   }
-  #drawStanceRight() {
+  #drawStanceLeft() {
     ctx.save();
     ctx.scale(-1, 1);
     ctx.drawImage(
@@ -232,12 +241,26 @@ export class Player extends Base {
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }
-      if (!this.directionRight && levelGrade.success != "success") {
-        this.#drawStanceRight();
-      } else if (this.directionRight && levelGrade.success != "success") {
+      if (
+        !this.directionRight &&
+        levelGrade.success != "success" &&
+        !this.jetpackPickupTime
+      ) {
         this.#drawStanceLeft();
+      } else if (
+        this.directionRight &&
+        levelGrade.success != "success" &&
+        !this.jetpackPickupTime
+      ) {
+        this.#drawStanceRight();
       }
-
+      if ((keys["d"] || keys["ArrowRight"]) && this.jetpackPickupTime) {
+        this.#drawStanceRight();
+      } else if ((keys["a"] || keys["ArrowLeft"]) && this.jetpackPickupTime) {
+        this.#drawStanceLeft();
+      } else if (this.jetpackPickupTime) {
+        this.#drawStanceRight();
+      }
       frameX = 0; // Reset frameX when not running
     }
   }

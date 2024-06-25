@@ -20,6 +20,7 @@ export class Flag extends Base {
   quiz: Quiz | null;
   outQuiz: boolean;
   quizStartTime: number | null;
+  answerProvidedTime: number | null;
   gameOverStartTime: number | null;
   #flagFrame: Frame = {
     width: 92,
@@ -32,6 +33,7 @@ export class Flag extends Base {
     this.quiz = null;
     this.outQuiz = false;
     this.quizStartTime = null;
+    this.answerProvidedTime = null;
     this.gameOverStartTime = null;
     this.flagImage = new Image();
     this.flagImage.src = flagImg;
@@ -48,7 +50,7 @@ export class Flag extends Base {
     ctx.drawImage(
       this.flagImage,
       frameX * this.#flagFrame.width,
-      0, // Adjust based on your sprite sheet layout
+      0,
       this.#flagFrame.width,
       this.#flagFrame.height,
       this.position.x,
@@ -57,7 +59,7 @@ export class Flag extends Base {
       130
     );
   }
-  // if player collides with the flag show the quiz modal and after 1.5s of completing the quiz close the modal and show gameover after 3s
+
   showQuiz(player: Player) {
     if (this.outQuiz) {
       if (!this.gameOverStartTime) {
@@ -68,25 +70,26 @@ export class Flag extends Base {
         gameStatus.gameOver = true;
         this.gameOverStartTime = null;
       }
+      return;
     }
 
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
-        this.quizStartTime = Date.now();
         this.gameOverStartTime = null;
       }
-      // FIXME quiz timer not showing the answer after waiting for certain interval
-      if (
-        gameStatus.isQuiz &&
-        quizMap.quizMap != null &&
-        quizMap.quizMap.correct != null
-      ) {
-        const currentTime = Date.now();
-        if (this.quizStartTime && currentTime - this.quizStartTime >= 3000) {
-          this.quizStartTime = null;
-          this.outQuiz = true;
-          quizMap.quizMap.closeQuiz();
+
+      if (gameStatus.isQuiz && quizMap.quizMap != null) {
+        if (quizMap.quizMap.correct !== null) {
+          if (!this.answerProvidedTime) {
+            this.answerProvidedTime = Date.now();
+          }
+          const answerElapsed = Date.now() - this.answerProvidedTime;
+          if (answerElapsed >= 3000) {
+            this.answerProvidedTime = null;
+            this.outQuiz = true;
+            quizMap.quizMap.closeQuiz();
+          }
         }
       }
     }

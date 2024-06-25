@@ -9,11 +9,11 @@ import {
   scoreCount,
 } from "../constants/constants";
 import { ctx } from "./canvas";
-const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
-const menuButtons = ["Start", "Editor", "Instruction"];
 
 import foreImg from "../assets/foreground.png";
 import { TButton } from "../types/types";
+const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
+const menuButtons = ["Start", "Editor", "Instruction"];
 const foreImage = new Image();
 foreImage.src = foreImg;
 document.addEventListener("click", handleClick);
@@ -102,7 +102,11 @@ export function drawAboutScreen() {
     CANVAS_HEIGHT / 2 - 70
   );
   ctx.fillText("Pause/Resume: p key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 40);
-  ctx.fillText("Mute/Unmute: m key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 10);
+  ctx.fillText(
+    "Mute/Unmute All Sound: m key. Mute/Unmute Bg music: n key",
+    CANVAS_WIDTH / 5,
+    CANVAS_HEIGHT / 2 - 10
+  );
   ctx.fillText(
     "Full Screen: Alt + Enter key",
     CANVAS_WIDTH / 5,
@@ -180,7 +184,6 @@ export function gameOverFunction() {
     menuOptions.option = "";
   }
 
-  // Draw "Return to Home" button
   homeButton = {
     x: CANVAS_WIDTH / 4 + 20,
     y: CANVAS_HEIGHT / 2 + 150,
@@ -202,7 +205,6 @@ export function drawPauseScreen() {
   ctx.fillText("Game Paused", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2);
   ctx.fillText("Press P to Resume", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 50);
 
-  // Draw "Return to Home" button
   homeButton = {
     x: CANVAS_WIDTH / 4,
     y: CANVAS_HEIGHT / 2 + 70,
@@ -218,4 +220,3 @@ export function drawPauseScreen() {
   ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }
 //TODO update projectile
-//FIXME quiz timer
