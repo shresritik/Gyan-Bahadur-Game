@@ -7,3 +7,6 @@ export interface IBase {
 export interface TKeys {
   [keys: string]: boolean;
 }
+export interface MapObject {
+  map: number[][];
+}

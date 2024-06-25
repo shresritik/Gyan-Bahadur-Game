@@ -8,6 +8,7 @@ import ammo from "./assets/single-water.png";
 import none from "./assets/none.png";
 import jet from "./assets/jetpack.png";
 import { isCustom, menuOptions } from "./constants/constants";
+import { MapObject } from "./interface/interface";
 const images = {
   grapes,
   corona,
@@ -24,10 +25,6 @@ const images = {
 type ImageKey = keyof typeof images;
 
 let selectedTile: ImageKey | null = null;
-
-interface MapObject {
-  map: number[][];
-}
 
 const rows = 20;
 const cols = 120;

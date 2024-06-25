@@ -11,14 +11,9 @@ import {
 import { ctx } from "./canvas";
 const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
 const menuButtons = ["Start", "Editor", "Instruction"];
-type TButton = {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  option?: number;
-};
+
 import foreImg from "../assets/foreground.png";
+import { TButton } from "../types/types";
 const foreImage = new Image();
 foreImage.src = foreImg;
 document.addEventListener("click", handleClick);
@@ -138,6 +133,7 @@ export function drawAboutScreen() {
     y: CANVAS_HEIGHT / 2 + 180,
     w: 200,
     h: 50,
+    option: null,
   };
   ctx.font = "22px Paytone One";
 
@@ -190,6 +186,7 @@ export function gameOverFunction() {
     y: CANVAS_HEIGHT / 2 + 150,
     w: 250,
     h: 50,
+    option: null,
   };
   ctx.fillStyle = "red";
   ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
@@ -211,6 +208,7 @@ export function drawPauseScreen() {
     y: CANVAS_HEIGHT / 2 + 70,
     w: 200,
     h: 50,
+    option: null,
   };
   ctx.font = "22px Paytone One ";
 

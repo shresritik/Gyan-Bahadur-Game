@@ -32,3 +32,11 @@ export type TObj = {
   jet: Jetpack[];
 };
 export type Ttile = number[][];
+
+export type TButton = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  option: number | null;
+};

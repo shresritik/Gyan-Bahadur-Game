@@ -9,8 +9,8 @@ import { eatingAudio } from "../components/audio";
 
 export class Fruit extends Base {
   tile: number = 0;
-  private static bananaImage: HTMLImageElement;
-  private static grapeImage: HTMLImageElement;
+  #bananaImage: HTMLImageElement;
+  #grapeImage: HTMLImageElement;
 
   constructor(
     position: { x: number; y: number },
@@ -21,55 +21,34 @@ export class Fruit extends Base {
     super(position, h, w);
     this.tile = tile;
 
-    if (!Fruit.bananaImage) {
-      Fruit.bananaImage = new Image();
-      Fruit.bananaImage.src = banana;
-    }
+    this.#bananaImage = new Image();
+    this.#bananaImage.src = banana;
 
-    if (!Fruit.grapeImage) {
-      Fruit.grapeImage = new Image();
-      Fruit.grapeImage.src = grape;
+    this.#grapeImage = new Image();
+    this.#grapeImage.src = grape;
+  }
+  // if player collides with the fruit increase health and remove the fruit
+  #playerCollision(player: Player) {
+    if (detectCollision(player, this)) {
+      eatingAudio.play();
+      if (scoreCount.health < 100) scoreCount.health++;
+      objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
     }
   }
-
   draw = (player: Player) => {
     let image: HTMLImageElement | undefined;
 
     if (this.tile === 3) {
-      image = Fruit.bananaImage;
+      image = this.#bananaImage;
     } else if (this.tile === 2) {
-      image = Fruit.grapeImage;
+      image = this.#grapeImage;
     }
-
-    if (image && image.complete) {
+    if (image)
       ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
-
-      if (detectCollision(player, this)) {
-        eatingAudio.play();
-        if (scoreCount.health < 100) scoreCount.health++;
-        objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
-      }
-    } else if (image) {
-      image.onload = () => {
-        ctx.drawImage(image, this.position.x, this.position.y - 10, 40, 50);
-
-        if (detectCollision(player, this)) {
-          eatingAudio.play();
-
-          if (scoreCount.health < 100) scoreCount.health++;
-          objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
-        }
-      };
-    }
+    this.#playerCollision(player);
   };
 
   moveX = (player: Player, deltaTime: number) => {
-    // const movementSpeed = (SPEED * deltaTime) / 16.67;
-    // if (keys["d"] && player.position.x >= 300) {
-    //   this.position.x -= movementSpeed;
-    // } else if (keys["a"] && player.position.x >= 300) {
-    //   this.position.x += movementSpeed;
-    // }
     backgroundMovement(player, this, deltaTime);
   };
 }

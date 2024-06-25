@@ -13,16 +13,16 @@ let frameY = 0;
 const frameInterval = 1000 / 5;
 let gameFrame = 0;
 export class Jetpack extends Base {
-  jetImg: HTMLImageElement;
-  jetFrame: Frame = {
+  #jetImg: HTMLImageElement;
+  #jetFrame: Frame = {
     width: 508,
     height: 523,
   };
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
-    this.jetImg = new Image();
-    this.jetImg.src = jet;
+    this.#jetImg = new Image();
+    this.#jetImg.src = jet;
   }
 
   drawJet(deltaTime: number) {
@@ -33,17 +33,18 @@ export class Jetpack extends Base {
       gameFrame = 0;
     }
     ctx.drawImage(
-      this.jetImg,
-      frameX * this.jetFrame.width,
-      frameY * this.jetFrame.height,
-      this.jetFrame.width,
-      this.jetFrame.height,
+      this.#jetImg,
+      frameX * this.#jetFrame.width,
+      frameY * this.#jetFrame.height,
+      this.#jetFrame.width,
+      this.#jetFrame.height,
       this.position.x,
       this.position.y,
       50,
       60
     );
   }
+  // if player collides the jetpack initialize the jetpack timer in player class
   collidesPlayer(player: Player, deltaTime: number) {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (detectCollision(player, this)) {
@@ -51,17 +52,12 @@ export class Jetpack extends Base {
       player.velocityY -= movementSpeed;
       player.gravity = 0;
 
-      player.jetpackPickupTime = Date.now(); // Set the pickup time
+      player.jetpackPickupTime = Date.now();
       objects.jet = objects.jet.filter((j) => j != this);
     }
   }
 
   moveX(player: Player, deltaTime: number) {
-    // const movementSpeed = (SPEED * deltaTime) / 16.67;
-
-    // if (keys["d"] && player.position.x >= 300) this.position.x -= movementSpeed;
-    // else if (keys["a"] && player.position.x >= 300)
-    //   this.position.x += movementSpeed;
     backgroundMovement(player, this, deltaTime);
   }
 }

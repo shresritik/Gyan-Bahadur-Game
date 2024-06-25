@@ -3,38 +3,26 @@ import { keys } from "../constants/constants";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
-
+import wall from "../assets/wall.png";
 export class Plat extends Base {
-  private image: HTMLImageElement;
+  #image: HTMLImageElement;
 
   constructor(position: { x: number; y: number }, w: number, h: number) {
     super(position, h, w);
-    this.image = new Image();
-    this.image.src = "images/wall.png";
+    this.#image = new Image();
+    this.#image.src = wall;
   }
 
   draw = () => {
-    if (this.image.complete) {
-      ctx.drawImage(
-        this.image,
-        this.position.x,
-        this.position.y,
-        this.w,
-        this.h
-      );
-    } else {
-      this.image.onload = () => {
-        ctx.drawImage(
-          this.image,
-          this.position.x,
-          this.position.y,
-          this.w,
-          this.h
-        );
-      };
-    }
+    ctx.drawImage(
+      this.#image,
+      this.position.x,
+      this.position.y,
+      this.w,
+      this.h
+    );
   };
-
+  // handle horizontal and vertical collision with the player
   playerCollision(player: Player) {
     if (detectCollision(player, this)) {
       // Vertical Collision: Player lands on top or hits the bottom of the platform
@@ -79,12 +67,6 @@ export class Plat extends Base {
   }
 
   moveX = (player: Player, deltaTime: number) => {
-    // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-    // if (keys["d"] && player.position.x >= 300) {
-    //   this.position.x -= movementSpeed;
-    // } else if (keys["a"] && player.position.x >= 300) {
-    //   this.position.x += movementSpeed;
-    // }
     backgroundMovement(player, this, deltaTime);
   };
 }
