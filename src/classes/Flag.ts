@@ -14,11 +14,12 @@ import { flagAudio } from "../components/audio";
 let frameX = 0;
 let gameFrame = 0;
 const frameInterval = 1000 / 6;
+
 export class Flag extends Base {
   quiz: Quiz | null;
   outQuiz: boolean;
-  quizTimer: number;
-  gameOverTimer: number;
+  quizStartTime: number | null;
+  gameOverStartTime: number | null;
   flagFrame: {
     flagWidth: number;
     flagHeight: number;
@@ -34,8 +35,8 @@ export class Flag extends Base {
     super(position, h, w);
     this.quiz = null;
     this.outQuiz = false;
-    this.quizTimer = 0;
-    this.gameOverTimer = 0;
+    this.quizStartTime = null;
+    this.gameOverStartTime = null;
     this.flagImage = new Image();
     this.flagImage.src = flagImg;
   }
@@ -61,20 +62,23 @@ export class Flag extends Base {
     );
   }
 
-  showQuiz(player: Player, deltaTime: number) {
+  showQuiz(player: Player) {
     if (this.outQuiz) {
-      this.gameOverTimer += deltaTime;
-      if (this.gameOverTimer >= 1500) {
+      if (!this.gameOverStartTime) {
+        this.gameOverStartTime = Date.now();
+      }
+      const gameOverElapsed = Date.now() - this.gameOverStartTime;
+      if (gameOverElapsed >= 1500) {
         gameStatus.gameOver = true;
-        this.gameOverTimer = 0;
+        this.gameOverStartTime = null;
       }
     }
 
     if (detectCollision(player, this)) {
       if (!gameStatus.isQuiz && !this.outQuiz) {
         gameStatus.isQuiz = true;
-        this.quizTimer = Date.now();
-        this.gameOverTimer = 0;
+        this.quizStartTime = Date.now();
+        this.gameOverStartTime = null;
       }
 
       if (
@@ -83,10 +87,10 @@ export class Flag extends Base {
         quizMap.quizMap.correct != null
       ) {
         const currentTime = Date.now();
-        if (currentTime - this.quizTimer >= 800) {
-          quizMap.quizMap.closeQuiz();
+        if (this.quizStartTime && currentTime - this.quizStartTime >= 3000) {
+          this.quizStartTime = null;
           this.outQuiz = true;
-          this.quizTimer = 0;
+          quizMap.quizMap.closeQuiz();
         }
       }
     }

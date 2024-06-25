@@ -75,7 +75,6 @@ export class Quiz {
 
       return button;
     });
-
     if (this.correct !== null) {
       ctx.fillText(
         currentQuiz.error,
@@ -138,11 +137,11 @@ export class Quiz {
   }
 
   checkAnswer(option: number, currentQuiz: Tquiz) {
-    if (option === currentQuiz.answerIndex && this.correct == null) {
+    if (option === currentQuiz.answerIndex) {
       scoreCount.score += 10;
       this.correct = true;
       levelGrade.success = "success";
-    } else if (this.correct == null) {
+    } else {
       this.correct = false;
       levelGrade.success = "fail";
     }

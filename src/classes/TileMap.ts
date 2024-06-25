@@ -160,7 +160,7 @@ export class TileMap {
     objects.flag.forEach((fl) => {
       fl.drawFlag(deltaTime);
       fl.moveX(player, deltaTime);
-      fl.showQuiz(player, deltaTime);
+      fl.showQuiz(player);
     });
   }
   drawAnimal(player: Player, deltaTime: number) {
