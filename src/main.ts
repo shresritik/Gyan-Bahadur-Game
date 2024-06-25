@@ -20,7 +20,7 @@ import { TileMap } from "./classes/TileMap";
 import "./style.css";
 import { Quiz } from "./classes/Quiz";
 import { handleFullScreen } from "./utils/utils";
-import singleWater from "./assets/single-water.png";
+import singleWater from "./assets/images/single-water.png";
 import {
   drawAboutScreen,
   drawPauseScreen,

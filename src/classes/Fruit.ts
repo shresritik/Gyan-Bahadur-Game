@@ -3,8 +3,8 @@ import { objects, scoreCount } from "../constants/constants";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
-import banana from "../assets/banana.png";
-import grape from "../assets/grapes.png";
+import banana from "../assets/images/banana.png";
+import grape from "../assets/images/grapes.png";
 import { eatingAudio } from "../components/audio";
 import { IFruit } from "../interface/interface";
 

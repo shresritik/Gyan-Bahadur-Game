@@ -3,7 +3,7 @@ import { keys } from "../constants/constants";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
-import wall from "../assets/wall.png";
+import wall from "../assets/images/wall.png";
 import { IPlat } from "../interface/interface";
 
 export class Plat extends Base implements IPlat {

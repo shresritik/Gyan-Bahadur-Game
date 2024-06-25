@@ -1,12 +1,12 @@
-import grapes from "./assets/grapes.png";
-import corona from "./assets/corona.png";
-import singleFire from "./assets/single-fire.png";
-import wall from "./assets/wall.png";
-import flag from "./assets/single-flag.png";
-import animal from "./assets/dog1.png";
-import ammo from "./assets/single-water.png";
-import none from "./assets/none.png";
-import jet from "./assets/jetpack.png";
+import grapes from "./assets/images/grapes.png";
+import corona from "./assets/images/corona.png";
+import singleFire from "./assets/images/single-fire.png";
+import wall from "./assets/images/wall.png";
+import flag from "./assets/images/single-flag.png";
+import animal from "./assets/images/dog1.png";
+import ammo from "./assets/images/single-water.png";
+import none from "./assets/images/none.png";
+import jet from "./assets/images/jetpack.png";
 import { isCustom, menuOptions } from "./constants/constants";
 import { MapObject } from "./interface/interface";
 const images = {

@@ -13,8 +13,8 @@ import {
 } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
-import fireImg from "../assets/fire.png";
-import coronaImg from "../assets/virus2.png";
+import fireImg from "../assets/images/fire.png";
+import coronaImg from "../assets/images/virus2.png";
 import { Bullet } from "./Bullet";
 import { Plat } from "./Platform";
 import { coronaAudio, damageAudio, fireAudio } from "../components/audio";

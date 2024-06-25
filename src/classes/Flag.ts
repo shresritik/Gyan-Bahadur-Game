@@ -7,7 +7,7 @@ import {
 } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
-import flagImg from "../assets/flag.png";
+import flagImg from "../assets/images/flag.png";
 import { Quiz } from "./Quiz";
 import { flagAudio } from "../components/audio";
 import { Frame } from "../types/types";

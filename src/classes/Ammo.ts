@@ -1,7 +1,7 @@
 import { ctx } from "../components/canvas";
 import { ammoObj, objects } from "../constants/constants";
 import { Base } from "./Base";
-import water from "../assets/h-water.png";
+import water from "../assets/images/h-water.png";
 import { Player } from "./Player";
 import {
   audioOnCanvas,

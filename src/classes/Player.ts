@@ -12,18 +12,18 @@ import {
 } from "../constants/constants";
 import { Base } from "./Base";
 import { Bullet } from "./Bullet";
-import stanceImg from "../assets/stancer2.png";
-import runImg from "../assets/runright-3.png";
-import jumpImg from "../assets/jump2.png";
-import shoot from "../assets/shoot.png";
-import win from "../assets/win.png";
+import stanceImg from "../assets/images/stancer2.png";
+import runImg from "../assets/images/runright-3.png";
+import jumpImg from "../assets/images/jump2.png";
+import shoot from "../assets/images/shoot.png";
+import win from "../assets/images/win.png";
 import {
   loseAudio,
   rocketAudio,
   runAudio,
   winAudio,
 } from "../components/audio";
-import jet from "../assets/jetpack2.png";
+import jet from "../assets/images/jetpack2.png";
 import { Frame } from "../types/types";
 import { IPlayer } from "../interface/interface";
 

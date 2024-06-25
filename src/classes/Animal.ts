@@ -1,5 +1,5 @@
 import { Base } from "./Base";
-import dog from "../assets/dogr2.png";
+import dog from "../assets/images/dogr2.png";
 import { ctx } from "../components/canvas";
 import { objects, scoreCount } from "../constants/constants";
 import { Player } from "./Player";

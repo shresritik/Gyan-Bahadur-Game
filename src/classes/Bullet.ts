@@ -1,9 +1,9 @@
 import { ctx } from "../components/canvas";
 import { SPEED } from "../constants/constants";
 import { Base } from "./Base";
-import firer from "../assets/firer.png";
-import water from "../assets/water.png";
-import corona from "../assets/corona.png";
+import firer from "../assets/images/firer.png";
+import water from "../assets/images/water.png";
+import corona from "../assets/images/corona.png";
 import { explosionAudio, waterAudio } from "../components/audio";
 import { Frame } from "../types/types";
 import { IBullet } from "../interface/interface";

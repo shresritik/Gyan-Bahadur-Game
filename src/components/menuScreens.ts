@@ -10,7 +10,7 @@ import {
 } from "../constants/constants";
 import { ctx } from "./canvas";
 
-import foreImg from "../assets/foreground.png";
+import foreImg from "../assets/images/foreground.png";
 import { TButton } from "../types/types";
 const buttonBox = { x: 800, y: 50, w: 200, h: 500 };
 const menuButtons = ["Start", "Editor", "Instruction"];

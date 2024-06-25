@@ -1,7 +1,7 @@
 import { ctx } from "../components/canvas";
 import { SPEED, objects } from "../constants/constants";
 import { Base } from "./Base";
-import jet from "../assets/jetpack2.png";
+import jet from "../assets/images/jetpack2.png";
 import { Player } from "./Player";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Frame } from "../types/types";
