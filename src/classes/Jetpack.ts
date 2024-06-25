@@ -4,7 +4,6 @@ import { Base } from "./Base";
 import jet from "../assets/jetpack2.png";
 import { Player } from "./Player";
 import { backgroundMovement, detectCollision } from "../utils/utils";
-import { rocketAudio } from "../components/audio";
 type Frame = {
   width: number;
   height: number;

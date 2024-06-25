@@ -8,7 +8,8 @@ import { Plat } from "../classes/Platform";
 import { Player } from "../classes/Player";
 import { Jetpack } from "../classes/Jetpack";
 import { toggleFullScreen } from "../components/toggleFullScreen";
-import { CANVAS_WIDTH, SPEED, TKeys, keys } from "../constants/constants";
+import { CANVAS_WIDTH, SPEED, keys } from "../constants/constants";
+import { TKeys } from "../interface/interface";
 /**
  * Generates a random integer value between min (inclusive) and max (exclusive).
  * @param min The minimum value (inclusive).
