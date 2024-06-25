@@ -50,7 +50,6 @@ function handleClick(e: MouseEvent) {
     }
   }
 
-  // Add this block to handle clicks on the "Return to Home" button
   if (homeButton) {
     if (
       offsetX >= homeButton.x &&

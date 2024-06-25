@@ -1,15 +1,7 @@
-import { Ammo } from "../classes/Ammo";
-import { Animal } from "../classes/Animal";
-import { Bullet } from "../classes/Bullet";
-import { Enemy } from "../classes/Enemy";
-import { Flag } from "../classes/Flag";
-import { Fruit } from "../classes/Fruit";
-import { Jetpack } from "../classes/Jetpack";
-import { Plat } from "../classes/Platform";
 import { Quiz } from "../classes/Quiz";
-export interface TKeys {
-  [keys: string]: boolean;
-}
+import { TKeys } from "../interface/interface";
+import { TObj, Tquiz, Ttile } from "../types/types";
+
 export const keys: TKeys = {};
 export const CANVAS_WIDTH = 1280;
 export const CANVAS_HEIGHT = 640;
@@ -23,21 +15,15 @@ export enum GameState {
 export const gameState = {
   currentState: GameState.Start,
 };
-export const gameStatus = { gameOver: false, isPaused: false, isQuiz: false };
+export const gameStatus: {
+  gameOver: boolean;
+  isPaused: boolean;
+  isQuiz: boolean;
+} = { gameOver: false, isPaused: false, isQuiz: false };
 export const scoreCount = { score: 0, health: 100 };
 export const quizMap: { quizMap: Quiz | null } = { quizMap: null };
-export const objects: {
-  platform: Plat[];
-  enemy: Enemy[];
-  fruit: Fruit[];
-  flag: Flag[];
-  animal: Animal[];
-  ammo: Ammo[];
-  bullet: Bullet[];
-  enemyFireBullet: Bullet[];
-  enemyBullet: Bullet[];
-  jet: Jetpack[];
-} = {
+
+export const objects: TObj = {
   platform: [],
   enemy: [],
   fruit: [],
@@ -52,13 +38,9 @@ export const objects: {
 export const ammoObj = {
   ammo: 5,
 };
-export type Tquiz = {
-  id: number;
-  question: string;
-  answerIndex: number;
-  options: string[];
-  error: string;
-};
+
+export const frameInterval = 1000 / 12; // 12 frames per second
+
 export const quizObj: Tquiz[] = [
   {
     id: 0,
@@ -82,11 +64,10 @@ export const quizObj: Tquiz[] = [
     error: "Mt Everest is the highest mountain of 8848m",
   },
 ];
-export const levelGrade = { success: "", level: 0, levelVal: 0 };
+export const levelGrade = { success: "", level: 0 };
 export const menuOptions = { option: "" };
 export const isCustom: { custom: boolean } = { custom: false };
 export const audioLevel = { isMuted: false };
-export type Ttile = number[][];
 export const level1: Ttile = [
   [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

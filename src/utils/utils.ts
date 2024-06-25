@@ -84,13 +84,7 @@ export function getDistance(
 ): number {
   return Math.floor(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
 }
-export const normalizeVector = (vector: { x: number; y: number }) => {
-  const length = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  return {
-    x: vector.x / length,
-    y: vector.y / length,
-  };
-};
+
 export function audioOnCanvas(audio: HTMLMediaElement, caller: Tdetector) {
   if (caller.position.x <= CANVAS_WIDTH && caller.position.x >= 0) {
     audio.play();

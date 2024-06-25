@@ -1,4 +1,3 @@
-// Image imports
 import grapes from "./assets/grapes.png";
 import corona from "./assets/corona.png";
 import singleFire from "./assets/single-fire.png";
@@ -24,10 +23,8 @@ const images = {
 // Define a type for the keys of the images object
 type ImageKey = keyof typeof images;
 
-// State variables for tile selection
 let selectedTile: ImageKey | null = null;
 
-// Map object
 interface MapObject {
   map: number[][];
 }
@@ -42,10 +39,15 @@ customLevel.className = "customLevel";
 const tableEl = document.createElement("table");
 customLevel.append(tableEl);
 
-let visibleStartIndex = 0; // Start by showing the first 20 columns
+let visibleStartIndex = 0;
 let isMouseDown = false;
 
-// Function to create map object
+/**
+ * initialize the map with zeros
+ * @param rows no. of rows
+ * @param cols no.of cols
+ * @returns array of rows and cols
+ */
 function createMapObj(rows: number, cols: number): MapObject {
   const map = Array.from({ length: rows }, () => Array(cols).fill(0));
   return { map };
@@ -87,7 +89,7 @@ function prev() {
   }
 }
 
-// Function to render the table
+// Function to render the table with mouse events and image on the columns
 function renderTable() {
   tableEl.innerHTML = ""; // Clear existing table
 
@@ -114,12 +116,14 @@ function renderTable() {
       tableColumn.addEventListener("mouseover", () => {
         if (isMouseDown) addTile(row, column, tableColumn);
       });
+      tableColumn.addEventListener("mouseleave", () => {
+        isMouseDown = false;
+      });
       tableColumn.addEventListener("dragover", (e) => {
         e.preventDefault();
         if (isMouseDown) addTile(row, column, tableColumn);
       });
 
-      // Add image if the map value is not zero
       if (mapObj.map[row][column] !== 0) {
         const image = new Image();
         image.src = images[getTileKey(mapObj.map[row][column]) as ImageKey];
@@ -132,7 +136,7 @@ function renderTable() {
   }
 }
 
-// Function to add tile to the map
+// Function to add tile to the map with image and the values based on the selected tile
 function addTile(row: number, column: number, tableColumn: HTMLElement) {
   if (!selectedTile) return;
 
@@ -200,34 +204,35 @@ function getTileValue(key: ImageKey): number {
       return 0;
   }
 }
+// Reset map values and images to 0
+
 function reset() {
-  isCustom.custom = false; // Assuming isCustom is a global variable or state
+  isCustom.custom = false;
   const tds = document.querySelectorAll("td");
 
-  // Reset mapObj.map values to 0
   for (let row = 0; row < mapObj.map.length; row++) {
     for (let col = 0; col < mapObj.map[row].length; col++) {
       mapObj.map[row][col] = 0;
     }
   }
 
-  // Remove all images from table cells
   tds.forEach((td) => {
     const images = td.querySelectorAll("img");
     images.forEach((img) => img.remove());
   });
 }
+//set the custom variable to true and remove the editor
 function play() {
   isCustom.custom = true;
   customLevel.style.display = "none";
   menuOptions.option = "Play";
 }
+//remove the custom editor
 function back() {
   isCustom.custom = false;
-  customLevel.style.display = "block";
   customLevel.style.display = "none";
 }
-// Create UI elements dynamically
+// Create div and button elements dynamically
 function createUI() {
   const controlsDiv = document.createElement("div");
   const imgDiv = document.createElement("div");

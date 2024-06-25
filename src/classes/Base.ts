@@ -1,9 +1,4 @@
-export interface IBase {
-  position: { x: number; y: number };
-  h: number;
-  w: number;
-  bulletY?: number;
-}
+import { IBase } from "../interface/interface";
 
 export class Base implements IBase {
   position: { x: number; y: number };

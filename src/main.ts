@@ -8,7 +8,6 @@ import {
   gameStatus,
   quizMap,
   ammoObj,
-  TKeys,
   levelGrade,
   menuOptions,
   isCustom,
@@ -28,23 +27,26 @@ import {
   drawStartScreen,
   gameOverFunction,
 } from "./components/menuScreens";
-import { bgmAudio, loseAudio, winAudio } from "./components/audio";
+import { bgmAudio, winAudio } from "./components/audio";
 import { muteOption } from "./components/mute";
-
+import {
+  drawHealthBar,
+  writeBullet,
+  writeLevel,
+  writeScore,
+} from "./components/scores";
+//initializing the variables for preloading
 let tileMap: TileMap;
 let player: Player;
-
 let lastFrameTime = performance.now();
-
-const keysArray: TKeys = {};
 const image = new Image();
 image.src = singleWater;
-let maxScore: number = 0;
-
+/**
+ * event listeners for play, mute, pause and shoot
+ */
 const setupEventListeners = () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
     keys[e.key] = true;
-    keysArray[e.key] = true;
     if (
       e.code === "Space" &&
       levelGrade.level != 2 &&
@@ -83,65 +85,22 @@ const setupEventListeners = () => {
 
   window.addEventListener("keyup", (e: KeyboardEvent) => {
     keys[e.key] = false;
-    delete keysArray[e.key];
   });
 };
-
+/**
+ * initialize the maps and player
+ * @param level: level of the player
+ */
 const drawObjects = (level: number) => {
   tileMap = new TileMap(level);
   player = new Player({ x: 20, y: 100 }, 120, 60);
   tileMap.drawMap(player);
   quizMap.quizMap = new Quiz();
 };
-
-const writeScore = () => {
-  ctx.fillStyle = "white";
-  ctx.font = "20px sans-serif";
-  if (maxScore < scoreCount.score) {
-    maxScore = scoreCount.score;
-    localStorage.setItem("maxScore", JSON.stringify(maxScore));
-  }
-  ctx.fillText(`Score: ${scoreCount.score}`, 15, 35);
-};
-
-const writeBullet = () => {
-  ctx.fillStyle = "white";
-  ctx.font = "20px sans-serif";
-  ctx.drawImage(image, 110, 10, 20, 30);
-  ctx.fillText(`${ammoObj.ammo}`, 140, 35);
-};
-
-const writeLevel = () => {
-  ctx.fillStyle = "white";
-  ctx.font = "20px sans-serif";
-  ctx.fillText(`Level: ${levelGrade.level}`, 170, 35);
-};
-
-const drawHealthBar = (
-  x = 15,
-  y = 50,
-  width = 200,
-  height = 20,
-  maxHealth: number = 100
-) => {
-  let currentHealth = scoreCount.health;
-  if (currentHealth <= 0) {
-    gameStatus.gameOver = true;
-  }
-
-  ctx.fillStyle = "#000";
-  ctx.fillRect(x, y, width, height);
-  ctx.fillStyle = "white";
-  ctx.fillText(` ${currentHealth}%`, 215, 68);
-
-  const healthWidth = (currentHealth / maxHealth) * width;
-  ctx.fillStyle = "green";
-  ctx.fillRect(x, y, healthWidth, height);
-
-  ctx.strokeStyle = "#fff";
-  ctx.strokeRect(x, y, width, height);
-};
-
+/**
+ * this function starts the game time, stores it and passes it to updateGameState function
+ * @param currentTime takes the game time
+ */
 const gameLoop = (currentTime: number) => {
   if (!gameStatus.isPaused) {
     const deltaTime = currentTime - lastFrameTime;
@@ -151,12 +110,38 @@ const gameLoop = (currentTime: number) => {
 
   requestAnimationFrame(gameLoop);
 };
-
+/**
+ * this function draws objects from tilemap and update player position
+ * @param deltaTime gametime
+ */
+const moveObjects = (deltaTime: number) => {
+  tileMap?.moveX(player, deltaTime);
+  tileMap?.drawEnemy(player, deltaTime);
+  tileMap?.drawFruit(player, deltaTime);
+  tileMap?.drawFlag(player, deltaTime);
+  tileMap?.drawAnimal(player, deltaTime);
+  tileMap?.drawAmmo(player, deltaTime);
+  tileMap?.drawJet(player, deltaTime);
+  player?.updateBullet(deltaTime);
+  player?.draw(deltaTime);
+  player?.moveY(deltaTime);
+  player?.moveX(deltaTime);
+};
+/**
+ * Based on the gamestate and the options of the homescreen the screen are rendered
+ * @param deltaTime gametime
+ */
 const updateGameState = (deltaTime: number) => {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   switch (gameState.currentState) {
     case GameState.Start:
+      if (!audioLevel.isMuted && bgmAudio.paused) {
+        bgmAudio.play();
+        bgmAudio.autoplay = true;
+        bgmAudio.play();
+        bgmAudio.volume = 0.8;
+      }
       if (menuOptions.option == "Start" || menuOptions.option == "Play") {
         startGame();
       } else if (menuOptions.option == "Instruction") {
@@ -173,35 +158,13 @@ const updateGameState = (deltaTime: number) => {
         break;
       }
 
-      tileMap?.moveX(player, deltaTime);
-      tileMap?.drawEnemy(player, deltaTime);
-      tileMap?.drawFruit(player, deltaTime);
-      tileMap?.drawFlag(player, deltaTime);
-      tileMap?.drawAnimal(player, deltaTime);
-      tileMap?.drawAmmo(player, deltaTime);
-      tileMap?.drawJet(player, deltaTime);
-      player?.updateBullet(deltaTime);
-      player?.draw(deltaTime);
-      player?.moveY(deltaTime);
-      player?.moveX(deltaTime);
-      if (player.position.y >= CANVAS_HEIGHT) {
-        loseAudio.play();
-        gameStatus.gameOver = true;
-      }
-
-      objects.enemy.forEach((enemy) => {
-        enemy.updateEnemyBullet(player, deltaTime);
-        enemy.enemyBulletCollision();
-        objects.platform.forEach((platform) => {
-          enemy.platformCollision(platform);
-        });
-      });
+      moveObjects(deltaTime);
 
       if (gameStatus.isQuiz && quizMap.quizMap != null) {
         quizMap.quizMap.draw();
       }
 
-      writeBullet();
+      writeBullet(image);
       writeScore();
       writeLevel();
       drawHealthBar();
@@ -210,21 +173,12 @@ const updateGameState = (deltaTime: number) => {
       gameOverFunction();
       break;
   }
-
-  // Ensure bgmAudio is playing
-  if (
-    gameState.currentState === GameState.Start &&
-    !audioLevel.isMuted &&
-    bgmAudio.paused
-  ) {
-    bgmAudio.play();
-    bgmAudio.autoplay = true;
-    bgmAudio.play();
-    bgmAudio.volume = 0.8;
-  }
 };
-
-export const startGame = (value?: number) => {
+/**
+ * restart the gameloop by initializing the variables
+ * @param value define the level default it is level 1 if value=1 then level2
+ */
+const startGame = (value?: number) => {
   gameStatus.gameOver = false;
   gameStatus.isPaused = false;
   scoreCount.score = 0;
@@ -246,19 +200,15 @@ export const startGame = (value?: number) => {
   if (winAudio.played) winAudio.pause();
   if (menuOptions.option == "Start") {
     drawObjects(1);
-    // menuOptions.option = "";
   }
   if (levelGrade.success == "success" && value == 1) {
     drawObjects(2);
-    // levelGrade.success = "fail";
   }
   if (
     isCustom.custom == true &&
     (menuOptions.option == "Editor" || menuOptions.option == "Play")
   ) {
     drawObjects(-1);
-
-    // menuOptions.option = "";
   }
 
   if (player) {
@@ -276,4 +226,5 @@ export const startGame = (value?: number) => {
 
 setupEventListeners();
 handleFullScreen();
+//start the gameloop
 requestAnimationFrame(gameLoop);

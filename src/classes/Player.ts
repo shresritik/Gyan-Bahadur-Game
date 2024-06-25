@@ -4,6 +4,8 @@ import {
   CANVAS_WIDTH,
   SPEED,
   ammoObj,
+  frameInterval,
+  gameStatus,
   keys,
   levelGrade,
   objects,
@@ -17,223 +19,223 @@ import shoot from "../assets/shoot.png";
 import win from "../assets/win.png";
 import { loseAudio, runAudio, winAudio } from "../components/audio";
 import jet from "../assets/jetpack2.png";
-
-interface IPlayer {
-  position: { x: number; y: number };
-  h: number;
-  w: number;
-}
+import { Frame } from "../types/types";
 
 let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
-const frameInterval = 1000 / 12; // 12 frames per second
-type Frame = {
-  width: number;
-  height: number;
-};
-let framex = 0;
 
-export class Player extends Base implements IPlayer {
-  stanceFrame: Frame = {
+export class Player extends Base {
+  #stanceFrame: Frame = {
     width: 30,
     height: 52,
   };
-  shootFrame: Frame = {
+  #shootFrame: Frame = {
     width: 61,
     height: 81,
   };
 
-  runFrame: Frame = {
+  #runFrame: Frame = {
     width: 45.5,
     height: 52,
   };
-  jetFrame: Frame = {
+  #jetFrame: Frame = {
     width: 508,
     height: 523,
+    framex: 0,
   };
 
   velocityY = 0;
   gravity = 0.2;
   directionRight: boolean = true;
-  cooldownTime = 0;
 
   // Preloaded images
-  stanceImage: HTMLImageElement;
-  runImage: HTMLImageElement;
-  jumpImage: HTMLImageElement;
-  winImage: HTMLImageElement;
-  shootImage: HTMLImageElement;
-  jetImg: HTMLImageElement;
+  #stanceImage: HTMLImageElement;
+  #runImage: HTMLImageElement;
+  #jumpImage: HTMLImageElement;
+  #winImage: HTMLImageElement;
+  #shootImage: HTMLImageElement;
+  #jetImg: HTMLImageElement;
   jetpackPickupTime: number | null = null;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
-    this.jetImg = new Image();
-    this.jetImg.src = jet;
-    // Preload images
-    this.stanceImage = new Image();
-    this.stanceImage.src = stanceImg;
+    this.#jetImg = new Image();
+    this.#jetImg.src = jet;
 
-    this.runImage = new Image();
-    this.runImage.src = runImg;
+    this.#stanceImage = new Image();
+    this.#stanceImage.src = stanceImg;
 
-    this.jumpImage = new Image();
-    this.jumpImage.src = jumpImg;
-    this.shootImage = new Image();
-    this.shootImage.src = shoot;
-    this.winImage = new Image();
+    this.#runImage = new Image();
+    this.#runImage.src = runImg;
 
-    this.winImage.src = win;
+    this.#jumpImage = new Image();
+    this.#jumpImage.src = jumpImg;
+
+    this.#shootImage = new Image();
+    this.#shootImage.src = shoot;
+
+    this.#winImage = new Image();
+    this.#winImage.src = win;
   }
-
-  draw(deltaTime: number) {
-    gameFrame += deltaTime;
-    if (gameFrame >= frameInterval) {
-      frameX++;
-      gameFrame = 0;
-    }
-
+  #drawJetPack(deltaTime: number) {
     if (this.jetpackPickupTime) {
-      if (framex >= 3) framex = 0;
+      if (this.#jetFrame.framex! >= 3) this.#jetFrame.framex = 0;
       gameFrame += deltaTime;
       if (gameFrame >= 1000 / 12) {
-        framex++;
+        this.#jetFrame.framex!++;
         gameFrame = 0;
       }
       ctx.drawImage(
-        this.jetImg,
-        framex * this.jetFrame.width,
-        0 * this.jetFrame.height,
-        this.jetFrame.width,
-        this.jetFrame.height,
+        this.#jetImg,
+        this.#jetFrame.framex! * this.#jetFrame.width,
+        0 * this.#jetFrame.height,
+        this.#jetFrame.width,
+        this.#jetFrame.height,
         this.position.x,
         this.position.y + 30,
         50,
         60
       );
     }
-    if ((keys["d"] || keys["ArrowRight"]) && !this.jetpackPickupTime) {
-      runAudio.play();
-      this.directionRight = true;
+  }
+  #drawRunRight() {
+    this.directionRight = true;
 
-      if (frameX >= 8) frameX = 0;
+    if (frameX >= 8) frameX = 0;
+    ctx.drawImage(
+      this.#runImage,
+      frameX * this.#runFrame.width,
+      frameY * this.#runFrame.height,
+      this.#runFrame.width,
+      this.#runFrame.height,
+      this.position.x - 20,
+      this.position.y + 10,
+      100,
+      130
+    );
+  }
+  #drawRunLeft() {
+    this.directionRight = false;
+
+    if (frameX >= 8) frameX = 0;
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.drawImage(
+      this.#runImage,
+      frameX * this.#runFrame.width,
+      frameY * this.#runFrame.height,
+      this.#runFrame.width,
+      this.#runFrame.height,
+      -this.position.x - this.#runFrame.width - 40,
+      this.position.y + 10,
+      100,
+      130
+    );
+    ctx.restore();
+  }
+  #drawJump() {
+    if (this.directionRight) {
+      ctx.drawImage(this.#jumpImage, this.position.x, this.position.y, 80, 180);
+    } else {
+      ctx.save();
+
+      ctx.scale(-1, 1);
       ctx.drawImage(
-        this.runImage,
-        frameX * this.runFrame.width,
-        frameY * this.runFrame.height,
-        this.runFrame.width,
-        this.runFrame.height,
-        this.position.x - 20,
-        this.position.y + 10,
-        100,
-        130
+        this.#jumpImage,
+        -this.position.x - 80,
+        this.position.y,
+        80,
+        180
       );
-    } else if ((keys["a"] || keys["ArrowLeft"]) && !this.jetpackPickupTime) {
-      runAudio.play();
+      ctx.restore();
+    }
 
-      this.directionRight = false;
-
-      if (frameX >= 8) frameX = 0;
+    frameX = 0;
+  }
+  #drawShootBullet() {
+    if (frameX >= 2) frameX = 0;
+    if (this.directionRight) {
+      ctx.drawImage(
+        this.#shootImage,
+        frameX * this.#shootFrame.width,
+        frameY * this.#shootFrame.height,
+        this.#shootFrame.width,
+        this.#shootFrame.height,
+        this.position.x,
+        this.position.y,
+        100,
+        150
+      );
+    } else {
       ctx.save();
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.runImage,
-        frameX * this.runFrame.width,
-        frameY * this.runFrame.height,
-        this.runFrame.width,
-        this.runFrame.height,
-        -this.position.x - this.runFrame.width - 40, // Adjust for the mirrored position
-        this.position.y + 10,
+        this.#shootImage,
+        frameX * this.#shootFrame.width,
+        frameY * this.#shootFrame.height,
+        this.#shootFrame.width,
+        this.#shootFrame.height,
+        -this.position.x - this.#shootFrame.width,
+        this.position.y,
         100,
-        130
+        150
       );
       ctx.restore();
+    }
+  }
+  #drawSuccess() {
+    winAudio.play();
+    ctx.drawImage(
+      this.#winImage,
+      this.position.x,
+      this.position.y + 10,
+      80,
+      125
+    );
+  }
+  #drawStanceLeft() {
+    ctx.drawImage(this.#stanceImage, this.position.x, this.position.y, 80, 150);
+  }
+  #drawStanceRight() {
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.drawImage(
+      this.#stanceImage,
+      -this.position.x - this.#stanceFrame.width - 40, // Adjust for the mirrored position
+      this.position.y,
+      80,
+      150
+    );
+    ctx.restore();
+  }
+  draw(deltaTime: number) {
+    gameFrame += deltaTime;
+
+    if (gameFrame >= frameInterval) {
+      frameX++;
+      gameFrame = 0;
+    }
+    this.#drawJetPack(deltaTime);
+    if ((keys["d"] || keys["ArrowRight"]) && !this.jetpackPickupTime) {
+      runAudio.play();
+      this.#drawRunRight();
+    } else if ((keys["a"] || keys["ArrowLeft"]) && !this.jetpackPickupTime) {
+      runAudio.play();
+      this.#drawRunLeft();
     } else if ((keys["w"] || keys["ArrowUp"]) && !this.jetpackPickupTime) {
-      if (this.directionRight) {
-        ctx.drawImage(
-          this.jumpImage,
-          this.position.x,
-          this.position.y,
-          80,
-          180
-        );
-      } else {
-        ctx.save();
-
-        ctx.scale(-1, 1);
-        ctx.drawImage(
-          this.jumpImage,
-          -this.position.x - 80,
-          this.position.y,
-          80,
-          180
-        );
-        ctx.restore();
-      }
-
-      frameX = 0;
+      this.#drawJump();
     } else if (keys["f"] || keys["g"]) {
-      if (frameX >= 2) frameX = 0;
-      if (this.directionRight) {
-        ctx.drawImage(
-          this.shootImage,
-          frameX * this.shootFrame.width,
-          frameY * this.shootFrame.height,
-          this.shootFrame.width,
-          this.shootFrame.height,
-          this.position.x,
-          this.position.y,
-          100,
-          150
-        );
-      } else {
-        ctx.save();
-        ctx.scale(-1, 1);
-        ctx.drawImage(
-          this.shootImage,
-          frameX * this.shootFrame.width,
-          frameY * this.shootFrame.height,
-          this.shootFrame.width,
-          this.shootFrame.height,
-          -this.position.x - this.shootFrame.width,
-          this.position.y,
-          100,
-          150
-        );
-        ctx.restore();
-      }
+      this.#drawShootBullet();
     } else {
       if (levelGrade.success == "success") {
-        winAudio.play();
-        ctx.drawImage(
-          this.winImage,
-          this.position.x,
-          this.position.y + 10,
-          80,
-          125
-        );
+        this.#drawSuccess();
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }
       if (!this.directionRight && levelGrade.success != "success") {
-        ctx.save();
-        ctx.scale(-1, 1);
-        ctx.drawImage(
-          this.stanceImage,
-          -this.position.x - this.stanceFrame.width - 40, // Adjust for the mirrored position
-          this.position.y,
-          80,
-          150
-        );
-        ctx.restore();
+        this.#drawStanceRight();
       } else if (this.directionRight && levelGrade.success != "success") {
-        ctx.drawImage(
-          this.stanceImage,
-          this.position.x,
-          this.position.y,
-          80,
-          150
-        );
+        this.#drawStanceLeft();
       }
 
       frameX = 0; // Reset frameX when not running
@@ -251,7 +253,7 @@ export class Player extends Base implements IPlayer {
         this.position.x += movementSpeed;
       }
 
-      this.checkBoundaryX();
+      this.#checkBoundaryX();
     }
   }
   #drawJetTimer(
@@ -276,35 +278,44 @@ export class Player extends Base implements IPlayer {
     ctx.strokeStyle = "#fff";
     ctx.strokeRect(x, y, width, height);
   }
+  // If jetpackPickupTime is set and 10 seconds have passed, reset gravity and jetpackPickupTime
   moveY(deltaTime: number) {
-    // If jetpackPickupTime is set and 10 seconds have passed, reset gravity and jetpackPickupTime
     if (this.jetpackPickupTime) {
       let elapsedTime = Date.now() - this.jetpackPickupTime;
       this.#drawJetTimer(elapsedTime);
       if (elapsedTime >= 10000) {
-        this.gravity = 0.2; // Reset to original gravity value
+        this.gravity = 0.2;
         this.jetpackPickupTime = null;
       }
     }
 
     this.position.y += this.velocityY * (deltaTime / 16.67);
     this.velocityY += this.gravity * (deltaTime / 16.67);
-    if (this.position.y <= 0) {
-      this.position.y = 0;
-    }
+    this.#checkBoundaryY();
   }
 
-  checkBoundaryX() {
+  #checkBoundaryX() {
     if (this.position.x <= 0) {
       this.position.x = 0;
     } else if (this.position.x + this.w >= CANVAS_WIDTH) {
       this.position.x = CANVAS_WIDTH - this.w;
     }
   }
-
+  #checkBoundaryY() {
+    if (this.position.y <= 0) {
+      this.position.y = 0;
+    } else if (this.position.y >= CANVAS_HEIGHT) {
+      loseAudio.play();
+      gameStatus.gameOver = true;
+    }
+  }
+  /**
+   * initalize the bullet
+   * @param angleVal projectile angle in radian
+   */
   fireBullet(angleVal: number) {
     if (ammoObj.ammo > 0) {
-      ammoObj.ammo--; // Decrease ammo count
+      ammoObj.ammo--;
       const bulletDirection = this.directionRight ? 1 : -1;
 
       const bullet = new Bullet(
@@ -322,7 +333,7 @@ export class Player extends Base implements IPlayer {
       objects.bullet.push(bullet);
     }
   }
-
+  //update bullet poisition and remove it if not in canvas
   updateBullet(deltaTime: number) {
     for (let i = 0; i < objects.bullet.length; i++) {
       const bullet = objects.bullet[i];

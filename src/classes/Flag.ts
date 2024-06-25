@@ -10,6 +10,7 @@ import { Player } from "./Player";
 import flagImg from "../assets/flag.png";
 import { Quiz } from "./Quiz";
 import { flagAudio } from "../components/audio";
+import { Frame } from "../types/types";
 
 let frameX = 0;
 let gameFrame = 0;
@@ -20,14 +21,9 @@ export class Flag extends Base {
   outQuiz: boolean;
   quizStartTime: number | null;
   gameOverStartTime: number | null;
-  flagFrame: {
-    flagWidth: number;
-    flagHeight: number;
-    flagFrame: number;
-  } = {
-    flagWidth: 92,
-    flagHeight: 100,
-    flagFrame: 100,
+  #flagFrame: Frame = {
+    width: 92,
+    height: 100,
   };
   flagImage: HTMLImageElement;
 
@@ -51,17 +47,17 @@ export class Flag extends Base {
     if (frameX > 3) frameX = 0;
     ctx.drawImage(
       this.flagImage,
-      frameX * this.flagFrame.flagWidth,
+      frameX * this.#flagFrame.width,
       0, // Adjust based on your sprite sheet layout
-      this.flagFrame.flagWidth,
-      this.flagFrame.flagHeight,
+      this.#flagFrame.width,
+      this.#flagFrame.height,
       this.position.x,
       this.position.y - 80,
       100,
       130
     );
   }
-
+  // if player collides with the flag show the quiz modal and after 1.5s of completing the quiz close the modal and show gameover after 3s
   showQuiz(player: Player) {
     if (this.outQuiz) {
       if (!this.gameOverStartTime) {
@@ -80,7 +76,7 @@ export class Flag extends Base {
         this.quizStartTime = Date.now();
         this.gameOverStartTime = null;
       }
-
+      // FIXME quiz timer not showing the answer after waiting for certain interval
       if (
         gameStatus.isQuiz &&
         quizMap.quizMap != null &&

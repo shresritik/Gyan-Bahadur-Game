@@ -65,10 +65,5 @@ export class Ammo extends Base {
   }
   moveX(player: Player, deltaTime: number) {
     backgroundMovement(player, this, deltaTime);
-    // const movementSpeed = (SPEED * deltaTime) / 16.67;
-
-    // if ((keys["d"] || keys["ArrowRight"])&& player.position.x >= 300) this.position.x -= movementSpeed;
-    // else if (keys["a"] && player.position.x >= 300)
-    //   this.position.x += movementSpeed;
   }
 }

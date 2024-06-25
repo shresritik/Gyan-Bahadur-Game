@@ -221,15 +221,6 @@ export class Enemy extends Base {
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
 
-    // const movementSpeed = (SPEED * deltaTime) / 16.67;
-
-    // Parallax effect for player movement
-    // if (keys["d"] && player.position.x >= 300) {
-    //   this.position.x -= movementSpeed;
-    // } else if (keys["a"] && player.position.x >= 300) {
-    //   this.position.x += movementSpeed;
-    // }
-
     backgroundMovement(player, this, deltaTime);
 
     // Move enemy if tile is 5

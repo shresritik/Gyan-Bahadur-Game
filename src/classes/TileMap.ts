@@ -1,10 +1,4 @@
-import {
-  Ttile,
-  level1,
-  level2,
-  levelGrade,
-  objects,
-} from "../constants/constants";
+import { level1, level2, levelGrade, objects } from "../constants/constants";
 import { Ammo } from "./Ammo";
 import { Animal } from "./Animal";
 import { Enemy } from "./Enemy";
@@ -14,6 +8,7 @@ import { Plat } from "./Platform";
 import { Player } from "./Player";
 import { Jetpack } from "./Jetpack";
 import { backgroundMovement, getRandomValue } from "../utils/utils";
+import { Ttile } from "../types/types";
 
 export class TileMap {
   tileSize: number = 32;
@@ -118,21 +113,9 @@ export class TileMap {
       });
     });
     objects.bullet.forEach((bul) => {
-      // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-      // if (keys["d"] && player.position.x >= 300) {
-      //   bul.position.x -= movementSpeed;
-      // } else if (keys["a"] && player.position.x >= 300) {
-      //   bul.position.x += movementSpeed;
-      // }
       backgroundMovement(player, bul, deltaTime);
     });
     objects.enemyBullet.forEach((bul) => {
-      // const movementSpeed = (SPEED * deltaTime) / 16.67; // Corrected deltaTime application
-      // if (keys["d"] && player.position.x >= 300) {
-      //   bul.position.x -= movementSpeed;
-      // } else if (keys["a"] && player.position.x >= 300) {
-      //   bul.position.x += movementSpeed;
-      // }
       backgroundMovement(player, bul, deltaTime);
     });
   };
@@ -144,11 +127,12 @@ export class TileMap {
       en.enemyBulletCollision();
       en.moveX(player, deltaTime);
       en.audioEnemy();
+      en.updateEnemyBullet(player, deltaTime);
+      en.enemyBulletCollision();
+      objects.platform.forEach((platform) => {
+        en.platformCollision(platform);
+      });
     });
-    // objects.enemy.forEach((enemy) => {
-    //   enemy.updateEnemyBullet(player, deltaTime);
-    //   enemy.enemyBulletCollision();
-    // });
   }
   drawFruit(player: Player, deltaTime: number) {
     objects.fruit.forEach((fr) => {

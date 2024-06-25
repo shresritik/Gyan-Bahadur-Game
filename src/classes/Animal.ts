@@ -5,6 +5,7 @@ import { objects, scoreCount } from "../constants/constants";
 import { Player } from "./Player";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { barkAudio, sadAudio } from "../components/audio";
+import { Frame } from "../types/types";
 
 let frameX = 0;
 let frameY = 0;
@@ -15,16 +16,11 @@ export class Animal extends Base {
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
   healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
   tile: number = 0;
-  dogFrame: {
-    dogWidth: number;
-    dogHeight: number;
-    dogFrame: number;
-  } = {
-    dogWidth: 60,
-    dogHeight: 64,
-    dogFrame: 70,
+  #dogFrame: Frame = {
+    width: 60,
+    height: 64,
   };
-  dogImage: HTMLImageElement;
+  #dogImage: HTMLImageElement;
   constructor(
     position: { x: number; y: number },
     w: number,
@@ -33,8 +29,8 @@ export class Animal extends Base {
   ) {
     super(position, h, w);
     this.tile = tile;
-    this.dogImage = new Image();
-    this.dogImage.src = dog;
+    this.#dogImage = new Image();
+    this.#dogImage.src = dog;
   }
 
   drawAnimal = (deltaTime: number) => {
@@ -45,12 +41,12 @@ export class Animal extends Base {
     }
     if (frameX >= 6) frameX = 0;
     ctx.drawImage(
-      this.dogImage,
+      this.#dogImage,
 
-      frameX * this.dogFrame.dogWidth,
-      frameY * this.dogFrame.dogHeight,
-      this.dogFrame.dogWidth,
-      this.dogFrame.dogHeight,
+      frameX * this.#dogFrame.width,
+      frameY * this.#dogFrame.height,
+      this.#dogFrame.width,
+      this.#dogFrame.height,
       this.position.x,
       this.position.y,
       this.w,
@@ -59,14 +55,9 @@ export class Animal extends Base {
   };
 
   moveX = (player: Player, deltaTime: number) => {
-    // const movementSpeed = SPEED * (deltaTime / 16.67);
-    // if (keys["d"] && player.position.x >= 300) {
-    //   this.position.x -= movementSpeed;
-    // } else if (keys["a"] && player.position.x >= 300) {
-    //   this.position.x += movementSpeed;
-    // }
     backgroundMovement(player, this, deltaTime);
   };
+  //decrease the health of the player if it collides with player
   collidesPlayer(player: Player) {
     const currentTime = Date.now();
     if (detectCollision(player, this)) {
@@ -81,6 +72,8 @@ export class Animal extends Base {
       }
     }
   }
+  //decrease the health of the player if it player shoots it
+
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
