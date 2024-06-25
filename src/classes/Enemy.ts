@@ -78,6 +78,7 @@ export class Enemy extends Base implements IEnemy {
     } else if (this.tile == 5) {
       ctx.drawImage(image, this.position.x, this.position.y, 80, 80);
     }
+    this.updateParticles();
   };
   audioEnemy() {
     if (this.position.x <= CANVAS_WIDTH && this.position.x >= 0) {
@@ -131,9 +132,9 @@ export class Enemy extends Base implements IEnemy {
       ) {
         singleBullet.drawBullet(deltatime, this.tile);
         singleBullet.moveBullet(deltatime);
-
         if (detectCollision(player, singleBullet)) {
           damageAudio.play();
+          this.createParticles(singleBullet.position, "red"); // Create particles when enemy bullet hits player
           if (scoreCount.health > 0 && !this.hitEnemy) {
             scoreCount.health--;
             this.hitEnemy = true;
@@ -167,17 +168,21 @@ export class Enemy extends Base implements IEnemy {
       this.directionX *= -1;
     }
   };
-  createParticles() {
+  private createParticles(
+    position?: { x: number; y: number },
+    color = "#1371F7"
+  ) {
     const particleCount = 20;
+    const posX = position ? position.x : this.position.x + this.w / 2;
+    const posY = position ? position.y : this.position.y + this.h / 2;
     for (let i = 0; i < particleCount; i++) {
-      const size = Math.random() * 5 + 2;
+      const size = Math.random() * 10 + 2;
       const velocity = {
         x: (Math.random() - 0.5) * 4,
         y: (Math.random() - 0.5) * 4,
       };
-      const color = this.tile === 4 ? "orange" : "green";
       const particle = new Particle(
-        { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
+        { x: posX, y: posY },
         velocity,
         size,
         color
@@ -191,6 +196,7 @@ export class Enemy extends Base implements IEnemy {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
         damageAudio.play();
+        this.createParticles();
         if (this.tile == 5) {
           if (this.bulletIndex >= 2) {
             scoreCount.score++;
@@ -220,6 +226,13 @@ export class Enemy extends Base implements IEnemy {
     });
   };
 
+  private updateParticles() {
+    this.particles = this.particles.filter((particle) => particle.isAlive());
+    this.particles.forEach((particle) => {
+      particle.update();
+      particle.draw();
+    });
+  }
   moveX = (player: Player, deltaTime: number) => {
     this.elapsedFrame++;
     if (this.elapsedFrame % 15 === 0) this.imageX++;

@@ -101,7 +101,6 @@ export interface IEnemy {
   updateEnemyBullet(player: Player, deltatime: number): void;
   playerCollision(player: Player): void;
   platformCollision(platform: Plat): void;
-  createParticles(): void;
   enemyBulletCollision(): void;
   moveX(player: Player, deltaTime: number): void;
   destroy(): void;

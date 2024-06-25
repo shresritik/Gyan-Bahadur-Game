@@ -51,10 +51,10 @@ export const quizObj: Tquiz[] = [
   },
   {
     id: 1,
-    question: "Who is CM of Nepal in 2081 B.S",
+    question: "Who is the mayor of Kathmandu in 2081 B.S",
     answerIndex: 1,
-    options: ["Empty", "Sher Bahadur Deuba", "K.P Oli"],
-    error: "Empty became PM in 2079 B.S",
+    options: ["Balendra Shah", "Gyandenda Shah", "Paras Shah"],
+    error: "Balendra Shah became the first youth mayor in 2080 B.S",
   },
   {
     id: 2,
