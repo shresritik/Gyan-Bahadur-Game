@@ -6,6 +6,7 @@ import { Flag } from "../classes/Flag";
 import { Fruit } from "../classes/Fruit";
 import { Jetpack } from "../classes/Jetpack";
 import { Plat } from "../classes/Platform";
+import { Player } from "../classes/Player";
 
 export type Frame = {
   width: number;
@@ -41,3 +42,13 @@ export type TButton = {
   option: number | null;
   isHovered?: boolean;
 };
+export type Tdetector =
+  | Player
+  | Plat
+  | Bullet
+  | Enemy
+  | Fruit
+  | Flag
+  | Animal
+  | Ammo
+  | Jetpack;

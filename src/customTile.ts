@@ -7,7 +7,7 @@ import animal from "./assets/images/dog1.png";
 import ammo from "./assets/images/single-water.png";
 import none from "./assets/images/none.png";
 import jet from "./assets/images/jetpack.png";
-import { isCustom, menuOptions } from "./constants/constants";
+import { COLS, ROWS, isCustom, menuOptions } from "./constants/constants";
 import { MapObject } from "./interface/interface";
 const images = {
   grapes,
@@ -26,8 +26,8 @@ type ImageKey = keyof typeof images;
 
 let selectedTile: ImageKey | null = null;
 
-const rows = 20;
-const cols = 120;
+const rows = ROWS;
+const cols = COLS;
 let mapObj: MapObject = createMapObj(rows, cols);
 
 // Create table element and append to document body

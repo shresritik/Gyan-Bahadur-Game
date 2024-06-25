@@ -35,14 +35,16 @@ import {
   writeLevel,
   writeScore,
 } from "./components/scores";
-//initializing the variables for preloading
+
+// Initializing the variables for preloading
 let tileMap: TileMap;
 let player: Player;
 let lastFrameTime = performance.now();
 const image = new Image();
 image.src = singleWater;
+
 /**
- * event listeners for play, mute, pause and shoot
+ * Event listeners for play, mute, pause and shoot
  */
 const setupEventListeners = () => {
   window.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -90,8 +92,9 @@ const setupEventListeners = () => {
     keys[e.key] = false;
   });
 };
+
 /**
- * initialize the maps and player
+ * Initialize the maps and player
  * @param level: level of the player
  */
 const drawObjects = (level: number) => {
@@ -100,8 +103,9 @@ const drawObjects = (level: number) => {
   tileMap.drawMap(player);
   quizMap.quizMap = new Quiz();
 };
+
 /**
- * this function starts the game time, stores it and passes it to updateGameState function
+ * This function starts the game time, stores it and passes it to updateGameState function
  * @param currentTime takes the game time
  */
 const gameLoop = (currentTime: number) => {
@@ -113,8 +117,9 @@ const gameLoop = (currentTime: number) => {
 
   requestAnimationFrame(gameLoop);
 };
+
 /**
- * this function draws objects from tilemap and update player position
+ * This function draws objects from tilemap and update player position
  * @param deltaTime gametime
  */
 const moveObjects = (deltaTime: number) => {
@@ -130,12 +135,14 @@ const moveObjects = (deltaTime: number) => {
   player?.moveY(deltaTime);
   player?.moveX(deltaTime);
 };
+
 /**
  * Based on the gamestate and the options of the homescreen the screen are rendered
  * @param deltaTime gametime
  */
 const updateGameState = (deltaTime: number) => {
-  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // Ensure canvas is cleared at the start of each frame
+  let maxScore = localStorage.getItem("maxScore");
 
   switch (gameState.currentState) {
     case GameState.Start:
@@ -157,7 +164,7 @@ const updateGameState = (deltaTime: number) => {
     case GameState.Playing:
       if (gameStatus.gameOver) {
         gameState.currentState = GameState.GameOver;
-        gameOverFunction();
+        gameOverFunction(maxScore);
         break;
       }
 
@@ -173,12 +180,13 @@ const updateGameState = (deltaTime: number) => {
       drawHealthBar();
       break;
     case GameState.GameOver:
-      gameOverFunction();
+      gameOverFunction(maxScore);
       break;
   }
 };
+
 /**
- * restart the gameloop by initializing the variables
+ * Restart the gameloop by initializing the variables
  * @param value define the level default it is level 1 if value=1 then level2
  */
 const startGame = (value?: number) => {
@@ -225,9 +233,10 @@ const startGame = (value?: number) => {
 
   gameState.currentState = GameState.Playing;
   lastFrameTime = performance.now();
+  requestAnimationFrame(gameLoop); // Ensure game loop starts
 };
 
 setupEventListeners();
 handleFullScreen();
-//start the gameloop
+// Start the gameloop
 requestAnimationFrame(gameLoop);

@@ -1,15 +1,8 @@
-import { Ammo } from "../classes/Ammo";
-import { Animal } from "../classes/Animal";
-import { Bullet } from "../classes/Bullet";
-import { Enemy } from "../classes/Enemy";
-import { Flag } from "../classes/Flag";
-import { Fruit } from "../classes/Fruit";
-import { Plat } from "../classes/Platform";
 import { Player } from "../classes/Player";
-import { Jetpack } from "../classes/Jetpack";
 import { toggleFullScreen } from "../components/toggleFullScreen";
 import { CANVAS_WIDTH, SPEED, keys } from "../constants/constants";
 import { TKeys } from "../interface/interface";
+import { Tdetector } from "../types/types";
 /**
  * Generates a random integer value between min (inclusive) and max (exclusive).
  * @param min The minimum value (inclusive).
@@ -28,16 +21,6 @@ export function getRandomValue(min: number, max: number): number {
  * @param other The enemy to check collision against.
  * @returns True if there is a collision, false otherwise.
  */
-type Tdetector =
-  | Player
-  | Plat
-  | Bullet
-  | Enemy
-  | Fruit
-  | Flag
-  | Animal
-  | Ammo
-  | Jetpack;
 
 export function detectCollision(
   entity1: Tdetector,
@@ -85,12 +68,22 @@ export function getDistance(
 ): number {
   return Math.floor(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
 }
-
+/**
+ * if the caller is on canvas then only play the audio
+ * @param audio audio media element
+ * @param caller object
+ */
 export function audioOnCanvas(audio: HTMLMediaElement, caller: Tdetector) {
   if (caller.position.x <= CANVAS_WIDTH && caller.position.x >= 0) {
     audio.play();
   }
 }
+/**
+ * move the background when player.position.x reaches 300 to create horizontal movement
+ * @param player
+ * @param caller
+ * @param deltatime
+ */
 export function backgroundMovement(
   player: Player,
   caller: Tdetector,

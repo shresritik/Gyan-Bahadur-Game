@@ -6,9 +6,10 @@ import {
 } from "../constants/constants";
 import { ctx } from "./canvas";
 
+let maxScore: number = localStorage.getItem("maxScore")
+  ? parseInt(localStorage.getItem("maxScore")!)
+  : 0;
 export const writeScore = () => {
-  let maxScore: number = 0;
-
   ctx.fillStyle = "white";
   ctx.font = "20px sans-serif";
   if (maxScore < scoreCount.score) {

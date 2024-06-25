@@ -352,3 +352,5 @@ export const level2: Ttile = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   ],
 ];
+export const ROWS = 20;
+export const COLS = 120;

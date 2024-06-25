@@ -21,6 +21,13 @@ let optionButtons: TButton[];
 let homeButton: TButton; // Add this line to store the "Return to Home" button properties
 
 function handleClick(e: MouseEvent) {
+  if (
+    gameState.currentState !== GameState.Start &&
+    gameState.currentState !== GameState.GameOver
+  ) {
+    return; // Ignore clicks if not in Start or GameOver state
+  }
+
   const { offsetX, offsetY } = e;
   if (optionButtons) {
     for (const button of optionButtons) {
@@ -61,6 +68,7 @@ function handleClick(e: MouseEvent) {
 export function drawStartScreen() {
   gameState.currentState = GameState.Start;
 
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // Clear the canvas
   ctx.drawImage(foreImage, 80, 100, foreImage.width, foreImage.height);
 
   ctx.fillStyle = "white";
@@ -152,7 +160,8 @@ export function drawAboutScreen() {
   ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 32);
 }
 
-export function gameOverFunction() {
+export function gameOverFunction(maxScore: string | null) {
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.fillStyle = "red";
@@ -164,7 +173,6 @@ export function gameOverFunction() {
   }
 
   ctx.fillText("Game Over", CANVAS_WIDTH / 4 + 20, CANVAS_HEIGHT / 2 - 50);
-  let maxScore = localStorage.getItem("maxScore");
   ctx.font = "30px Paytone One ";
   ctx.fillText(
     `High Score: ${maxScore}`,
@@ -224,4 +232,3 @@ export function drawPauseScreen() {
   ctx.fillStyle = "white";
   ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }
-//TODO update projectile
