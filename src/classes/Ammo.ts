@@ -9,23 +9,21 @@ import {
   detectCollision,
 } from "../utils/utils";
 import { ammoAudio } from "../components/audio";
+import { Frame } from "../types/types";
+import { IAmmo } from "../interface/interface";
 
 let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 5;
 let gameFrame = 0;
-export class Ammo extends Base {
-  bulletIndex: number;
-  fireFrame: {
-    fireWidth: number;
-    fireHeight: number;
-    fireFrame: number;
-  } = {
-    fireWidth: 126,
-    fireHeight: 254,
-    fireFrame: 40,
+
+export class Ammo extends Base implements IAmmo {
+  private bulletIndex: number;
+  private fireFrame: Frame = {
+    width: 126,
+    height: 254,
   };
-  ammoImg: HTMLImageElement;
+  private ammoImg: HTMLImageElement;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
     this.bulletIndex = 0;
@@ -44,10 +42,10 @@ export class Ammo extends Base {
     ctx.drawImage(
       this.ammoImg,
 
-      frameX * this.fireFrame.fireWidth,
-      frameY * this.fireFrame.fireHeight,
-      this.fireFrame.fireWidth,
-      this.fireFrame.fireHeight,
+      frameX * this.fireFrame.width,
+      frameY * this.fireFrame.height,
+      this.fireFrame.width,
+      this.fireFrame.height,
       this.position.x,
       this.position.y - 40,
       50,

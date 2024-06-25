@@ -11,22 +11,23 @@ import flagImg from "../assets/flag.png";
 import { Quiz } from "./Quiz";
 import { flagAudio } from "../components/audio";
 import { Frame } from "../types/types";
+import { IFlag } from "../interface/interface";
 
 let frameX = 0;
 let gameFrame = 0;
 const frameInterval = 1000 / 6;
 
-export class Flag extends Base {
+export class Flag extends Base implements IFlag {
   quiz: Quiz | null;
   outQuiz: boolean;
   quizStartTime: number | null;
   answerProvidedTime: number | null;
   gameOverStartTime: number | null;
-  #flagFrame: Frame = {
+  private flagFrame: Frame = {
     width: 92,
     height: 100,
   };
-  flagImage: HTMLImageElement;
+  private flagImage: HTMLImageElement;
 
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super(position, h, w);
@@ -49,10 +50,10 @@ export class Flag extends Base {
     if (frameX > 3) frameX = 0;
     ctx.drawImage(
       this.flagImage,
-      frameX * this.#flagFrame.width,
+      frameX * this.flagFrame.width,
       0,
-      this.#flagFrame.width,
-      this.#flagFrame.height,
+      this.flagFrame.width,
+      this.flagFrame.height,
       this.position.x,
       this.position.y - 80,
       100,

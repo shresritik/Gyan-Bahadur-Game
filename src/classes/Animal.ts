@@ -6,21 +6,21 @@ import { Player } from "./Player";
 import { backgroundMovement, detectCollision } from "../utils/utils";
 import { barkAudio, sadAudio } from "../components/audio";
 import { Frame } from "../types/types";
+import { IAnimal } from "../interface/interface";
 
 let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 3;
 let gameFrame = 0;
-
-export class Animal extends Base {
-  lastHealthDecreaseTime: number = 0; // Last time health was decreased
-  healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
+export class Animal extends Base implements IAnimal {
+  lastHealthDecreaseTime = 0; // Last time health was decreased
+  healthDecreaseCooldown = 800; // Cooldown period in milliseconds
   tile: number = 0;
-  #dogFrame: Frame = {
+  private dogFrame: Frame = {
     width: 60,
     height: 64,
   };
-  #dogImage: HTMLImageElement;
+  private dogImage: HTMLImageElement;
   constructor(
     position: { x: number; y: number },
     w: number,
@@ -29,8 +29,8 @@ export class Animal extends Base {
   ) {
     super(position, h, w);
     this.tile = tile;
-    this.#dogImage = new Image();
-    this.#dogImage.src = dog;
+    this.dogImage = new Image();
+    this.dogImage.src = dog;
   }
 
   drawAnimal = (deltaTime: number) => {
@@ -41,12 +41,12 @@ export class Animal extends Base {
     }
     if (frameX >= 6) frameX = 0;
     ctx.drawImage(
-      this.#dogImage,
+      this.dogImage,
 
-      frameX * this.#dogFrame.width,
-      frameY * this.#dogFrame.height,
-      this.#dogFrame.width,
-      this.#dogFrame.height,
+      frameX * this.dogFrame.width,
+      frameY * this.dogFrame.height,
+      this.dogFrame.width,
+      this.dogFrame.height,
       this.position.x,
       this.position.y,
       this.w,

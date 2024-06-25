@@ -25,26 +25,27 @@ import {
 } from "../components/audio";
 import jet from "../assets/jetpack2.png";
 import { Frame } from "../types/types";
+import { IPlayer } from "../interface/interface";
 
 let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
 
-export class Player extends Base {
-  #stanceFrame: Frame = {
+export class Player extends Base implements IPlayer {
+  private stanceFrame: Frame = {
     width: 30,
     height: 52,
   };
-  #shootFrame: Frame = {
+  private shootFrame: Frame = {
     width: 61,
     height: 81,
   };
 
-  #runFrame: Frame = {
+  private runFrame: Frame = {
     width: 45.5,
     height: 52,
   };
-  #jetFrame: Frame = {
+  private jetFrame: Frame = {
     width: 508,
     height: 523,
     framex: 0,
@@ -55,51 +56,51 @@ export class Player extends Base {
   directionRight: boolean = true;
 
   // Preloaded images
-  #stanceImage: HTMLImageElement;
-  #runImage: HTMLImageElement;
-  #jumpImage: HTMLImageElement;
-  #winImage: HTMLImageElement;
-  #shootImage: HTMLImageElement;
-  #jetImg: HTMLImageElement;
+  private stanceImage: HTMLImageElement;
+  private runImage: HTMLImageElement;
+  private jumpImage: HTMLImageElement;
+  private winImage: HTMLImageElement;
+  private shootImage: HTMLImageElement;
+  private jetImg: HTMLImageElement;
   jetpackPickupTime: number | null = null;
   constructor(position: { x: number; y: number }, h: number, w: number) {
     super({ x: position.x, y: position.y, bulletY: position.y }, h, w);
-    this.#jetImg = new Image();
-    this.#jetImg.src = jet;
+    this.jetImg = new Image();
+    this.jetImg.src = jet;
 
-    this.#stanceImage = new Image();
-    this.#stanceImage.src = stanceImg;
+    this.stanceImage = new Image();
+    this.stanceImage.src = stanceImg;
 
-    this.#runImage = new Image();
-    this.#runImage.src = runImg;
+    this.runImage = new Image();
+    this.runImage.src = runImg;
 
-    this.#jumpImage = new Image();
-    this.#jumpImage.src = jumpImg;
+    this.jumpImage = new Image();
+    this.jumpImage.src = jumpImg;
 
-    this.#shootImage = new Image();
-    this.#shootImage.src = shoot;
+    this.shootImage = new Image();
+    this.shootImage.src = shoot;
 
-    this.#winImage = new Image();
-    this.#winImage.src = win;
+    this.winImage = new Image();
+    this.winImage.src = win;
   }
-  #drawJetPack(deltaTime: number) {
+  private drawJetPack(deltaTime: number) {
     if (this.jetpackPickupTime) {
       rocketAudio.play();
       rocketAudio.volume = 0.5;
       rocketAudio.autoplay = true;
 
-      if (this.#jetFrame.framex! >= 3) this.#jetFrame.framex = 0;
+      if (this.jetFrame.framex! >= 3) this.jetFrame.framex = 0;
       gameFrame += deltaTime;
       if (gameFrame >= 1000 / 12) {
-        this.#jetFrame.framex!++;
+        this.jetFrame.framex!++;
         gameFrame = 0;
       }
       ctx.drawImage(
-        this.#jetImg,
-        this.#jetFrame.framex! * this.#jetFrame.width,
-        0 * this.#jetFrame.height,
-        this.#jetFrame.width,
-        this.#jetFrame.height,
+        this.jetImg,
+        this.jetFrame.framex! * this.jetFrame.width,
+        0 * this.jetFrame.height,
+        this.jetFrame.width,
+        this.jetFrame.height,
         this.position.x,
         this.position.y + 30,
         50,
@@ -107,50 +108,50 @@ export class Player extends Base {
       );
     }
   }
-  #drawRunRight() {
+  private drawRunRight() {
     this.directionRight = true;
 
     if (frameX >= 8) frameX = 0;
     ctx.drawImage(
-      this.#runImage,
-      frameX * this.#runFrame.width,
-      frameY * this.#runFrame.height,
-      this.#runFrame.width,
-      this.#runFrame.height,
+      this.runImage,
+      frameX * this.runFrame.width,
+      frameY * this.runFrame.height,
+      this.runFrame.width,
+      this.runFrame.height,
       this.position.x - 20,
       this.position.y + 10,
       100,
       130
     );
   }
-  #drawRunLeft() {
+  private drawRunLeft() {
     this.directionRight = false;
 
     if (frameX >= 8) frameX = 0;
     ctx.save();
     ctx.scale(-1, 1);
     ctx.drawImage(
-      this.#runImage,
-      frameX * this.#runFrame.width,
-      frameY * this.#runFrame.height,
-      this.#runFrame.width,
-      this.#runFrame.height,
-      -this.position.x - this.#runFrame.width - 40,
+      this.runImage,
+      frameX * this.runFrame.width,
+      frameY * this.runFrame.height,
+      this.runFrame.width,
+      this.runFrame.height,
+      -this.position.x - this.runFrame.width - 40,
       this.position.y + 10,
       100,
       130
     );
     ctx.restore();
   }
-  #drawJump() {
+  private drawJump() {
     if (this.directionRight) {
-      ctx.drawImage(this.#jumpImage, this.position.x, this.position.y, 80, 180);
+      ctx.drawImage(this.jumpImage, this.position.x, this.position.y, 80, 180);
     } else {
       ctx.save();
 
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.#jumpImage,
+        this.jumpImage,
         -this.position.x - 80,
         this.position.y,
         80,
@@ -161,15 +162,15 @@ export class Player extends Base {
 
     frameX = 0;
   }
-  #drawShootBullet() {
+  private drawShootBullet() {
     if (frameX >= 2) frameX = 0;
     if (this.directionRight) {
       ctx.drawImage(
-        this.#shootImage,
-        frameX * this.#shootFrame.width,
-        frameY * this.#shootFrame.height,
-        this.#shootFrame.width,
-        this.#shootFrame.height,
+        this.shootImage,
+        frameX * this.shootFrame.width,
+        frameY * this.shootFrame.height,
+        this.shootFrame.width,
+        this.shootFrame.height,
         this.position.x,
         this.position.y,
         100,
@@ -179,12 +180,12 @@ export class Player extends Base {
       ctx.save();
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.#shootImage,
-        frameX * this.#shootFrame.width,
-        frameY * this.#shootFrame.height,
-        this.#shootFrame.width,
-        this.#shootFrame.height,
-        -this.position.x - this.#shootFrame.width,
+        this.shootImage,
+        frameX * this.shootFrame.width,
+        frameY * this.shootFrame.height,
+        this.shootFrame.width,
+        this.shootFrame.height,
+        -this.position.x - this.shootFrame.width,
         this.position.y,
         100,
         150
@@ -192,25 +193,25 @@ export class Player extends Base {
       ctx.restore();
     }
   }
-  #drawSuccess() {
+  private drawSuccess() {
     winAudio.play();
     ctx.drawImage(
-      this.#winImage,
+      this.winImage,
       this.position.x,
       this.position.y + 10,
       80,
       125
     );
   }
-  #drawStanceRight() {
-    ctx.drawImage(this.#stanceImage, this.position.x, this.position.y, 80, 150);
+  private drawStanceRight() {
+    ctx.drawImage(this.stanceImage, this.position.x, this.position.y, 80, 150);
   }
-  #drawStanceLeft() {
+  private drawStanceLeft() {
     ctx.save();
     ctx.scale(-1, 1);
     ctx.drawImage(
-      this.#stanceImage,
-      -this.position.x - this.#stanceFrame.width - 40, // Adjust for the mirrored position
+      this.stanceImage,
+      -this.position.x - this.stanceFrame.width - 40, // Adjust for the mirrored position
       this.position.y,
       80,
       150
@@ -224,20 +225,20 @@ export class Player extends Base {
       frameX++;
       gameFrame = 0;
     }
-    this.#drawJetPack(deltaTime);
+    this.drawJetPack(deltaTime);
     if ((keys["d"] || keys["ArrowRight"]) && !this.jetpackPickupTime) {
       runAudio.play();
-      this.#drawRunRight();
+      this.drawRunRight();
     } else if ((keys["a"] || keys["ArrowLeft"]) && !this.jetpackPickupTime) {
       runAudio.play();
-      this.#drawRunLeft();
+      this.drawRunLeft();
     } else if ((keys["w"] || keys["ArrowUp"]) && !this.jetpackPickupTime) {
-      this.#drawJump();
+      this.drawJump();
     } else if (keys["f"] || keys["g"]) {
-      this.#drawShootBullet();
+      this.drawShootBullet();
     } else {
       if (levelGrade.success == "success") {
-        this.#drawSuccess();
+        this.drawSuccess();
       } else if (levelGrade.success == "fail") {
         loseAudio.play();
       }
@@ -246,20 +247,20 @@ export class Player extends Base {
         levelGrade.success != "success" &&
         !this.jetpackPickupTime
       ) {
-        this.#drawStanceLeft();
+        this.drawStanceLeft();
       } else if (
         this.directionRight &&
         levelGrade.success != "success" &&
         !this.jetpackPickupTime
       ) {
-        this.#drawStanceRight();
+        this.drawStanceRight();
       }
       if ((keys["d"] || keys["ArrowRight"]) && this.jetpackPickupTime) {
-        this.#drawStanceRight();
+        this.drawStanceRight();
       } else if ((keys["a"] || keys["ArrowLeft"]) && this.jetpackPickupTime) {
-        this.#drawStanceLeft();
+        this.drawStanceLeft();
       } else if (this.jetpackPickupTime) {
-        this.#drawStanceRight();
+        this.drawStanceRight();
       }
       frameX = 0; // Reset frameX when not running
     }
@@ -276,10 +277,10 @@ export class Player extends Base {
         this.position.x += movementSpeed;
       }
 
-      this.#checkBoundaryX();
+      this.checkBoundaryX();
     }
   }
-  #drawJetTimer(
+  private drawJetTimer(
     elapsedTime: number,
 
     x = 15,
@@ -298,14 +299,14 @@ export class Player extends Base {
     ctx.fillStyle = "#00C1EE";
     ctx.fillRect(x, y, healthWidth, height);
 
-    ctx.strokeStyle = "#fff";
+    ctx.strokeStyle = "fff";
     ctx.strokeRect(x, y, width, height);
   }
   // If jetpackPickupTime is set and 10 seconds have passed, reset gravity and jetpackPickupTime
   moveY(deltaTime: number) {
     if (this.jetpackPickupTime) {
       let elapsedTime = Date.now() - this.jetpackPickupTime;
-      this.#drawJetTimer(elapsedTime);
+      this.drawJetTimer(elapsedTime);
       if (elapsedTime >= 10000) {
         this.gravity = 0.2;
         this.jetpackPickupTime = null;
@@ -314,17 +315,17 @@ export class Player extends Base {
 
     this.position.y += this.velocityY * (deltaTime / 16.67);
     this.velocityY += this.gravity * (deltaTime / 16.67);
-    this.#checkBoundaryY();
+    this.checkBoundaryY();
   }
 
-  #checkBoundaryX() {
+  private checkBoundaryX() {
     if (this.position.x <= 0) {
       this.position.x = 0;
     } else if (this.position.x + this.w >= CANVAS_WIDTH) {
       this.position.x = CANVAS_WIDTH - this.w;
     }
   }
-  #checkBoundaryY() {
+  private checkBoundaryY() {
     if (this.position.y <= 0) {
       this.position.y = 0;
     } else if (this.position.y >= CANVAS_HEIGHT) {

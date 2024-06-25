@@ -9,9 +9,9 @@ import { Player } from "./Player";
 import { Jetpack } from "./Jetpack";
 import { backgroundMovement, getRandomValue } from "../utils/utils";
 import { Ttile } from "../types/types";
-
-export class TileMap {
-  #tileSize: number = 32;
+import { ITile } from "../interface/interface";
+export class TileMap implements ITile {
+  private tileSize: number = 32;
   map: Ttile = [];
   constructor(level: number) {
     levelGrade.level = level;
@@ -34,19 +34,17 @@ export class TileMap {
         if (tile == 1) {
           objects.platform.push(
             new Plat(
-              { x: column * this.#tileSize, y: row * this.#tileSize },
-              this.#tileSize,
-              this.#tileSize
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
             )
           );
         } else if (tile == 4 || tile == 5) {
           const newEnemy = new Enemy(
             {
-              x: column * this.#tileSize,
+              x: column * this.tileSize,
               y:
-                tile == 4
-                  ? row * this.#tileSize - 60
-                  : row * this.#tileSize - 70,
+                tile == 4 ? row * this.tileSize - 60 : row * this.tileSize - 70,
             },
             80,
             100,
@@ -60,24 +58,24 @@ export class TileMap {
 
           objects.fruit.push(
             new Fruit(
-              { x: column * this.#tileSize, y: row * this.#tileSize },
-              this.#tileSize,
-              this.#tileSize,
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize,
               val
             )
           );
         } else if (tile == 6) {
           objects.flag.push(
             new Flag(
-              { x: column * this.#tileSize, y: row * this.#tileSize },
-              this.#tileSize,
-              this.#tileSize
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
             )
           );
         } else if (tile == 7) {
           objects.animal.push(
             new Animal(
-              { x: column * this.#tileSize, y: row * this.#tileSize - 70 },
+              { x: column * this.tileSize, y: row * this.tileSize - 70 },
               100,
               120,
               tile
@@ -86,17 +84,17 @@ export class TileMap {
         } else if (tile == 8) {
           objects.ammo.push(
             new Ammo(
-              { x: column * this.#tileSize, y: row * this.#tileSize },
-              this.#tileSize,
-              this.#tileSize
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
             )
           );
         } else if (tile == 9) {
           objects.jet.push(
             new Jetpack(
-              { x: column * this.#tileSize, y: row * this.#tileSize },
-              this.#tileSize,
-              this.#tileSize
+              { x: column * this.tileSize, y: row * this.tileSize },
+              this.tileSize,
+              this.tileSize
             )
           );
         }

@@ -19,25 +19,27 @@ import { Bullet } from "./Bullet";
 import { Plat } from "./Platform";
 import { coronaAudio, damageAudio, fireAudio } from "../components/audio";
 import { Frame } from "../types/types";
+import Particle from "./Particle";
+import { IEnemy } from "../interface/interface";
 
-export class Enemy extends Base {
-  #imageX: number = 0;
-  #enemyFrame: Frame = {
+export class Enemy extends Base implements IEnemy {
+  private imageX: number = 0;
+  private enemyFrame: Frame = {
     width: 126,
     height: 254,
   };
-  #hitEnemy: boolean = false;
-  #elapsedFrame = 0;
+  private hitEnemy: boolean = false;
+  private elapsedFrame = 0;
   tile: number = 0;
   enemyBullet: Bullet[] = [];
   bulletInterval: number | undefined;
   lastHealthDecreaseTime: number = 0; // Last time health was decreased
   healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
-  #bulletIndex: number = 0;
-  #fireImage: HTMLImageElement;
-  #coronaImage: HTMLImageElement;
-  #directionX: number;
-
+  private bulletIndex: number = 0;
+  private fireImage: HTMLImageElement;
+  private coronaImage: HTMLImageElement;
+  private directionX: number;
+  private particles: Particle[] = [];
   constructor(
     position: { x: number; y: number },
     w: number,
@@ -46,13 +48,13 @@ export class Enemy extends Base {
   ) {
     super(position, h, w);
     this.tile = tile;
-    this.#directionX = 1;
+    this.directionX = 1;
 
-    this.#fireImage = new Image();
-    this.#fireImage.src = fireImg;
+    this.fireImage = new Image();
+    this.fireImage.src = fireImg;
 
-    this.#coronaImage = new Image();
-    this.#coronaImage.src = coronaImg;
+    this.coronaImage = new Image();
+    this.coronaImage.src = coronaImg;
   }
 
   startShooting(player: Player) {
@@ -60,14 +62,14 @@ export class Enemy extends Base {
   }
 
   draw = () => {
-    const image = this.tile === 4 ? this.#fireImage : this.#coronaImage;
+    const image = this.tile === 4 ? this.fireImage : this.coronaImage;
     if (this.tile == 4) {
       ctx.drawImage(
         image,
-        this.#imageX * this.#enemyFrame.width,
+        this.imageX * this.enemyFrame.width,
         0,
-        this.#enemyFrame.width,
-        this.#enemyFrame.height,
+        this.enemyFrame.width,
+        this.enemyFrame.height,
         this.position.x,
         this.position.y,
         80,
@@ -102,7 +104,7 @@ export class Enemy extends Base {
     objects.enemyBullet.push(bullet);
   };
   //remove bullet if not in the canvas
-  #checkBoundary(singleBullet: Bullet, index: number) {
+  private checkBoundary(singleBullet: Bullet, index: number) {
     if (
       singleBullet.position.x <= 0 ||
       singleBullet.position.x >= CANVAS_WIDTH ||
@@ -117,7 +119,7 @@ export class Enemy extends Base {
   //if the bullet collides with enemy decrease health and bullet
   updateEnemyBullet = (player: Player, deltatime: number) => {
     this.enemyBullet.forEach((singleBullet, index) => {
-      this.#checkBoundary(singleBullet, index);
+      this.checkBoundary(singleBullet, index);
 
       if (
         getDistance(
@@ -132,14 +134,14 @@ export class Enemy extends Base {
 
         if (detectCollision(player, singleBullet)) {
           damageAudio.play();
-          if (scoreCount.health > 0 && !this.#hitEnemy) {
+          if (scoreCount.health > 0 && !this.hitEnemy) {
             scoreCount.health--;
-            this.#hitEnemy = true;
+            this.hitEnemy = true;
           }
           this.enemyBullet.splice(index, 1);
           objects.enemyBullet.splice(index, 1);
         } else {
-          this.#hitEnemy = false;
+          this.hitEnemy = false;
         }
       }
     });
@@ -162,16 +164,35 @@ export class Enemy extends Base {
   // if enemy collides with platform then change the enemy direction
   platformCollision = (platform: Plat) => {
     if (detectCollision(this, platform)) {
-      this.#directionX *= -1;
+      this.directionX *= -1;
     }
   };
+  createParticles() {
+    const particleCount = 20;
+    for (let i = 0; i < particleCount; i++) {
+      const size = Math.random() * 5 + 2;
+      const velocity = {
+        x: (Math.random() - 0.5) * 4,
+        y: (Math.random() - 0.5) * 4,
+      };
+      const color = this.tile === 4 ? "orange" : "green";
+      const particle = new Particle(
+        { x: this.position.x + this.w / 2, y: this.position.y + this.h / 2 },
+        velocity,
+        size,
+        color
+      );
+      this.particles.push(particle);
+    }
+  }
+
   //enemy bullet logic
   enemyBulletCollision = () => {
     objects.bullet.forEach((bull, index) => {
       if (detectCollision(bull, this)) {
         damageAudio.play();
         if (this.tile == 5) {
-          if (this.#bulletIndex >= 2) {
+          if (this.bulletIndex >= 2) {
             scoreCount.score++;
             objects.enemy = objects.enemy.filter((enemy) => {
               if (enemy === this) {
@@ -181,7 +202,7 @@ export class Enemy extends Base {
               return true;
             });
           } else {
-            this.#bulletIndex++;
+            this.bulletIndex++;
           }
         } else {
           scoreCount.score++;
@@ -200,17 +221,17 @@ export class Enemy extends Base {
   };
 
   moveX = (player: Player, deltaTime: number) => {
-    this.#elapsedFrame++;
-    if (this.#elapsedFrame % 15 === 0) this.#imageX++;
-    if (this.#imageX >= 7) this.#imageX = 0;
+    this.elapsedFrame++;
+    if (this.elapsedFrame % 15 === 0) this.imageX++;
+    if (this.imageX >= 7) this.imageX = 0;
 
     backgroundMovement(player, this, deltaTime);
 
     if (this.tile === 5) {
-      this.position.x += this.#directionX * SPEED * (deltaTime / 16.67);
+      this.position.x += this.directionX * SPEED * (deltaTime / 16.67);
 
       if (this.position.x <= 0 || this.position.x + this.w >= CANVAS_WIDTH) {
-        this.#directionX *= -1;
+        this.directionX *= -1;
       }
 
       objects.platform.forEach((platform) => {

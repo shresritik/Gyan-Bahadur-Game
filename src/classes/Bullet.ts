@@ -6,23 +6,24 @@ import water from "../assets/water.png";
 import corona from "../assets/corona.png";
 import { explosionAudio, waterAudio } from "../components/audio";
 import { Frame } from "../types/types";
+import { IBullet } from "../interface/interface";
 
 let frameX = 0;
 let frameY = 0;
 const frameInterval = 1000 / 5; // 5 frames per second
 
-export class Bullet extends Base {
-  velocityDirection: { x: number };
-  #fireFrame: Frame = {
+export class Bullet extends Base implements IBullet {
+  private velocityDirection: { x: number };
+  private fireFrame: Frame = {
     width: 254,
     height: 126,
   };
-  #firerImg: HTMLImageElement;
-  #coronaImg: HTMLImageElement;
-  #waterImg: HTMLImageElement;
-  #accumulatedTime: number;
+  private firerImg: HTMLImageElement;
+  private coronaImg: HTMLImageElement;
+  private waterImg: HTMLImageElement;
+  private accumulatedTime: number;
   angle: number;
-  #bulletSpeed: number = 2;
+  private bulletSpeed: number = 2;
   constructor(
     position: { x: number; y: number },
     h: number,
@@ -32,25 +33,25 @@ export class Bullet extends Base {
   ) {
     super(position, h, w);
     this.velocityDirection = { x: direction.x };
-    this.#firerImg = new Image();
-    this.#firerImg.src = firer;
-    this.#coronaImg = new Image();
-    this.#coronaImg.src = corona;
-    this.#waterImg = new Image();
-    this.#waterImg.src = water;
-    this.#accumulatedTime = 0;
+    this.firerImg = new Image();
+    this.firerImg.src = firer;
+    this.coronaImg = new Image();
+    this.coronaImg.src = corona;
+    this.waterImg = new Image();
+    this.waterImg.src = water;
+    this.accumulatedTime = 0;
     this.angle = angle;
   }
-  #drawFire() {
+  private drawFire() {
     explosionAudio.play();
     if (frameY >= 6) frameY = 0;
     if (this.velocityDirection.x == -1) {
       ctx.drawImage(
-        this.#firerImg,
-        frameX * this.#fireFrame.width,
-        frameY * this.#fireFrame.height,
-        this.#fireFrame.width,
-        this.#fireFrame.height,
+        this.firerImg,
+        frameX * this.fireFrame.width,
+        frameY * this.fireFrame.height,
+        this.fireFrame.width,
+        this.fireFrame.height,
         this.position.x,
         this.position.y,
         this.w,
@@ -60,11 +61,11 @@ export class Bullet extends Base {
       ctx.save();
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.#firerImg,
-        frameX * this.#fireFrame.width,
-        frameY * this.#fireFrame.height,
-        this.#fireFrame.width,
-        this.#fireFrame.height,
+        this.firerImg,
+        frameX * this.fireFrame.width,
+        frameY * this.fireFrame.height,
+        this.fireFrame.width,
+        this.fireFrame.height,
         -this.position.x,
         this.position.y,
         this.w,
@@ -73,16 +74,16 @@ export class Bullet extends Base {
       ctx.restore();
     }
   }
-  #drawWater() {
+  private drawWater() {
     waterAudio.play();
     if (frameY >= 6) frameY = 0;
     if (this.velocityDirection.x == -1) {
       ctx.drawImage(
-        this.#waterImg,
-        frameX * this.#fireFrame.width,
-        frameY * this.#fireFrame.height,
-        this.#fireFrame.width,
-        this.#fireFrame.height,
+        this.waterImg,
+        frameX * this.fireFrame.width,
+        frameY * this.fireFrame.height,
+        this.fireFrame.width,
+        this.fireFrame.height,
         this.position.x,
         this.position.y,
         this.w,
@@ -92,11 +93,11 @@ export class Bullet extends Base {
       ctx.save();
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.#waterImg,
-        frameX * this.#fireFrame.width,
-        frameY * this.#fireFrame.height,
-        this.#fireFrame.width,
-        this.#fireFrame.height,
+        this.waterImg,
+        frameX * this.fireFrame.width,
+        frameY * this.fireFrame.height,
+        this.fireFrame.width,
+        this.fireFrame.height,
         -this.position.x - this.w,
         this.position.y,
         this.w,
@@ -106,23 +107,23 @@ export class Bullet extends Base {
     }
   }
   drawBullet(deltaTime: number, tile?: number) {
-    this.#accumulatedTime += deltaTime;
+    this.accumulatedTime += deltaTime;
 
-    if (this.#accumulatedTime >= frameInterval) {
+    if (this.accumulatedTime >= frameInterval) {
       frameY++;
-      this.#accumulatedTime = 0;
+      this.accumulatedTime = 0;
     }
 
     if (tile === 4) {
-      this.#drawFire();
+      this.drawFire();
     } else if (tile === 5) {
-      ctx.drawImage(this.#coronaImg, this.position.x, this.position.y, 32, 32);
+      ctx.drawImage(this.coronaImg, this.position.x, this.position.y, 32, 32);
     } else {
-      this.#drawWater();
+      this.drawWater();
     }
   }
   // if bullet position is is less than 300 change the angle to downward direction
-  #bulletProjectile(movementSpeed: number) {
+  private bulletProjectile(movementSpeed: number) {
     const angleDirection = movementSpeed;
     const vx = -angleDirection * Math.cos(this.angle);
     const vy =
@@ -137,13 +138,13 @@ export class Bullet extends Base {
     const movementSpeed =
       this.velocityDirection.x *
       ((SPEED * deltaTime) / 16.67) *
-      this.#bulletSpeed;
+      this.bulletSpeed;
 
     if (this.angle !== 0) {
       if (this.position.y <= 300) {
         this.angle = -(3 * Math.PI) / 4;
       }
-      this.#bulletProjectile(movementSpeed);
+      this.bulletProjectile(movementSpeed);
     } else {
       this.position.x += movementSpeed;
     }

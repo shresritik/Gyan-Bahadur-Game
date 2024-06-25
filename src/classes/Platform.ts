@@ -4,23 +4,19 @@ import { backgroundMovement, detectCollision } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
 import wall from "../assets/wall.png";
-export class Plat extends Base {
-  #image: HTMLImageElement;
+import { IPlat } from "../interface/interface";
+
+export class Plat extends Base implements IPlat {
+  private image: HTMLImageElement;
 
   constructor(position: { x: number; y: number }, w: number, h: number) {
     super(position, h, w);
-    this.#image = new Image();
-    this.#image.src = wall;
+    this.image = new Image();
+    this.image.src = wall;
   }
 
   draw = () => {
-    ctx.drawImage(
-      this.#image,
-      this.position.x,
-      this.position.y,
-      this.w,
-      this.h
-    );
+    ctx.drawImage(this.image, this.position.x, this.position.y, this.w, this.h);
   };
   // handle horizontal and vertical collision with the player
   playerCollision(player: Player) {
