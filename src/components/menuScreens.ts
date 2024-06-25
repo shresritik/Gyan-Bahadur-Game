@@ -94,52 +94,52 @@ export function drawAboutScreen() {
   ctx.fillText(
     "Move Left: a/left key. Move Right:d/right key. Up: w/up key",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 - 100
+    CANVAS_HEIGHT / 3 - 100
   );
   ctx.fillText(
     "Bullet: f key. Projectile: g key ",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 - 70
+    CANVAS_HEIGHT / 3 - 70
   );
-  ctx.fillText("Pause/Resume: p key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 2 - 40);
+  ctx.fillText("Pause/Resume: p key", CANVAS_WIDTH / 5, CANVAS_HEIGHT / 3 - 40);
   ctx.fillText(
     "Mute/Unmute All Sound: m key. Mute/Unmute Bg music: n key",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 - 10
+    CANVAS_HEIGHT / 3 - 10
   );
   ctx.fillText(
     "Full Screen: Alt + Enter key",
     CANVAS_WIDTH / 5,
-    CANVAS_HEIGHT / 2 + 20
+    CANVAS_HEIGHT / 3 + 20
   );
   ctx.fillText(
     "Score is increased if the enemy (virus/fire) is defeated.",
     CANVAS_WIDTH / 5,
-    (3 * CANVAS_HEIGHT) / 5
+    (3 * CANVAS_HEIGHT) / 6
   );
   ctx.fillText(
     "Health is decreased if enemy hits the player.",
     CANVAS_WIDTH / 5,
-    (3 * CANVAS_HEIGHT) / 5 + 30
+    (3 * CANVAS_HEIGHT) / 6 + 30
   );
   ctx.fillText(
     "Health is decreased if the player hits/collides with the dog.",
     CANVAS_WIDTH / 5,
-    (3 * CANVAS_HEIGHT) / 5 + 60
+    (3 * CANVAS_HEIGHT) / 6 + 60
   );
   ctx.fillText(
     "Health is increased with the food.",
     CANVAS_WIDTH / 5,
-    (3 * CANVAS_HEIGHT) / 5 + 90
+    (3 * CANVAS_HEIGHT) / 6 + 90
   );
   ctx.fillText(
     "Goal is to reach a flag and answer the quiz to increase score.",
     CANVAS_WIDTH / 5,
-    (3 * CANVAS_HEIGHT) / 5 + 120
+    (3 * CANVAS_HEIGHT) / 6 + 120
   );
   homeButton = {
     x: CANVAS_WIDTH / 4 - 60,
-    y: CANVAS_HEIGHT / 2 + 210,
+    y: CANVAS_HEIGHT / 2 + 150,
     w: 200,
     h: 50,
     option: null,

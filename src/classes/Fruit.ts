@@ -32,7 +32,7 @@ export class Fruit extends Base implements IFruit {
   private playerCollision(player: Player) {
     if (detectCollision(player, this)) {
       eatingAudio.play();
-      if (scoreCount.health < 100) scoreCount.health++;
+      if (scoreCount.health < 100) scoreCount.health += 2;
       objects.fruit = objects.fruit.filter((fruit) => fruit !== this); // Remove the specific fruit
     }
   }

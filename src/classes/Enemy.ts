@@ -14,7 +14,7 @@ import {
 import { Base } from "./Base";
 import { Player } from "./Player";
 import fireImg from "../assets/fire.png";
-import coronaImg from "../assets/corona.png";
+import coronaImg from "../assets/virus2.png";
 import { Bullet } from "./Bullet";
 import { Plat } from "./Platform";
 import { coronaAudio, damageAudio, fireAudio } from "../components/audio";
@@ -27,6 +27,11 @@ export class Enemy extends Base implements IEnemy {
   private enemyFrame: Frame = {
     width: 126,
     height: 254,
+  };
+  private coronaFrame: Frame = {
+    width: 776,
+    height: 771,
+    framex: 0,
   };
   private hitEnemy: boolean = false;
   private elapsedFrame = 0;
@@ -76,7 +81,17 @@ export class Enemy extends Base implements IEnemy {
         100
       );
     } else if (this.tile == 5) {
-      ctx.drawImage(image, this.position.x, this.position.y, 80, 80);
+      ctx.drawImage(
+        image,
+        this.coronaFrame.framex! * this.coronaFrame.width,
+        0,
+        this.coronaFrame.width,
+        this.coronaFrame.height,
+        this.position.x,
+        this.position.y,
+        80,
+        80
+      );
     }
     this.updateParticles();
   };
@@ -136,7 +151,7 @@ export class Enemy extends Base implements IEnemy {
           damageAudio.play();
           this.createParticles(singleBullet.position, "red"); // Create particles when enemy bullet hits player
           if (scoreCount.health > 0 && !this.hitEnemy) {
-            scoreCount.health--;
+            scoreCount.health -= 5;
             this.hitEnemy = true;
           }
           this.enemyBullet.splice(index, 1);
@@ -157,7 +172,7 @@ export class Enemy extends Base implements IEnemy {
         scoreCount.health > 0 &&
         currentTime - this.lastHealthDecreaseTime > this.healthDecreaseCooldown
       ) {
-        scoreCount.health--;
+        scoreCount.health -= 5;
         this.lastHealthDecreaseTime = currentTime;
       }
     }
@@ -237,6 +252,9 @@ export class Enemy extends Base implements IEnemy {
     this.elapsedFrame++;
     if (this.elapsedFrame % 15 === 0) this.imageX++;
     if (this.imageX >= 7) this.imageX = 0;
+    this.elapsedFrame++;
+    if (this.elapsedFrame % 28 === 0) this.coronaFrame.framex!++;
+    if (this.coronaFrame.framex! >= 9) this.coronaFrame.framex = 0;
 
     backgroundMovement(player, this, deltaTime);
 

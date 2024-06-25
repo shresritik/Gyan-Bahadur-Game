@@ -39,4 +39,5 @@ export type TButton = {
   w: number;
   h: number;
   option: number | null;
+  isHovered?: boolean;
 };
