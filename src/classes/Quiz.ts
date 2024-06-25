@@ -7,7 +7,7 @@ import {
   quizObj,
   scoreCount,
 } from "../constants/constants";
-import { Tquiz } from "../types/types";
+import { TButton, Tquiz } from "../types/types";
 import { getRandomValue } from "../utils/utils";
 
 export class Quiz {
@@ -15,7 +15,7 @@ export class Quiz {
   #randomIndex: number = getRandomValue(0, quizObj.length);
   #quizBox = { x: 250, y: 50, w: 800, h: 500 };
   selectedOption: number | null = null;
-  #optionButtons: Toption[] = [];
+  #optionButtons: TButton[] = [];
 
   constructor() {
     this.handleKeyPress = this.handleKeyPress.bind(this);
