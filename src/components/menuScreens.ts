@@ -113,7 +113,7 @@ export function drawAboutScreen() {
     CANVAS_HEIGHT / 2 + 20
   );
   ctx.fillText(
-    "Score is increased if the enemy (virus/fire) is defeated. ",
+    "Score is increased if the enemy (virus/fire) is defeated.",
     CANVAS_WIDTH / 5,
     (3 * CANVAS_HEIGHT) / 5
   );
@@ -128,13 +128,18 @@ export function drawAboutScreen() {
     (3 * CANVAS_HEIGHT) / 5 + 60
   );
   ctx.fillText(
-    "Health is increased with the food",
+    "Health is increased with the food.",
     CANVAS_WIDTH / 5,
     (3 * CANVAS_HEIGHT) / 5 + 90
   );
+  ctx.fillText(
+    "Goal is to reach a flag and answer the quiz to increase score.",
+    CANVAS_WIDTH / 5,
+    (3 * CANVAS_HEIGHT) / 5 + 120
+  );
   homeButton = {
     x: CANVAS_WIDTH / 4 - 60,
-    y: CANVAS_HEIGHT / 2 + 180,
+    y: CANVAS_HEIGHT / 2 + 210,
     w: 200,
     h: 50,
     option: null,
