@@ -2,7 +2,7 @@
 
 ### About
 
-"Gyan Bahadur" is an innovative 2D educational game designed to provide users with knowledge across various subjects. The game incorporates engaging mechanics where players collect healthy food for energy, use water to put out fires, destroy bacteria, and dodge animals. At the end, players answer general knowledge questions to proceed. This game aims to make learning fun and interactive, appealing to a wide audience.
+"Gyan Bahadur" is an innovative 2D educational game designed to provide users with knowledge across various subjects. The game incorporates engaging mechanics where players collect healthy food for energy, use water to put out fires, destroy bacteria, and dodge animals. To win the game the player needs to find the flag and solve the quiz. This game aims to make learning fun and interactive, appealing to a wide audience.
 
 ### Features
 
@@ -12,6 +12,7 @@
 - Shoot water (f key)
 - Project shoot (g key)
 - General Knowledge Quiz at the end after reaching a flag
+- Game has 2 levels
 - Custom Level Design
 - Start screen with a start button to initialize the game
 - Sound effects
