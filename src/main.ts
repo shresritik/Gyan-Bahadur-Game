@@ -83,7 +83,7 @@ const setupEventListeners = () => {
     if (e.key === "f" && player) {
       player.fireBullet(Math.PI);
     } else if (keys["g"]) {
-      const angle = Math.PI / 6; // Fire at 30 degrees or -45 degrees based on direction
+      const angle = Math.PI / 6;
       player.fireBullet(angle);
     }
   });
@@ -141,7 +141,7 @@ const moveObjects = (deltaTime: number) => {
  * @param deltaTime gametime
  */
 const updateGameState = (deltaTime: number) => {
-  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT); // Ensure canvas is cleared at the start of each frame
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   let maxScore = localStorage.getItem("maxScore");
 
   switch (gameState.currentState) {
@@ -233,7 +233,7 @@ const startGame = (value?: number) => {
 
   gameState.currentState = GameState.Playing;
   lastFrameTime = performance.now();
-  requestAnimationFrame(gameLoop); // Ensure game loop starts
+  requestAnimationFrame(gameLoop);
 };
 
 setupEventListeners();

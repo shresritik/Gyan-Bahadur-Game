@@ -28,7 +28,7 @@ export interface IAmmo {
 }
 
 export interface IAnimal {
-  lastHealthDecreaseTime: number; // Last time health was decreased
+  lastHealthDecreaseTime: number;
   healthDecreaseCooldown: number;
   drawAnimal(deltaTime: number): void;
   moveX(player: Player, deltaTime: number): void;

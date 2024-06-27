@@ -38,8 +38,8 @@ export class Enemy extends Base implements IEnemy {
   tile: number = 0;
   enemyBullet: Bullet[] = [];
   bulletInterval: number | undefined;
-  lastHealthDecreaseTime: number = 0; // Last time health was decreased
-  healthDecreaseCooldown: number = 800; // Cooldown period in milliseconds
+  lastHealthDecreaseTime: number = 0;
+  healthDecreaseCooldown: number = 800;
   private bulletIndex: number = 0;
   private fireImage: HTMLImageElement;
   private coronaImage: HTMLImageElement;
@@ -61,9 +61,9 @@ export class Enemy extends Base implements IEnemy {
     this.coronaImage = new Image();
     this.coronaImage.src = coronaImg;
   }
-
+  // create bullet objects every 3 seconds
   startShooting(player: Player) {
-    this.bulletInterval = setInterval(() => this.createBullet(player), 3000); // create bullet objects every 3 seconds
+    this.bulletInterval = setInterval(() => this.createBullet(player), 3000);
   }
 
   draw = () => {
@@ -149,7 +149,7 @@ export class Enemy extends Base implements IEnemy {
         singleBullet.moveBullet(deltatime);
         if (detectCollision(player, singleBullet)) {
           damageAudio.play();
-          this.createParticles(singleBullet.position, "red"); // Create particles when enemy bullet hits player
+          this.createParticles(singleBullet.position, "red");
           if (scoreCount.health > 0 && !this.hitEnemy) {
             scoreCount.health -= 5;
             this.hitEnemy = true;

@@ -211,7 +211,7 @@ export class Player extends Base implements IPlayer {
     ctx.scale(-1, 1);
     ctx.drawImage(
       this.stanceImage,
-      -this.position.x - this.stanceFrame.width - 40, // Adjust for the mirrored position
+      -this.position.x - this.stanceFrame.width - 40,
       this.position.y,
       80,
       150

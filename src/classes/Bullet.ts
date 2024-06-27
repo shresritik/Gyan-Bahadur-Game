@@ -10,7 +10,7 @@ import { IBullet } from "../interface/interface";
 
 let frameX = 0;
 let frameY = 0;
-const frameInterval = 1000 / 5; // 5 frames per second
+const frameInterval = 1000 / 5;
 
 export class Bullet extends Base implements IBullet {
   private velocityDirection: { x: number };

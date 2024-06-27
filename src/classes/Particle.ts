@@ -16,13 +16,13 @@ class Particle {
     this.velocity = velocity;
     this.color = color;
     this.radius = radius;
-    this.lifetime = 100; // Time in frames for particle to disappear
+    this.lifetime = 100;
   }
 
   update() {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    this.radius *= 0.95; // Shrink particle over time
+    this.radius *= 0.95;
     this.lifetime -= 1;
   }
 
