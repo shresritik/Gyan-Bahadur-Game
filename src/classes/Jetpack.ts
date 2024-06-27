@@ -49,7 +49,7 @@ export class Jetpack extends Base implements IJetpack {
     const movementSpeed = (SPEED * deltaTime) / 16.67;
     if (detectCollision(player, this)) {
       player.velocityY = 0;
-      player.velocityY -= movementSpeed;
+      player.velocityY -= 2;
       player.gravity = 0;
       player.jetpackPickupTime = Date.now();
       objects.jet = objects.jet.filter((j) => j != this);
