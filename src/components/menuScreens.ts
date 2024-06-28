@@ -217,18 +217,4 @@ export function drawPauseScreen() {
   ctx.font = "30px Paytone One ";
   ctx.fillText("Game Paused", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2);
   ctx.fillText("Press P to Resume", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 2 + 50);
-
-  homeButton = {
-    x: CANVAS_WIDTH / 4,
-    y: CANVAS_HEIGHT / 2 + 70,
-    w: 200,
-    h: 50,
-    option: null,
-  };
-  ctx.font = "22px Paytone One ";
-
-  ctx.fillStyle = "red";
-  ctx.fillRect(homeButton.x, homeButton.y, homeButton.w, homeButton.h);
-  ctx.fillStyle = "white";
-  ctx.fillText("Return to Menu", homeButton.x + 15, homeButton.y + 31);
 }

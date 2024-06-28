@@ -10,6 +10,7 @@ import {
   backgroundMovement,
   detectCollision,
   getDistance,
+  getRandomValue,
 } from "../utils/utils";
 import { Base } from "./Base";
 import { Player } from "./Player";
@@ -191,7 +192,7 @@ export class Enemy extends Base implements IEnemy {
     const posX = position ? position.x : this.position.x + this.w / 2;
     const posY = position ? position.y : this.position.y + this.h / 2;
     for (let i = 0; i < particleCount; i++) {
-      const size = Math.random() * 10 + 2;
+      const size = getRandomValue(2, 12);
       const velocity = {
         x: (Math.random() - 0.5) * 4,
         y: (Math.random() - 0.5) * 4,
