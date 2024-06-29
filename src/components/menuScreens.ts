@@ -126,6 +126,11 @@ export function drawAboutScreen() {
     (3 * CANVAS_HEIGHT) / 6
   );
   ctx.fillText(
+    "To use editor drag and drop the required objects, then press save then play.",
+    CANVAS_WIDTH / 5,
+    CANVAS_HEIGHT / 3 + 80
+  );
+  ctx.fillText(
     "Health is decreased if enemy hits the player.",
     CANVAS_WIDTH / 5,
     (3 * CANVAS_HEIGHT) / 6 + 30

@@ -13,7 +13,7 @@
 - Project shoot (g key)
 - General Knowledge Quiz at the end after reaching a flag
 - Game has 2 levels
-- Custom Level Design
+- Custom Level Design: drag and drop the required objects, then press save and then play
 - Start screen with a start button to initialize the game
 - Sound effects
 - High score tracking
